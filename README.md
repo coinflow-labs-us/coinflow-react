@@ -1,0 +1,109 @@
+# Coinflow React
+
+## Withdraw Usage
+```
+import {useWallet} from '@solana/wallet-adapter-react';
+const wallet = useWallet();
+const connection = useConnection();
+
+<CoinflowWithdraw wallet={wallet} merchantId='<YOUR MERCHANT ID>' env='prod|sandbox|staging' connection={connection} />;
+```
+
+Props:
+* `wallet`: The Solana Wallet Adapter Wallet
+* `merchantId`: Your Merchant ID (Contact Coinflow support for this)
+* `connection`: Solana Connection
+* `env` (optional): This defaults to `prod`
+    - For testing set to `staging`
+* `onSuccess` (optional): function to run when the withdrawal process is successful
+
+## Purchase Usage
+```
+import {useWallet} from '@solana/wallet-adapter-react';
+const wallet = useWallet();
+const connection = useConnection();
+
+<CoinflowPurchase wallet={wallet} merchantId='<YOUR MERCHANT ID>' env='prod|sandbox|staging' connection={connection} />;
+```
+
+Props:
+* `wallet`: The Solana Wallet Adapter Wallet
+* `merchantId`: Your Merchant ID (Contact Coinflow support for this)
+* `connection`: Solana Connection
+* `env` (optional): This defaults to `prod`
+  - For testing set to `staging`
+* `onSuccess` (optional): function to run when the purchase process is successful
+* `transaction` (optional): transaction for the user to run which redeems their credits with your smart contract. Create this transaction just like you would for a normal user who has USDC in their account.
+* `partialSigners` (optional): Keypairs of Partial Signers to sign the transaction with, this is necessary when initializing new accounts as the new account Keypair must sign the transaction.
+* `debugTx` (optional): Setting this to `true` will sign the transaction with the wallet, and send the transaction with no preflight checks allowing for easier debug of any issues.
+* `token` (optional): The token to use for the purchase. Defaults to USDC. Currently only supported for the Solana Blockchain.
+
+## Utils
+
+`CoinflowUtils`
+
+* `getFeePayer` - Return the `PublicKey` of the Coinflow Fee Payer
+
+# Changelog
+
+### 2.1.1
+
+- Bug fix to set useHeightChange url param to true if using the handleHeightChange prop
+
+### 2.1.0
+
+- Added handleHeightChange to all components to allow for dynamic height changes
+
+### 2.0.0
+
+- Removing hard requirements for most large 3rd party libraries
+- Improved type checking for wallets and transactions
+
+### 1.3.0
+
+- Added support for Polygon blockchain
+- Added support for Solana Checkout with non-USDC tokens
+
+### 1.2.0
+
+- Added support for Ethereum Mainnet blockchain
+
+### 1.0.0
+
+- Added support for the NEAR blockchain
+
+### 0.3.0
+
+- Added Withdraw and Purchase history components
+
+### 0.2.11
+
+- Fixing bug with Magic Wallet and Versioned Transactions
+
+### 0.2.9
+
+- Added the ability to sign transactions
+
+### 0.2.6,0.2.7
+
+- Added `CoinflowUtils.getFeePayer()` to get the Coinflow fee payer PublicKey
+
+### 0.2.5
+
+- Fixing an issue when passing partialSigners not working with the setup transaction
+
+### 0.2.4
+
+- Setup and Redeem transactions now run gasless, which doesnt require the user to have SOL in their account to interact with coinflow
+
+### 0.2.2,0.2.3
+
+- Added the optional debugTx parameter to allow for easier debugging of any redeem transaction related issues.
+
+### 0.2.1
+
+- Added the optional partialSigners parameter to CoinflowPurchase component so redeem txs that require partial signers can be supported.
+
+### 0.2.0
+
+- Added the transaction optional parameter to CoinflowPurchase component enabling automatic redemption of credits on purchases.

@@ -1,0 +1,67 @@
+{
+  "name": "@coinflowlabs/react",
+  "version": "2.1.1",
+  "description": "React Component for Coinflow Withdraw",
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/esm/index.d.ts",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coinflow-labs-us/coinflow-react"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "solana",
+    "web3"
+  ],
+  "scripts": {
+    "clean": "rimraf build",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir build/cjs"
+  },
+  "files": [
+    "build",
+    "README.md"
+  ],
+  "dependencies": {
+    "bs58": "^5.0.0",
+    "bn.js": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.37",
+    "eslint-config-react-app": "^7.0.1",
+    "typescript": "^5.0.4",
+    "@solana/wallet-adapter-react": "^0.15.32",
+    "@near-wallet-selector/core": "^8.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "@solana/web3.js": ">=1.54.0"
+  },
+  "peerDependenciesMeta": {
+    "@solana/web3.js": {
+      "optional": true
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
