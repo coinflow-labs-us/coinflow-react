@@ -27,9 +27,9 @@ export function CoinflowPurchaseHistory(
 
 function SolanaPurchaseHistory(props: CoinflowSolanaHistoryProps) {
   const handlers = useSolanaIFrameMessageHandlers(props);
-  const {IFrameRef} = useIframeWallet(handlers, props);
-
   const {wallet} = props;
+  const {IFrameRef} = useIframeWallet(handlers, props, wallet.publicKey?.toString());
+
   if (!wallet.publicKey) return null;
   const walletPubkey = wallet.publicKey.toString();
 
@@ -46,7 +46,7 @@ function SolanaPurchaseHistory(props: CoinflowSolanaHistoryProps) {
 
 function NearPurchaseHistory(props: CoinflowNearHistoryProps) {
   const handlers = useNearIFrameMessageHandlers(props);
-  const {IFrameRef} = useIframeWallet(handlers, props);
+  const {IFrameRef} = useIframeWallet(handlers, props, props.wallet?.accountId);
 
   if (!props.wallet?.accountId) return null;
 
@@ -63,7 +63,7 @@ function NearPurchaseHistory(props: CoinflowNearHistoryProps) {
 
 function PolygonPurchaseHistory(props: CoinflowPolygonHistoryProps) {
   const handlers = useEthIFrameMessageHandlers(props);
-  const {IFrameRef} = useIframeWallet(handlers, props);
+  const {IFrameRef} = useIframeWallet(handlers, props, props.wallet?.address);
 
   if (!props.wallet?.address) return null;
 

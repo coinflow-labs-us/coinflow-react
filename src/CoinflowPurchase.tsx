@@ -31,9 +31,9 @@ export function CoinflowPurchase(
 
 function SolanaCoinflowPurchase(props: CoinflowSolanaPurchaseProps) {
   const handlers = useSolanaIFrameMessageHandlers(props);
-  const {IFrameRef} = useIframeWallet(handlers, props);
-
   const {wallet, transaction, supportsVersionedTransactions: supportsVersionedTransactionsParam} = props;
+  const {IFrameRef} = useIframeWallet(handlers, props, wallet.publicKey?.toString());
+
   const transactionStr = useMemo(
     () =>
       transaction
@@ -70,9 +70,9 @@ function SolanaCoinflowPurchase(props: CoinflowSolanaPurchaseProps) {
 
 function NearCoinflowPurchase(props: CoinflowNearPurchaseProps) {
   const handlers = useNearIFrameMessageHandlers(props);
-  const {IFrameRef} = useIframeWallet(handlers, props);
-
   const {wallet, action} = props;
+  const {IFrameRef} = useIframeWallet(handlers, props, wallet.accountId);
+
   const transaction = useMemo(
     () =>
       action
@@ -95,9 +95,9 @@ function NearCoinflowPurchase(props: CoinflowNearPurchaseProps) {
 
 export function PolygonCoinflowPurchase(props: CoinflowPolygonPurchaseProps) {
   const handlers = useEthIFrameMessageHandlers(props);
-  const {IFrameRef} = useIframeWallet(handlers, props);
-
   const {transaction, wallet} = props;
+  const {IFrameRef} = useIframeWallet(handlers, props, wallet.address);
+
   const transactionStr = useMemo(() => {
     if (!transaction) return undefined;
     return Buffer.from(JSON.stringify(transaction)).toString('base64');

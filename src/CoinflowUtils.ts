@@ -37,6 +37,13 @@ export class CoinflowUtils {
     return `https://${env}.coinflow.cash`;
   }
 
+  static getCoinflowApiUrl(env?: CoinflowEnvs): string {
+    if (!env || env === 'prod') return 'https://api.coinflow.cash';
+    if (env === 'local') return 'http://localhost:5000';
+
+    return `https://api-${env}.coinflow.cash`;
+  }
+
   static getCoinflowUrl({
     walletPubkey,
     route,
@@ -50,6 +57,7 @@ export class CoinflowUtils {
     email,
     loaderBackground,
     handleHeightChange,
+    useSocket,
   }: CoinflowIFrameProps): string {
     const url = new URL(
       `/${blockchain}` + route,
@@ -89,6 +97,10 @@ export class CoinflowUtils {
 
     if (handleHeightChange) {
       url.searchParams.append('useHeightChange', 'true');
+    }
+
+    if (useSocket) {
+      url.searchParams.append('useSocket', 'true');
     }
 
     return url.toString();

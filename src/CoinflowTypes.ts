@@ -13,6 +13,7 @@ export interface CoinflowTypes {
   loaderBackground?: string;
   blockchain: CoinflowBlockchain;
   handleHeightChange?: (height: string) => void;
+  useSocket?: boolean;
 }
 
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
@@ -82,20 +83,16 @@ export interface CoinflowPolygonHistoryProps extends CoinflowTypes {
 
 export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowNearHistoryProps | CoinflowPolygonHistoryProps;
 
-export interface CoinflowIFrameProps {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'> {
   walletPubkey: string;
   IFrameRef: React.RefObject<HTMLIFrameElement>;
   route: string;
   amount?: number;
   transaction?: string;
-  blockchain: CoinflowBlockchain;
   webhookInfo?: object;
   token?: string | PublicKey;
   email?: string;
-  env?: CoinflowEnvs;
-  loaderBackground?: string;
   supportsVersionedTransactions?: boolean;
-  handleHeightChange?: (height: string) => void;
 }
 
 /** Transactions **/

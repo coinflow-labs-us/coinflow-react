@@ -30,9 +30,9 @@ export function CoinflowWithdraw(
 
 function CoinflowSolanaWithdraw(props: CoinflowSolanaWithdrawProps) {
   const handlers = useSolanaIFrameMessageHandlers(props);
-  const {IFrameRef} = useIframeWallet(handlers, props);
-
   const {wallet} = props;
+  const {IFrameRef} = useIframeWallet(handlers, props, wallet.publicKey?.toString());
+
   if (!wallet.publicKey) return null;
   const walletPubkey = wallet.publicKey.toString();
 
@@ -49,9 +49,9 @@ function CoinflowSolanaWithdraw(props: CoinflowSolanaWithdrawProps) {
 
 function CoinflowNearWithdraw(props: CoinflowNearWithdrawProps) {
   const handlers = useNearIFrameMessageHandlers(props);
-  const {IFrameRef} = useIframeWallet(handlers, props);
-
   const {wallet} = props;
+  const {IFrameRef} = useIframeWallet(handlers, props, wallet.accountId);
+
   if (!wallet) return null;
   const walletPubkey = wallet.accountId;
 
@@ -68,9 +68,9 @@ function CoinflowNearWithdraw(props: CoinflowNearWithdrawProps) {
 
 function CoinflowEthWithdraw(props: CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps) {
   const handlers = useEthIFrameMessageHandlers(props);
-  const {IFrameRef} = useIframeWallet(handlers, props);
-
   const {wallet} = props;
+  const {IFrameRef} = useIframeWallet(handlers, props, wallet.address);
+
   if (!wallet?.address) return null;
   const walletPubkey = wallet.address;
 

@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useRef} from 'react';
 import {IFrameMessageHandlers, WalletCall} from './SolanaIFrameMessageHandlers';
-import {OnSuccessMethod} from '../CoinflowTypes';
+import {CoinflowEnvs, OnSuccessMethod} from '../CoinflowTypes';
+import {disconnectSocket, initiateSocket, sendWebsocketMessage, subscribeToChat} from './SocketService';
 
 export function useIframeWallet(
   {
@@ -8,21 +9,30 @@ export function useIframeWallet(
     handleSendTransaction,
     handleSignMessage,
   }: IFrameMessageHandlers,
-  {onSuccess, handleHeightChange}: {
+  {onSuccess, handleHeightChange, useSocket, env}: {
     onSuccess?: OnSuccessMethod,
     handleHeightChange?: (height: string) => void,
-  }
+    useSocket?: boolean,
+    env?: CoinflowEnvs,
+  },
+  walletPubkey: string | null | undefined
 ) {
   const IFrameRef = useRef<HTMLIFrameElement | null>(null);
 
   const sendIFrameMessage = useCallback(
     (message: string) => {
+      if (useSocket) {
+        if (!walletPubkey) return;
+        sendWebsocketMessage(message);
+        return;
+      }
+
       if (!IFrameRef?.current?.contentWindow)
         throw new Error('Iframe not defined');
 
       IFrameRef.current?.contentWindow.postMessage(message, '*');
     },
-    [IFrameRef]
+    [useSocket, walletPubkey]
   );
 
   const handleIframeMessages = useCallback(
@@ -84,9 +94,17 @@ export function useIframeWallet(
   );
 
   useEffect(() => {
+    if (useSocket) {
+      if (!walletPubkey) return;
+      initiateSocket(walletPubkey, env);
+      subscribeToChat(data => handleIframeMessages({data}));
+      return () => disconnectSocket();
+    }
+
     if (!window) throw new Error('Window not defined');
     window.onmessage = handleIframeMessages;
-  }, [handleIframeMessages]);
+    return () => {};
+  }, [env, handleIframeMessages, useSocket, walletPubkey]);
 
   return {IFrameRef};
 }
