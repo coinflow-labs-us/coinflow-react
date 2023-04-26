@@ -1,54 +1,20 @@
 import React from 'react';
-import type {Connection} from '@solana/web3.js';
 import {CoinflowIFrame} from './CoinflowIFrame';
 import {
   CoinflowUtils,
-  EthWallet,
-  NearWallet,
-  SolanaWallet,
 } from './CoinflowUtils';
-import {OnSuccessMethod, useIframeWallet} from './useIframeWallet';
-import {useSolanaIFrameMessageHandlers} from './SolanaIFrameMessageHandlers';
-import {useNearIFrameMessageHandlers} from './NearIFrameMessageHandlers';
-import {CoinflowIFrameProps, CommonCoinflowProps} from './CommonCoinflowProps';
-import {useEthIFrameMessageHandlers} from './EthIFrameMessageHandlers';
-
-export interface CoinflowCommonWithdrawProps extends CommonCoinflowProps {
-  onSuccess?: OnSuccessMethod;
-  token?: string;
-  amount?: number;
-  email?: string;
-}
-
-export interface CoinflowSolanaWithdrawProps
-  extends CoinflowCommonWithdrawProps {
-  wallet: SolanaWallet;
-  connection: Connection;
-  blockchain: 'solana';
-}
-
-export interface CoinflowNearWithdrawProps extends CoinflowCommonWithdrawProps {
-  wallet: NearWallet;
-  blockchain: 'near';
-}
-
-export interface CoinflowEthWithdrawProps extends CoinflowCommonWithdrawProps {
-  wallet: Omit<EthWallet, 'signMessage'>;
-  blockchain: 'eth';
-}
-
-export interface CoinflowPolygonWithdrawProps
-  extends CoinflowCommonWithdrawProps {
-  wallet: Omit<EthWallet, 'signMessage'>;
-  blockchain: 'polygon';
-}
+import {useIframeWallet} from './wallet/useIframeWallet';
+import {useSolanaIFrameMessageHandlers} from './wallet/SolanaIFrameMessageHandlers';
+import {useNearIFrameMessageHandlers} from './wallet/NearIFrameMessageHandlers';
+import {
+  CoinflowEthWithdrawProps,
+  CoinflowIFrameProps, CoinflowNearWithdrawProps, CoinflowPolygonWithdrawProps, CoinflowSolanaWithdrawProps,
+  CoinflowWithdrawProps,
+} from './CoinflowTypes';
+import {useEthIFrameMessageHandlers} from './wallet/EthIFrameMessageHandlers';
 
 export function CoinflowWithdraw(
-  props:
-    | CoinflowSolanaWithdrawProps
-    | CoinflowNearWithdrawProps
-    | CoinflowEthWithdrawProps
-    | CoinflowPolygonWithdrawProps
+  props: CoinflowWithdrawProps
 ) {
   return CoinflowUtils.byBlockchain(props.blockchain, {
     solana: (

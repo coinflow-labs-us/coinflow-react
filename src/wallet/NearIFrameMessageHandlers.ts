@@ -1,6 +1,6 @@
 import {useCallback} from 'react';
 import {IFrameMessageHandlers, WalletCall} from './SolanaIFrameMessageHandlers';
-import {NearWallet} from './CoinflowUtils';
+import {NearWallet} from '../CoinflowTypes';
 
 export function useNearIFrameMessageHandlers({
   wallet,

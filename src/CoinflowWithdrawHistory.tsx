@@ -1,16 +1,16 @@
 import {CoinflowUtils} from './CoinflowUtils';
-import {useIframeWallet} from './useIframeWallet';
+import {useIframeWallet} from './wallet/useIframeWallet';
 import {CoinflowIFrame} from './CoinflowIFrame';
 import React from 'react';
-import {useSolanaIFrameMessageHandlers} from './SolanaIFrameMessageHandlers';
-import {useNearIFrameMessageHandlers} from './NearIFrameMessageHandlers';
+import {useSolanaIFrameMessageHandlers} from './wallet/SolanaIFrameMessageHandlers';
+import {useNearIFrameMessageHandlers} from './wallet/NearIFrameMessageHandlers';
 import {
   CoinflowNearHistoryProps,
   CoinflowSolanaHistoryProps,
   CoinflowEthHistoryProps,
   CoinflowPolygonHistoryProps, CoinflowIFrameProps,
-} from './CommonCoinflowProps';
-import {useEthIFrameMessageHandlers} from './EthIFrameMessageHandlers';
+} from './CoinflowTypes';
+import {useEthIFrameMessageHandlers} from './wallet/EthIFrameMessageHandlers';
 
 export function CoinflowWithdrawHistory(
   props:

@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {CoinflowUtils} from './CoinflowUtils';
-import {CoinflowIFrameProps} from './CommonCoinflowProps';
+import {CoinflowIFrameProps} from './CoinflowTypes';
 
 export function CoinflowIFrame(props: CoinflowIFrameProps) {
   const url = useMemo(() => {

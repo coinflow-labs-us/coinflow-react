@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useRef} from 'react';
 import {IFrameMessageHandlers, WalletCall} from './SolanaIFrameMessageHandlers';
-
-export type OnSuccessMethod = (params: string) => void | Promise<void>;
+import {OnSuccessMethod} from '../CoinflowTypes';
 
 export function useIframeWallet(
   {
@@ -81,13 +80,7 @@ export function useIframeWallet(
         }
       }
     },
-    [
-      handleSendTransaction,
-      sendIFrameMessage,
-      onSuccess,
-      handleSignTransaction,
-      handleSignMessage,
-    ]
+    [handleSendTransaction, sendIFrameMessage, onSuccess, handleSignTransaction, handleSignMessage, handleHeightChange]
   );
 
   useEffect(() => {

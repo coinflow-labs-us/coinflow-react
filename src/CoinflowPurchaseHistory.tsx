@@ -1,19 +1,20 @@
-import {useIframeWallet} from './useIframeWallet';
+import {useIframeWallet} from './wallet/useIframeWallet';
 import {CoinflowIFrame} from './CoinflowIFrame';
 import React from 'react';
-import {useSolanaIFrameMessageHandlers} from './SolanaIFrameMessageHandlers';
-import {useNearIFrameMessageHandlers} from './NearIFrameMessageHandlers';
+import {useSolanaIFrameMessageHandlers} from './wallet/SolanaIFrameMessageHandlers';
+import {useNearIFrameMessageHandlers} from './wallet/NearIFrameMessageHandlers';
 import {CoinflowUtils} from './CoinflowUtils';
 import {
+  CoinflowHistoryProps,
   CoinflowIFrameProps,
   CoinflowNearHistoryProps,
   CoinflowPolygonHistoryProps,
   CoinflowSolanaHistoryProps,
-} from './CommonCoinflowProps';
-import {useEthIFrameMessageHandlers} from './EthIFrameMessageHandlers';
+} from './CoinflowTypes';
+import {useEthIFrameMessageHandlers} from './wallet/EthIFrameMessageHandlers';
 
 export function CoinflowPurchaseHistory(
-  props: CoinflowSolanaHistoryProps | CoinflowNearHistoryProps | CoinflowPolygonHistoryProps
+  props: CoinflowHistoryProps
 ) {
   return CoinflowUtils.byBlockchain(props.blockchain, {
     solana: (

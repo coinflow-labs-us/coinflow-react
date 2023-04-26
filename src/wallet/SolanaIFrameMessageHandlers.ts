@@ -1,7 +1,7 @@
 import {useCallback} from 'react';
 import base58 from 'bs58';
-import {SolanaWallet} from './CoinflowUtils';
 import type {Connection, Signer, Transaction, VersionedTransaction} from '@solana/web3.js';
+import {SolanaWallet} from '../CoinflowTypes';
 
 export type WalletCall = {method: string; data: string};
 

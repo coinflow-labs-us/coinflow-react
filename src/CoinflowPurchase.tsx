@@ -1,87 +1,22 @@
 import React, {useMemo} from 'react';
-import type { Connection, PublicKey, Signer, Transaction } from "@solana/web3.js";
 import {CoinflowIFrame} from './CoinflowIFrame';
-import {useSolanaIFrameMessageHandlers} from './SolanaIFrameMessageHandlers';
+import {useSolanaIFrameMessageHandlers} from './wallet/SolanaIFrameMessageHandlers';
 import {
-  CoinflowUtils,
-  EthWallet,
-  NearWallet,
-  SolanaWallet,
+  CoinflowUtils
 } from './CoinflowUtils';
-import {OnSuccessMethod, useIframeWallet} from './useIframeWallet';
-import {useNearIFrameMessageHandlers} from './NearIFrameMessageHandlers';
-import {CoinflowIFrameProps, CommonCoinflowProps} from './CommonCoinflowProps';
-import {useEthIFrameMessageHandlers} from './EthIFrameMessageHandlers';
-
-export interface CoinflowCommonPurchaseProps extends CommonCoinflowProps {
-  amount?: number;
-  onSuccess?: OnSuccessMethod;
-  webhookInfo?: object;
-  email?: string;
-}
-
-export interface CoinflowSolanaPurchaseProps
-  extends CoinflowCommonPurchaseProps {
-  wallet: SolanaWallet;
-  transaction?: Transaction;
-  partialSigners?: Signer[];
-  debugTx?: boolean;
-  connection: Connection;
-  blockchain: 'solana';
-  token?: PublicKey | string;
-  supportsVersionedTransactions?: boolean;
-}
-
-export type NearFtTransferCallAction = {
-  methodName: 'ft_transfer_call';
-  args: object;
-  gas: string;
-  deposit: string;
-};
-
-export interface CoinflowNearPurchaseProps extends CoinflowCommonPurchaseProps {
-  wallet: NearWallet;
-  blockchain: 'near';
-  action?: NearFtTransferCallAction;
-}
-
-type BigNumberish = object | bigint | string | number;
-type Bytes = ArrayLike<number>;
-type BytesLike = Bytes | string;
-
-type EvmTransaction = {
-  to: string;
-  from?: string;
-  nonce?: BigNumberish;
-
-  gasLimit?: BigNumberish;
-  gasPrice?: BigNumberish;
-
-  data?: BytesLike;
-  value?: BigNumberish;
-  chainId?: number;
-
-  type?: number;
-
-  maxPriorityFeePerGas?: BigNumberish;
-  maxFeePerGas?: BigNumberish;
-
-  customData?: Record<string, any>;
-  ccipReadEnabled?: boolean;
-};
-
-export interface CoinflowPolygonPurchaseProps
-  extends CoinflowCommonPurchaseProps {
-  transaction?: EvmTransaction;
-  wallet: EthWallet;
-  blockchain: 'polygon';
-}
+import {useIframeWallet} from './wallet/useIframeWallet';
+import {useNearIFrameMessageHandlers} from './wallet/NearIFrameMessageHandlers';
+import {
+  CoinflowIFrameProps,
+  CoinflowNearPurchaseProps,
+  CoinflowPolygonPurchaseProps,
+  CoinflowPurchaseProps,
+  CoinflowSolanaPurchaseProps,
+} from './CoinflowTypes';
+import {useEthIFrameMessageHandlers} from './wallet/EthIFrameMessageHandlers';
 
 export function CoinflowPurchase(
-  props:
-    | CoinflowSolanaPurchaseProps
-    | CoinflowNearPurchaseProps
-    | CoinflowPolygonPurchaseProps
+  props:CoinflowPurchaseProps
 ) {
   return CoinflowUtils.byBlockchain(props.blockchain, {
     solana: (

@@ -1,54 +1,6 @@
 import type {Transaction} from '@solana/web3.js';
-import type {WalletContextState} from '@solana/wallet-adapter-react';
-import type {Wallet} from '@near-wallet-selector/core';
 import base58 from 'bs58';
-import {CoinflowIFrameProps} from './CommonCoinflowProps';
-
-export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon';
-export type CoinflowEnvs = 'prod' | 'staging' | 'sandbox' | 'local';
-
-type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
-
-export type SolanaWallet = PartialBy<Pick<
-  WalletContextState,
-  'wallet' | 'signTransaction' | 'publicKey' | 'sendTransaction'
->, 'wallet' | 'signTransaction'>;
-export type NearWallet = {accountId: string;} & Pick<Wallet, 'signAndSendTransaction'>;
-
-type Bytes = ArrayLike<number>;
-type BytesLike = Bytes | string;
-
-type AccessList = Array<{address: string; storageKeys: Array<string>}>;
-type AccessListish =
-  | AccessList
-  | Array<[string, Array<string>]>
-  | Record<string, Array<string>>;
-
-export type EthWallet = {
-  address: string | null | undefined;
-  sendTransaction: (transaction: {
-    to: string;
-    from?: string;
-    nonce?: Bytes | bigint | string | number;
-
-    gasLimit?: Bytes | bigint | string | number;
-    gasPrice?: Bytes | bigint | string | number;
-
-    data?: BytesLike;
-    value?: Bytes | bigint | string | number;
-    chainId?: number;
-
-    type?: number;
-    accessList?: AccessListish;
-
-    maxPriorityFeePerGas?: Bytes | bigint | string | number;
-    maxFeePerGas?: Bytes | bigint | string | number;
-
-    customData?: Record<string, any>;
-    ccipReadEnabled?: boolean;
-  }) => Promise<{hash: string}>;
-  signMessage: (message: string) => Promise<string>;
-};
+import {CoinflowBlockchain, CoinflowEnvs, CoinflowIFrameProps, SolanaWallet} from './CoinflowTypes';
 
 export class CoinflowUtils {
   env: CoinflowEnvs;

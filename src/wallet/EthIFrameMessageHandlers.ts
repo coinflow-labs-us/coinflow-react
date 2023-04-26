@@ -1,8 +1,6 @@
 import {useCallback} from 'react';
 import {IFrameMessageHandlers, WalletCall} from './SolanaIFrameMessageHandlers';
-import {EthWallet} from './CoinflowUtils';
-
-type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+import {EthWallet, PartialBy} from '../CoinflowTypes';
 
 export function useEthIFrameMessageHandlers({
   wallet,
