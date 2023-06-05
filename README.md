@@ -46,6 +46,10 @@ Props:
 
 # Changelog
 
+### 2.2.0
+
+Added useSocket property to handle browser instances where iframe messages are unavailable
+
 ### 2.1.1
 
 - Bug fix to set useHeightChange url param to true if using the handleHeightChange prop
