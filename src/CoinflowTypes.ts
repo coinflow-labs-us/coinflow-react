@@ -93,6 +93,8 @@ export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'> {
   token?: string | PublicKey;
   email?: string;
   supportsVersionedTransactions?: boolean;
+  bankAccountLinkRedirect?: string;
+  additionalWallets?: {wallet: string; blockchain: 'solana' | 'eth' | 'near' | 'polygon'}[];
 }
 
 /** Transactions **/
@@ -174,6 +176,8 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
   token?: string;
   amount?: number;
   email?: string;
+  bankAccountLinkRedirect?: string;
+  additionalWallets?: {wallet: string; blockchain: 'solana' | 'eth' | 'near' | 'polygon'}[];
 }
 
 export interface CoinflowSolanaWithdrawProps

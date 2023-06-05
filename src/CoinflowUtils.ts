@@ -58,6 +58,8 @@ export class CoinflowUtils {
     loaderBackground,
     handleHeightChange,
     useSocket,
+    bankAccountLinkRedirect,
+                          additionalWallets,
   }: CoinflowIFrameProps): string {
     const url = new URL(
       `/${blockchain}` + route,
@@ -102,6 +104,13 @@ export class CoinflowUtils {
     if (useSocket) {
       url.searchParams.append('useSocket', 'true');
     }
+
+    if (bankAccountLinkRedirect) {
+      url.searchParams.append('bankAccountLinkRedirect', bankAccountLinkRedirect);
+    }
+
+    if (additionalWallets)
+      url.searchParams.append('additionalWallets', JSON.stringify(additionalWallets));
 
     return url.toString();
   }

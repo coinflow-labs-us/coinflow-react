@@ -27,6 +27,6 @@ export function CoinflowIFrame(props: CoinflowIFrameProps) {
         src={url}
       />
     ),
-    [IFrameRef, url]
+    [IFrameRef, handleHeightChange, url]
   );
 }
