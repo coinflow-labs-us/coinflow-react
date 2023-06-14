@@ -11,24 +11,25 @@ export const initiateSocket = (walletPubkey: string, env?: CoinflowEnvs) => {
     auth: {
       wallet: walletPubkey,
     },
+    transports: ['websocket'],
   });
   socket.on('connect', () => {
     console.log('Connected!');
   });
-}
+};
 export const disconnectSocket = () => {
   console.log('Disconnecting socket...');
-  if(socket) socket.disconnect();
+  if (socket) socket.disconnect();
   socket = undefined;
-}
+};
 
 export const subscribeToChat = (cb: (message: string) => void) => {
   if (!socket) return;
   socket.on('message', msg => {
     cb(msg);
   });
-}
+};
 
 export const sendWebsocketMessage = (message: string) => {
   if (socket) socket.emit('message', message);
-}
+};
