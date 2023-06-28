@@ -1,6 +1,11 @@
-import type {Transaction} from '@solana/web3.js';
+import type {Transaction, VersionedTransaction} from '@solana/web3.js';
 import base58 from 'bs58';
-import {CoinflowBlockchain, CoinflowEnvs, CoinflowIFrameProps, SolanaWallet} from './CoinflowTypes';
+import {
+  CoinflowBlockchain,
+  CoinflowEnvs,
+  CoinflowIFrameProps,
+  SolanaWallet,
+} from './CoinflowTypes';
 
 export class CoinflowUtils {
   env: CoinflowEnvs;
@@ -59,7 +64,7 @@ export class CoinflowUtils {
     handleHeightChange,
     useSocket,
     bankAccountLinkRedirect,
-                          additionalWallets,
+    additionalWallets,
   }: CoinflowIFrameProps): string {
     const url = new URL(
       `/${blockchain}` + route,
@@ -106,17 +111,23 @@ export class CoinflowUtils {
     }
 
     if (bankAccountLinkRedirect) {
-      url.searchParams.append('bankAccountLinkRedirect', bankAccountLinkRedirect);
+      url.searchParams.append(
+        'bankAccountLinkRedirect',
+        bankAccountLinkRedirect
+      );
     }
 
     if (additionalWallets)
-      url.searchParams.append('additionalWallets', JSON.stringify(additionalWallets));
+      url.searchParams.append(
+        'additionalWallets',
+        JSON.stringify(additionalWallets)
+      );
 
     return url.toString();
   }
 
   static serializeSolanaTransaction(
-    transaction: Transaction | undefined
+    transaction: Transaction | VersionedTransaction | undefined
   ): string | undefined {
     if (!transaction) return undefined;
 

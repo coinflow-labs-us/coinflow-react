@@ -1,4 +1,4 @@
-import type {Connection} from '@solana/web3.js';
+import type {Connection, VersionedTransaction} from '@solana/web3.js';
 import {PublicKey, Signer, Transaction} from '@solana/web3.js';
 import {WalletContextState} from '@solana/wallet-adapter-react';
 import {Wallet} from '@near-wallet-selector/core';
@@ -21,11 +21,17 @@ export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 export type OnSuccessMethod = (params: string) => void | Promise<void>;
 
 /** Wallets **/
-export type SolanaWallet = PartialBy<Pick<
-  WalletContextState,
-  'wallet' | 'signTransaction' | 'publicKey' | 'sendTransaction'
->, 'wallet' | 'signTransaction'>;
-export type NearWallet = {accountId: string;} & Pick<Wallet, 'signAndSendTransaction'>;
+export type SolanaWallet = PartialBy<
+  Pick<
+    WalletContextState,
+    'wallet' | 'signTransaction' | 'publicKey' | 'sendTransaction'
+  >,
+  'wallet' | 'signTransaction'
+>;
+export type NearWallet = {accountId: string} & Pick<
+  Wallet,
+  'signAndSendTransaction'
+>;
 
 type AccessList = Array<{address: string; storageKeys: Array<string>}>;
 type AccessListish =
@@ -81,7 +87,10 @@ export interface CoinflowPolygonHistoryProps extends CoinflowTypes {
   blockchain: 'polygon';
 }
 
-export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowNearHistoryProps | CoinflowPolygonHistoryProps;
+export type CoinflowHistoryProps =
+  | CoinflowSolanaHistoryProps
+  | CoinflowNearHistoryProps
+  | CoinflowPolygonHistoryProps;
 
 export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'> {
   walletPubkey: string;
@@ -94,7 +103,10 @@ export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'> {
   email?: string;
   supportsVersionedTransactions?: boolean;
   bankAccountLinkRedirect?: string;
-  additionalWallets?: {wallet: string; blockchain: 'solana' | 'eth' | 'near' | 'polygon'}[];
+  additionalWallets?: {
+    wallet: string;
+    blockchain: 'solana' | 'eth' | 'near' | 'polygon';
+  }[];
 }
 
 /** Transactions **/
@@ -143,7 +155,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
 export interface CoinflowSolanaPurchaseProps
   extends CoinflowCommonPurchaseProps {
   wallet: SolanaWallet;
-  transaction?: Transaction;
+  transaction?: Transaction | VersionedTransaction;
   partialSigners?: Signer[];
   debugTx?: boolean;
   connection: Connection;
@@ -165,7 +177,8 @@ export interface CoinflowPolygonPurchaseProps
   blockchain: 'polygon';
 }
 
-export type CoinflowPurchaseProps = CoinflowSolanaPurchaseProps
+export type CoinflowPurchaseProps =
+  | CoinflowSolanaPurchaseProps
   | CoinflowNearPurchaseProps
   | CoinflowPolygonPurchaseProps;
 
@@ -177,7 +190,10 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
   amount?: number;
   email?: string;
   bankAccountLinkRedirect?: string;
-  additionalWallets?: {wallet: string; blockchain: 'solana' | 'eth' | 'near' | 'polygon'}[];
+  additionalWallets?: {
+    wallet: string;
+    blockchain: 'solana' | 'eth' | 'near' | 'polygon';
+  }[];
 }
 
 export interface CoinflowSolanaWithdrawProps
@@ -203,4 +219,8 @@ export interface CoinflowPolygonWithdrawProps
   blockchain: 'polygon';
 }
 
-export type CoinflowWithdrawProps = CoinflowSolanaWithdrawProps | CoinflowNearWithdrawProps | CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps;
+export type CoinflowWithdrawProps =
+  | CoinflowSolanaWithdrawProps
+  | CoinflowNearWithdrawProps
+  | CoinflowEthWithdrawProps
+  | CoinflowPolygonWithdrawProps;

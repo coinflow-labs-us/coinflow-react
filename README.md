@@ -46,6 +46,10 @@ Props:
 
 # Changelog
 
+### 2.3.0
+
+Support Versioned Transactions in CoinflowPurchase
+
 ### 2.2.0
 
 Added useSocket property to handle browser instances where iframe messages are unavailable
