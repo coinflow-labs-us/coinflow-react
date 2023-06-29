@@ -65,6 +65,7 @@ export class CoinflowUtils {
     useSocket,
     bankAccountLinkRedirect,
     additionalWallets,
+    nearDeposit,
   }: CoinflowIFrameProps): string {
     const url = new URL(
       `/${blockchain}` + route,
@@ -122,6 +123,8 @@ export class CoinflowUtils {
         'additionalWallets',
         JSON.stringify(additionalWallets)
       );
+
+    if (nearDeposit) url.searchParams.append('nearDeposit', nearDeposit);
 
     return url.toString();
   }

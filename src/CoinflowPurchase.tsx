@@ -1,9 +1,7 @@
 import React, {useMemo} from 'react';
 import {CoinflowIFrame} from './CoinflowIFrame';
 import {useSolanaIFrameMessageHandlers} from './wallet/SolanaIFrameMessageHandlers';
-import {
-  CoinflowUtils
-} from './CoinflowUtils';
+import {CoinflowUtils} from './CoinflowUtils';
 import {useIframeWallet} from './wallet/useIframeWallet';
 import {useNearIFrameMessageHandlers} from './wallet/NearIFrameMessageHandlers';
 import {
@@ -15,9 +13,7 @@ import {
 } from './CoinflowTypes';
 import {useEthIFrameMessageHandlers} from './wallet/EthIFrameMessageHandlers';
 
-export function CoinflowPurchase(
-  props:CoinflowPurchaseProps
-) {
+export function CoinflowPurchase(props: CoinflowPurchaseProps) {
   return CoinflowUtils.byBlockchain(props.blockchain, {
     solana: (
       <SolanaCoinflowPurchase {...(props as CoinflowSolanaPurchaseProps)} />
@@ -31,8 +27,16 @@ export function CoinflowPurchase(
 
 function SolanaCoinflowPurchase(props: CoinflowSolanaPurchaseProps) {
   const handlers = useSolanaIFrameMessageHandlers(props);
-  const {wallet, transaction, supportsVersionedTransactions: supportsVersionedTransactionsParam} = props;
-  const {IFrameRef} = useIframeWallet(handlers, props, wallet.publicKey?.toString());
+  const {
+    wallet,
+    transaction,
+    supportsVersionedTransactions: supportsVersionedTransactionsParam,
+  } = props;
+  const {IFrameRef} = useIframeWallet(
+    handlers,
+    props,
+    wallet.publicKey?.toString()
+  );
 
   const transactionStr = useMemo(
     () =>
@@ -43,13 +47,13 @@ function SolanaCoinflowPurchase(props: CoinflowSolanaPurchaseProps) {
   );
 
   const supportsVersionedTransactions = useMemo<boolean>(() => {
-    if (supportsVersionedTransactionsParam !== undefined) return supportsVersionedTransactionsParam;
+    if (supportsVersionedTransactionsParam !== undefined)
+      return supportsVersionedTransactionsParam;
 
     if (!wallet?.wallet) return false;
     const {supportedTransactionVersions} = wallet.wallet.adapter;
     if (!supportedTransactionVersions) return false;
     return supportedTransactionVersions.has(0);
-
   }, [supportsVersionedTransactionsParam, wallet.wallet]);
 
   if (!wallet.publicKey) return null;
@@ -63,9 +67,7 @@ function SolanaCoinflowPurchase(props: CoinflowSolanaPurchaseProps) {
     supportsVersionedTransactions,
     route: `/purchase/${props.merchantId}`,
   };
-  return (
-    <CoinflowIFrame {...iframeProps}/>
-  );
+  return <CoinflowIFrame {...iframeProps} />;
 }
 
 function NearCoinflowPurchase(props: CoinflowNearPurchaseProps) {
@@ -87,10 +89,9 @@ function NearCoinflowPurchase(props: CoinflowNearPurchaseProps) {
     IFrameRef,
     transaction,
     route: `/purchase/${props.merchantId}`,
-  }
-  return (
-    <CoinflowIFrame {...iframeProps}/>
-  );
+    nearDeposit: props.nearDeposit,
+  };
+  return <CoinflowIFrame {...iframeProps} />;
 }
 
 export function PolygonCoinflowPurchase(props: CoinflowPolygonPurchaseProps) {
@@ -111,8 +112,6 @@ export function PolygonCoinflowPurchase(props: CoinflowPolygonPurchaseProps) {
     IFrameRef,
     transaction: transactionStr,
     route: `/purchase/${props.merchantId}`,
-  }
-  return (
-    <CoinflowIFrame {...iframeProps}/>
-  );
+  };
+  return <CoinflowIFrame {...iframeProps} />;
 }

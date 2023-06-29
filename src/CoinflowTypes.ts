@@ -107,6 +107,7 @@ export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'> {
     wallet: string;
     blockchain: 'solana' | 'eth' | 'near' | 'polygon';
   }[];
+  nearDeposit?: string;
 }
 
 /** Transactions **/
@@ -168,6 +169,7 @@ export interface CoinflowNearPurchaseProps extends CoinflowCommonPurchaseProps {
   wallet: NearWallet;
   blockchain: 'near';
   action?: NearFtTransferCallAction;
+  nearDeposit?: string;
 }
 
 export interface CoinflowPolygonPurchaseProps
