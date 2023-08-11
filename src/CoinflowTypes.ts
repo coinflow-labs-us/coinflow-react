@@ -92,21 +92,16 @@ export type CoinflowHistoryProps =
   | CoinflowNearHistoryProps
   | CoinflowPolygonHistoryProps;
 
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'> {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>,
+    Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'amount'>,
+    Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets'> {
   walletPubkey: string;
   IFrameRef: React.RefObject<HTMLIFrameElement>;
   route: string;
-  amount?: number;
   transaction?: string;
-  webhookInfo?: object;
   token?: string | PublicKey;
   email?: string;
   supportsVersionedTransactions?: boolean;
-  bankAccountLinkRedirect?: string;
-  additionalWallets?: {
-    wallet: string;
-    blockchain: 'solana' | 'eth' | 'near' | 'polygon';
-  }[];
   nearDeposit?: string;
 }
 
@@ -146,11 +141,14 @@ export type EvmTransaction = {
 
 /** Purchase **/
 
+type ChargebackProtectionData = Record<string, any>[]; // TODO: add type
+
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   amount?: number;
   onSuccess?: OnSuccessMethod;
   webhookInfo?: object;
   email?: string;
+  chargebackProtectionData?: ChargebackProtectionData;
 }
 
 export interface CoinflowSolanaPurchaseProps

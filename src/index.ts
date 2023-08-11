@@ -6,3 +6,4 @@ export * from './CoinflowIFrame';
 export * from './CoinflowPurchaseHistory';
 export * from './CoinflowWithdrawHistory';
 export * from './CoinflowTypes';
+export * from './CoinflowPurchaseProtection';
