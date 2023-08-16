@@ -33,8 +33,8 @@
   },
   "devDependencies": {
     "@solana/wallet-adapter-react": "^0.15.32",
-    "@near-wallet-selector/core": "^8.2.1",
-    "@types/react": "^18.2.18",
+    "@near-wallet-selector/core": "^8.5.0",
+    "@types/react": "^18.2.20",
     "eslint-config-react-app": "^7.0.1",
     "typescript": "^5.0.4"
   },
