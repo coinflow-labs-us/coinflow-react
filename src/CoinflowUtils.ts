@@ -129,7 +129,7 @@ export class CoinflowUtils {
 
     if (chargebackProtectionData) url.searchParams.append('chargebackProtectionData', JSON.stringify(chargebackProtectionData));
     // @ts-ignore
-    const deviceId = window.nSureSDK.getDeviceId();
+    const deviceId = window?.nSureSDK?.getDeviceId();
     if (deviceId) url.searchParams.append('deviceId', deviceId);
 
     return url.toString();

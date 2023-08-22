@@ -3,7 +3,7 @@ import {CoinflowEnvs} from './CoinflowTypes';
 
 export function CoinflowPurchaseProtection({coinflowEnv}: {coinflowEnv: CoinflowEnvs}) {
   const sdkUrl = useMemo(() => coinflowEnv === 'prod' ? 'https://sdk.nsureapi.com/sdk.js' : 'https://sdk.nsureapi.com/sdk-sandbox.js', [coinflowEnv]);
-  const applicationId = useMemo(() => coinflowEnv === 'prod' ? 'coinflow' : 'SANDBOX_CTCE4XK53ZW0R7V1', [coinflowEnv]);
+  const applicationId = useMemo(() => coinflowEnv === 'prod' ? '9JBW2RHC7JNJN8ZQ' : 'SANDBOX_CTCE4XK53ZW0R7V1', [coinflowEnv]);
 
   const initializeScript = useMemo(() => {
     return `window.nSureAsyncInit = function(deviceId) {
