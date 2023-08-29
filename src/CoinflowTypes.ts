@@ -92,9 +92,16 @@ export type CoinflowHistoryProps =
   | CoinflowNearHistoryProps
   | CoinflowPolygonHistoryProps;
 
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>,
-    Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'amount'>,
-    Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets'> {
+export interface CoinflowIFrameProps
+  extends Omit<CoinflowTypes, 'merchantId'>,
+    Pick<
+      CoinflowCommonPurchaseProps,
+      'chargebackProtectionData' | 'webhookInfo' | 'amount'
+    >,
+    Pick<
+      CoinflowCommonWithdrawProps,
+      'bankAccountLinkRedirect' | 'additionalWallets'
+    > {
   walletPubkey: string;
   IFrameRef: React.RefObject<HTMLIFrameElement>;
   route: string;
@@ -141,7 +148,49 @@ export type EvmTransaction = {
 
 /** Purchase **/
 
-type ChargebackProtectionData = Record<string, any>[]; // TODO: add type
+export type ChargebackProtectionData = ChargebackProtectionItem[];
+
+export interface ChargebackProtectionItem {
+  /**
+   * The name of the product
+   */
+  productName: string;
+  /**
+   * The product type. Possible values include: inGameProduct, gameOfSkill, dataStorage, computingResources, sportsTicket, eSportsTicket, musicTicket, conferenceTicket, virtualSportsTicket, virtualESportsTicket, virtualMusicTicket, virtualConferenceTicket, alcohol, DLC, subscription, fundACause, realEstate, computingContract, digitalArt, topUp
+   */
+  productType:
+    | 'inGameProduct'
+    | 'gameOfSkill'
+    | 'dataStorage'
+    | 'computingResources'
+    | 'sportsTicket'
+    | 'eSportsTicket'
+    | 'musicTicket'
+    | 'conferenceTicket'
+    | 'virtualSportsTicket'
+    | 'virtualESportsTicket'
+    | 'virtualMusicTicket'
+    | 'virtualConferenceTicket'
+    | 'alcohol'
+    | 'DLC'
+    | 'subscription'
+    | 'fundACause'
+    | 'realEstate'
+    | 'computingContract'
+    | 'digitalArt'
+    | 'topUp';
+  /**
+   * The item's list price
+   */
+  /**
+   * The number of units sold
+   */
+  quantity: number;
+  /**
+   * Any additional data that the store can provide on the product, e.g. description, link to image, etc.
+   */
+  rawProductData?: {[key: string]: any};
+}
 
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   amount?: number;

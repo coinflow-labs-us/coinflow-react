@@ -46,6 +46,10 @@ Props:
 
 # Changelog
 
+### 2.3.2
+
+Added typing for `ChargebackProtectionData`
+
 ### 2.3.0
 
 Support Versioned Transactions in CoinflowPurchase
