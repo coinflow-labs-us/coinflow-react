@@ -5,6 +5,8 @@ import {CoinflowUtils} from './CoinflowUtils';
 import {useIframeWallet} from './wallet/useIframeWallet';
 import {useNearIFrameMessageHandlers} from './wallet/NearIFrameMessageHandlers';
 import {
+  CoinflowEthPurchaseProps,
+  CoinflowEvmPurchaseProps,
   CoinflowIFrameProps,
   CoinflowNearPurchaseProps,
   CoinflowPolygonPurchaseProps,
@@ -20,8 +22,11 @@ export function CoinflowPurchase(props: CoinflowPurchaseProps) {
     ),
     near: <NearCoinflowPurchase {...(props as CoinflowNearPurchaseProps)} />,
     polygon: (
-      <PolygonCoinflowPurchase {...(props as CoinflowPolygonPurchaseProps)} />
+      <EvmCoinflowPurchase {...(props as CoinflowPolygonPurchaseProps)} />
     ),
+    eth: (
+      <EvmCoinflowPurchase {...(props as CoinflowEthPurchaseProps)} />
+    )
   });
 }
 
@@ -94,7 +99,7 @@ function NearCoinflowPurchase(props: CoinflowNearPurchaseProps) {
   return <CoinflowIFrame {...iframeProps} />;
 }
 
-export function PolygonCoinflowPurchase(props: CoinflowPolygonPurchaseProps) {
+export function EvmCoinflowPurchase(props: CoinflowEvmPurchaseProps) {
   const handlers = useEthIFrameMessageHandlers(props);
   const {transaction, wallet} = props;
   const {IFrameRef} = useIframeWallet(handlers, props, wallet.address);

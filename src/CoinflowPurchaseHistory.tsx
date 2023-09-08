@@ -5,6 +5,7 @@ import {useSolanaIFrameMessageHandlers} from './wallet/SolanaIFrameMessageHandle
 import {useNearIFrameMessageHandlers} from './wallet/NearIFrameMessageHandlers';
 import {CoinflowUtils} from './CoinflowUtils';
 import {
+  CoinflowEthHistoryProps, CoinflowEvmHistoryProps,
   CoinflowHistoryProps,
   CoinflowIFrameProps,
   CoinflowNearHistoryProps,
@@ -21,7 +22,8 @@ export function CoinflowPurchaseHistory(
       <SolanaPurchaseHistory {...(props as CoinflowSolanaHistoryProps)} />
     ),
     near: <NearPurchaseHistory {...(props as CoinflowNearHistoryProps)} />,
-    polygon: <PolygonPurchaseHistory {...(props as CoinflowPolygonHistoryProps)} />,
+    polygon: <EvmPurchaseHistory {...(props as CoinflowPolygonHistoryProps)} />,
+    eth: <EvmPurchaseHistory {...(props as CoinflowEthHistoryProps)} />,
   });
 }
 
@@ -61,7 +63,7 @@ function NearPurchaseHistory(props: CoinflowNearHistoryProps) {
   );
 }
 
-function PolygonPurchaseHistory(props: CoinflowPolygonHistoryProps) {
+function EvmPurchaseHistory(props: CoinflowEvmHistoryProps) {
   const handlers = useEthIFrameMessageHandlers(props);
   const {IFrameRef} = useIframeWallet(handlers, props, props.wallet?.address);
 

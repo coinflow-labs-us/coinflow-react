@@ -46,9 +46,14 @@ Props:
 
 # Changelog
 
+### 2.4.0
+
+- Added support for Ethereum Mainnet
+
 ### 2.3.2
 
-Added typing for `ChargebackProtectionData`
+- Added typing for `ChargebackProtectionData`
+- Added `token` prop for `CoinflowPurchase` with polygon
 
 ### 2.3.0
 

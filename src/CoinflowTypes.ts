@@ -77,20 +77,23 @@ export interface CoinflowNearHistoryProps extends CoinflowTypes {
   blockchain: 'near';
 }
 
-export interface CoinflowEthHistoryProps extends CoinflowTypes {
+export interface CoinflowEvmHistoryProps extends CoinflowTypes {
   wallet: EthWallet;
+}
+
+export interface CoinflowEthHistoryProps extends CoinflowEvmHistoryProps {
   blockchain: 'eth';
 }
 
-export interface CoinflowPolygonHistoryProps extends CoinflowTypes {
-  wallet: EthWallet;
+export interface CoinflowPolygonHistoryProps extends CoinflowEvmHistoryProps {
   blockchain: 'polygon';
 }
 
 export type CoinflowHistoryProps =
   | CoinflowSolanaHistoryProps
   | CoinflowNearHistoryProps
-  | CoinflowPolygonHistoryProps;
+  | CoinflowPolygonHistoryProps
+  | CoinflowEthHistoryProps;
 
 export interface CoinflowIFrameProps
   extends Omit<CoinflowTypes, 'merchantId'>,
@@ -219,17 +222,27 @@ export interface CoinflowNearPurchaseProps extends CoinflowCommonPurchaseProps {
   nearDeposit?: string;
 }
 
-export interface CoinflowPolygonPurchaseProps
-  extends CoinflowCommonPurchaseProps {
+export interface CoinflowEvmPurchaseProps extends CoinflowCommonPurchaseProps {
   transaction?: EvmTransaction;
+  token?: string;
   wallet: EthWallet;
+}
+
+export interface CoinflowPolygonPurchaseProps
+  extends CoinflowEvmPurchaseProps {
   blockchain: 'polygon';
+}
+
+export interface CoinflowEthPurchaseProps
+  extends CoinflowEvmPurchaseProps {
+  blockchain: 'eth';
 }
 
 export type CoinflowPurchaseProps =
   | CoinflowSolanaPurchaseProps
   | CoinflowNearPurchaseProps
-  | CoinflowPolygonPurchaseProps;
+  | CoinflowPolygonPurchaseProps
+  | CoinflowEthPurchaseProps;
 
 /** Withdraw **/
 
