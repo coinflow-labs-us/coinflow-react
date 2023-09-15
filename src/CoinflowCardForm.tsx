@@ -19,6 +19,26 @@ export interface CoinflowCardFormProps {
   blockchain: CoinflowBlockchain;
 }
 
+/**
+ * Allows merchants to collect card information from their customers in a PCI-compliant way and receive a token for use with the `/api/checkout/token` endpoint.
+ *
+ * Usage:
+ * ```tsx
+ *  const ref =  useRef<{getToken(): Promise<{token: string}>}>();
+ *
+ *  <CoinflowCardForm
+ *    ref={coinflowCardFormRef}
+ *    ...
+ *  />
+ *
+ *  <button onClick={() => {
+ *   ref.current?.getToken()
+ *     .then(({token}) => console.log(token))
+ *     .catch(e => console.error('GET TOKEN ERROR', e))
+ *  }}>Get Token</button>
+ *
+ * ```
+ */
 export const CoinflowCardForm = forwardRef(({handleHeightChange, walletPubkey, env, customCss, merchantId, blockchain}: CoinflowCardFormProps, ref) => {
   const {IFrameRef} = useIframeWallet(
     {

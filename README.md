@@ -46,6 +46,10 @@ Props:
 
 # Changelog
 
+### 2.5.0
+
+- Added the `CoinflowCardForm` component which allows merchants to collect credit card information from their users in a PCI compliant way. Tokenize it, and then utilize the remainder of Coinflow's APIs. 
+
 ### 2.4.0
 
 - Added support for Ethereum Mainnet
