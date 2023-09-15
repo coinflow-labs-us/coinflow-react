@@ -38,7 +38,7 @@ export function useIframeWallet(
   const handleIframeMessages = useCallback(
     async ({data}: {data: string}) => {
       try {
-        let parsedData = parseJSON(data);
+        let parsedData = parseIframeMessageJSON(data);
         if (!parsedData) return;
 
         switch (parsedData.method) {
@@ -109,7 +109,7 @@ export function useIframeWallet(
   return {IFrameRef};
 }
 
-function parseJSON(data: string): WalletCall | null {
+export function parseIframeMessageJSON(data: string): WalletCall | null {
   try {
     const res = JSON.parse(data);
     if (!res.method) return null;

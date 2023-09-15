@@ -7,3 +7,4 @@ export * from './CoinflowPurchaseHistory';
 export * from './CoinflowWithdrawHistory';
 export * from './CoinflowTypes';
 export * from './CoinflowPurchaseProtection';
+export * from './CoinflowCardForm';

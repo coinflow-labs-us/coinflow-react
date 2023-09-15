@@ -36,7 +36,8 @@
     "@near-wallet-selector/core": "^8.5.2",
     "@types/react": "^18.2.21",
     "eslint-config-react-app": "^7.0.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "csstype": "^3.1.2"
   },
   "peerDependencies": {
     "@solana/web3.js": ">=1.54.0",

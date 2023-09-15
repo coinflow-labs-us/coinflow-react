@@ -52,6 +52,7 @@ export class CoinflowUtils {
   static getCoinflowUrl({
     walletPubkey,
     route,
+    routePrefix,
     env,
     amount,
     transaction,
@@ -67,9 +68,11 @@ export class CoinflowUtils {
     additionalWallets,
     nearDeposit,
     chargebackProtectionData,
+    merchantCss,
   }: CoinflowIFrameProps): string {
+    const prefix = routePrefix ? `/${routePrefix}/${blockchain}` : `/${blockchain}`;
     const url = new URL(
-      `/${blockchain}` + route,
+      prefix + route,
       CoinflowUtils.getCoinflowBaseUrl(env)
     );
     url.searchParams.append('pubkey', walletPubkey);
@@ -131,6 +134,8 @@ export class CoinflowUtils {
     // @ts-ignore
     const deviceId = window?.nSureSDK?.getDeviceId();
     if (deviceId) url.searchParams.append('deviceId', deviceId);
+
+    if (merchantCss) url.searchParams.append('merchantCss', merchantCss);
 
     return url.toString();
   }

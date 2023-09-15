@@ -108,11 +108,13 @@ export interface CoinflowIFrameProps
   walletPubkey: string;
   IFrameRef: React.RefObject<HTMLIFrameElement>;
   route: string;
+  routePrefix?: string;
   transaction?: string;
   token?: string | PublicKey;
   email?: string;
   supportsVersionedTransactions?: boolean;
   nearDeposit?: string;
+  merchantCss?: string;
 }
 
 /** Transactions **/
