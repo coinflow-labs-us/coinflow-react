@@ -2,6 +2,7 @@ import {useCallback, useEffect, useRef} from 'react';
 import {IFrameMessageHandlers, WalletCall} from './SolanaIFrameMessageHandlers';
 import {CoinflowEnvs, OnSuccessMethod} from '../CoinflowTypes';
 import {disconnectSocket, initiateSocket, sendWebsocketMessage, subscribeToChat} from './SocketService';
+import {useHandleHeightChange} from '../useHandleHeightChange';
 
 export function useIframeWallet(
   {
@@ -34,6 +35,8 @@ export function useIframeWallet(
     },
     [useSocket, walletPubkey]
   );
+
+  useHandleHeightChange(handleHeightChange);
 
   const handleIframeMessages = useCallback(
     async ({data}: {data: string}) => {
@@ -71,14 +74,6 @@ export function useIframeWallet(
             sendIFrameMessage(signedMessage);
             break;
           }
-          case 'heightChange': {
-            handleHeightChange?.(parsedData.data);
-            break;
-          }
-          default: {
-            console.error(`Unsupported Wallet Method ${parsedData.method}`);
-            break;
-          }
         }
       } catch (e) {
         console.error('handleIframeMessages', e);
@@ -90,7 +85,7 @@ export function useIframeWallet(
         }
       }
     },
-    [handleSendTransaction, sendIFrameMessage, onSuccess, handleSignTransaction, handleSignMessage, handleHeightChange]
+    [handleSendTransaction, sendIFrameMessage, onSuccess, handleSignTransaction, handleSignMessage]
   );
 
   useEffect(() => {
@@ -102,8 +97,10 @@ export function useIframeWallet(
     }
 
     if (!window) throw new Error('Window not defined');
-    window.onmessage = handleIframeMessages;
-    return () => {};
+    window.addEventListener('message', handleIframeMessages);
+    return () => {
+      window.removeEventListener('message', handleIframeMessages);
+    };
   }, [env, handleIframeMessages, useSocket, walletPubkey]);
 
   return {IFrameRef};
@@ -118,4 +115,19 @@ export function parseIframeMessageJSON(data: string): WalletCall | null {
   } catch (e) {
     return null;
   }
+}
+
+export function getMessageHandler(method: string, handler: (data: string) => void): (args: {data: unknown}) => void {
+  return ({data: incomingData}: {data: unknown}) => {
+    if (origin === 'https://cdn.plaid.com') return;
+    if (typeof incomingData !== 'string') return;
+
+    const parsedData = parseIframeMessageJSON(incomingData);
+    if (!parsedData) return;
+
+    const {method: incomingMethod, data} = parsedData;
+    if (incomingMethod !== method) return;
+
+    handler(data);
+  };
 }
