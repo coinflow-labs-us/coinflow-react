@@ -2,6 +2,7 @@ import {useCallback} from 'react';
 import base58 from 'bs58';
 import type {Connection, Signer, Transaction, VersionedTransaction} from '@solana/web3.js';
 import {SolanaWallet} from '../CoinflowTypes';
+import * as web3 from '@solana/web3.js';
 
 export type WalletCall = {method: string; data: string};
 
@@ -20,10 +21,10 @@ export type IFrameMessageHandlers = {
 };
 
 export function useSolanaIFrameMessageHandlers({
-  wallet,
-  connection,
-  partialSigners,
-  debugTx = false,
+ wallet,
+ connection,
+ partialSigners,
+ debugTx = false,
 }: SolanaIFrameWalletProps): IFrameMessageHandlers {
   const sendTransactionDebug = useCallback(
     async (tx: Transaction | VersionedTransaction) => {
@@ -47,15 +48,8 @@ export function useSolanaIFrameMessageHandlers({
   );
 
   function getTransaction(data: string): Transaction | VersionedTransaction {
-    let web3;
-    try {
-      web3 = require('@solana/web3.js');
-    } catch (e) {
-      web3 = null;
-    }
-
     if (!web3)
-      throw new Error('web3 is not defined. Please install @solana/web3.js into your project');
+      throw new Error('@solana/web3.js is not defined. Please install @solana/web3.js into your project');
 
     const parsedUInt8Array = base58.decode(data);
     const vtx = web3.VersionedTransaction.deserialize(parsedUInt8Array);
