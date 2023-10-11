@@ -46,6 +46,11 @@ Props:
 
 # Changelog
 
+### 2.6.0
+
+- Added support for Apple Pay and Google Pay
+
+
 ### 2.5.0
 
 - Added the `CoinflowCardForm` component which allows merchants to collect credit card information from their users in a PCI compliant way. Tokenize it, and then utilize the remainder of Coinflow's APIs. 
