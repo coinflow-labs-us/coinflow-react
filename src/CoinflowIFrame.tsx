@@ -15,6 +15,7 @@ export function CoinflowIFrame(props: CoinflowIFrameProps) {
         onLoad={() => {
           if (IFrameRef.current) IFrameRef.current.style.opacity = '1';
         }}
+        allow={"payment"}
         ref={IFrameRef}
         style={{
           width: '100%',

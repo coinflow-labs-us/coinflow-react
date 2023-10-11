@@ -115,6 +115,7 @@ export interface CoinflowIFrameProps
   supportsVersionedTransactions?: boolean;
   nearDeposit?: string;
   merchantCss?: string;
+  color?: 'white' | 'black';
 }
 
 /** Transactions **/

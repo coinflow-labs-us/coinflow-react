@@ -69,6 +69,7 @@ export class CoinflowUtils {
     nearDeposit,
     chargebackProtectionData,
     merchantCss,
+    color,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix ? `/${routePrefix}/${blockchain}` : `/${blockchain}`;
     const url = new URL(
@@ -136,6 +137,7 @@ export class CoinflowUtils {
     if (deviceId) url.searchParams.append('deviceId', deviceId);
 
     if (merchantCss) url.searchParams.append('merchantCss', merchantCss);
+    if (color) url.searchParams.append('color', color);
 
     return url.toString();
   }

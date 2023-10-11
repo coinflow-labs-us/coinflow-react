@@ -8,3 +8,5 @@ export * from './CoinflowWithdrawHistory';
 export * from './CoinflowTypes';
 export * from './CoinflowPurchaseProtection';
 export * from './CoinflowCardForm';
+export * from './CoinflowApplePayButton';
+export * from './CoinflowGooglePayButton';
