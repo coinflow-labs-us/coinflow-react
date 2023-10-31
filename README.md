@@ -46,6 +46,10 @@ Props:
 
 # Changelog
 
+### 2.6.1
+
+- Added built in support for SSR which fixes a "window not defined" error. 
+
 ### 2.6.0
 
 - Added support for Apple Pay and Google Pay

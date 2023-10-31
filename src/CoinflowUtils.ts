@@ -132,9 +132,11 @@ export class CoinflowUtils {
     if (nearDeposit) url.searchParams.append('nearDeposit', nearDeposit);
 
     if (chargebackProtectionData) url.searchParams.append('chargebackProtectionData', JSON.stringify(chargebackProtectionData));
-    // @ts-ignore
-    const deviceId = window?.nSureSDK?.getDeviceId();
-    if (deviceId) url.searchParams.append('deviceId', deviceId);
+    if (typeof window !== 'undefined') {
+      // @ts-ignore
+      const deviceId = window?.nSureSDK?.getDeviceId();
+      if (deviceId) url.searchParams.append('deviceId', deviceId);
+    }
 
     if (merchantCss) url.searchParams.append('merchantCss', merchantCss);
     if (color) url.searchParams.append('color', color);
