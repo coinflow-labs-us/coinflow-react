@@ -116,6 +116,7 @@ export interface CoinflowIFrameProps
   nearDeposit?: string;
   merchantCss?: string;
   color?: 'white' | 'black';
+  rent?: {lamports: string | number}
 }
 
 /** Transactions **/
@@ -216,6 +217,7 @@ export interface CoinflowSolanaPurchaseProps
   blockchain: 'solana';
   token?: PublicKey | string;
   supportsVersionedTransactions?: boolean;
+  rent?: {lamports: string | number;};
 }
 
 export interface CoinflowNearPurchaseProps extends CoinflowCommonPurchaseProps {

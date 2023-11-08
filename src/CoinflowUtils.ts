@@ -70,6 +70,7 @@ export class CoinflowUtils {
     chargebackProtectionData,
     merchantCss,
     color,
+    rent,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix ? `/${routePrefix}/${blockchain}` : `/${blockchain}`;
     const url = new URL(
@@ -140,6 +141,7 @@ export class CoinflowUtils {
 
     if (merchantCss) url.searchParams.append('merchantCss', merchantCss);
     if (color) url.searchParams.append('color', color);
+    if (rent) url.searchParams.append('rent', rent.lamports.toString());
 
     return url.toString();
   }

@@ -11,11 +11,11 @@ export function CoinflowIFrame(props: CoinflowIFrameProps) {
   return useMemo(
     () => (
       <iframe
-        scrolling={handleHeightChange ? 'no': 'yes'}
+        scrolling={handleHeightChange ? 'no' : 'yes'}
         onLoad={() => {
           if (IFrameRef.current) IFrameRef.current.style.opacity = '1';
         }}
-        allow={"payment"}
+        allow={'payment;camera'}
         ref={IFrameRef}
         style={{
           width: '100%',

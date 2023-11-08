@@ -46,6 +46,11 @@ Props:
 
 # Changelog
 
+### 2.7.0
+
+- Added support for paying solana rent for a transaction
+- Added camera support document verification
+
 ### 2.6.1
 
 - Added built in support for SSR which fixes a "window not defined" error. 
