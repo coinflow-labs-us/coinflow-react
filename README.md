@@ -46,6 +46,10 @@ Props:
 
 # Changelog
 
+### 2.7.1
+
+- Added new property lockDefaultToken which locks the withdrawal option to the users default currency (USDC or EUROe)
+
 ### 2.7.0
 
 - Added support for paying solana rent for a transaction

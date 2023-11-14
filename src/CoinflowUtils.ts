@@ -71,12 +71,12 @@ export class CoinflowUtils {
     merchantCss,
     color,
     rent,
+    lockDefaultToken,
   }: CoinflowIFrameProps): string {
-    const prefix = routePrefix ? `/${routePrefix}/${blockchain}` : `/${blockchain}`;
-    const url = new URL(
-      prefix + route,
-      CoinflowUtils.getCoinflowBaseUrl(env)
-    );
+    const prefix = routePrefix
+      ? `/${routePrefix}/${blockchain}`
+      : `/${blockchain}`;
+    const url = new URL(prefix + route, CoinflowUtils.getCoinflowBaseUrl(env));
     url.searchParams.append('pubkey', walletPubkey);
 
     if (transaction) {
@@ -132,7 +132,11 @@ export class CoinflowUtils {
 
     if (nearDeposit) url.searchParams.append('nearDeposit', nearDeposit);
 
-    if (chargebackProtectionData) url.searchParams.append('chargebackProtectionData', JSON.stringify(chargebackProtectionData));
+    if (chargebackProtectionData)
+      url.searchParams.append(
+        'chargebackProtectionData',
+        JSON.stringify(chargebackProtectionData)
+      );
     if (typeof window !== 'undefined') {
       // @ts-ignore
       const deviceId = window?.nSureSDK?.getDeviceId();
@@ -142,6 +146,7 @@ export class CoinflowUtils {
     if (merchantCss) url.searchParams.append('merchantCss', merchantCss);
     if (color) url.searchParams.append('color', color);
     if (rent) url.searchParams.append('rent', rent.lamports.toString());
+    if (lockDefaultToken) url.searchParams.append('lockDefaultToken', 'true');
 
     return url.toString();
   }

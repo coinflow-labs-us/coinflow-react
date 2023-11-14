@@ -111,12 +111,13 @@ export interface CoinflowIFrameProps
   routePrefix?: string;
   transaction?: string;
   token?: string | PublicKey;
+  lockDefaultToken?: boolean;
   email?: string;
   supportsVersionedTransactions?: boolean;
   nearDeposit?: string;
   merchantCss?: string;
   color?: 'white' | 'black';
-  rent?: {lamports: string | number}
+  rent?: {lamports: string | number};
 }
 
 /** Transactions **/
@@ -217,7 +218,7 @@ export interface CoinflowSolanaPurchaseProps
   blockchain: 'solana';
   token?: PublicKey | string;
   supportsVersionedTransactions?: boolean;
-  rent?: {lamports: string | number;};
+  rent?: {lamports: string | number};
 }
 
 export interface CoinflowNearPurchaseProps extends CoinflowCommonPurchaseProps {
@@ -233,13 +234,11 @@ export interface CoinflowEvmPurchaseProps extends CoinflowCommonPurchaseProps {
   wallet: EthWallet;
 }
 
-export interface CoinflowPolygonPurchaseProps
-  extends CoinflowEvmPurchaseProps {
+export interface CoinflowPolygonPurchaseProps extends CoinflowEvmPurchaseProps {
   blockchain: 'polygon';
 }
 
-export interface CoinflowEthPurchaseProps
-  extends CoinflowEvmPurchaseProps {
+export interface CoinflowEthPurchaseProps extends CoinflowEvmPurchaseProps {
   blockchain: 'eth';
 }
 
@@ -254,6 +253,7 @@ export type CoinflowPurchaseProps =
 export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
   onSuccess?: OnSuccessMethod;
   token?: string;
+  lockDefaultToken?: boolean;
   amount?: number;
   email?: string;
   bankAccountLinkRedirect?: string;
