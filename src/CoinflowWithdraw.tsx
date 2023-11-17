@@ -41,6 +41,7 @@ function CoinflowSolanaWithdraw(props: CoinflowSolanaWithdrawProps) {
     walletPubkey,
     IFrameRef,
     route: `/withdraw/${props.merchantId}`,
+    supportsVersionedTransactions: props.supportsVersionedTransactions !== false,
   };
   return (
     <CoinflowIFrame {...iframeProps}/>

@@ -261,6 +261,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     wallet: string;
     blockchain: 'solana' | 'eth' | 'near' | 'polygon';
   }[];
+  supportsVersionedTransactions?: boolean;
 }
 
 export interface CoinflowSolanaWithdrawProps

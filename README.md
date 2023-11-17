@@ -46,6 +46,13 @@ Props:
 
 # Changelog
 
+### 3.0.0
+
+**Breaking Changes**
+
+- Added supportsVersionedTransactions to CoinflowWithdraw allowing platforms with wallets that support versioned transactions to Withdraw non-USDC/EuroE tokens in a single transaction with better prices.
+- This is enabled to true by default. If you are using a wallet that does not support versioned transactions, you must set `supportsVersionedTransactions` in `CoinflowWithdraw` to `false`.
+
 ### 2.7.1
 
 - Added new property lockDefaultToken which locks the withdrawal option to the users default currency (USDC or EUROe)
