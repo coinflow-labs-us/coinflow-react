@@ -46,6 +46,10 @@ Props:
 
 # Changelog
 
+## 3.0.1
+
+- Update to `CoinflowPurchaseProtection` to make `partnerId` required
+
 ### 3.0.0
 
 **Breaking Changes**

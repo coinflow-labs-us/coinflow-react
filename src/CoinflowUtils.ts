@@ -18,10 +18,19 @@ export class CoinflowUtils {
     else this.url = `https://api-${this.env}.coinflow.cash`;
   }
 
-  async getFeePayer(merchantId: string): Promise<string> {
-    const response = await fetch(this.url + `/merchant/view/${merchantId}`);
-    const json = await response.json();
-    return json.feePayerPublicKey;
+  async getNSurePartnerId(merchantId: string): Promise<string | undefined> {
+    return fetch(this.url + `/merchant/view/${merchantId}`)
+      .then(response => response.json())
+      .then(
+        (json: {
+          nSurePartnerId: string | undefined;
+          nSureSettings: {nSurePartnerId: string | undefined};
+        }) => json.nSureSettings?.nSurePartnerId || json.nSurePartnerId
+      )
+      .catch(e => {
+        console.error(e);
+        return undefined;
+      });
   }
 
   async getCreditBalance(
