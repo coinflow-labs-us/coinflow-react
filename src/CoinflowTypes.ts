@@ -129,30 +129,8 @@ export type NearFtTransferCallAction = {
   deposit: string;
 };
 
-type BigNumberish = object | bigint | string | number;
 type Bytes = ArrayLike<number>;
 type BytesLike = Bytes | string;
-
-export type EvmTransaction = {
-  to: string;
-  from?: string;
-  nonce?: BigNumberish;
-
-  gasLimit?: BigNumberish;
-  gasPrice?: BigNumberish;
-
-  data?: BytesLike;
-  value?: BigNumberish;
-  chainId?: number;
-
-  type?: number;
-
-  maxPriorityFeePerGas?: BigNumberish;
-  maxFeePerGas?: BigNumberish;
-
-  customData?: Record<string, any>;
-  ccipReadEnabled?: boolean;
-};
 
 /** Purchase **/
 
@@ -229,7 +207,7 @@ export interface CoinflowNearPurchaseProps extends CoinflowCommonPurchaseProps {
 }
 
 export interface CoinflowEvmPurchaseProps extends CoinflowCommonPurchaseProps {
-  transaction?: EvmTransaction;
+  transaction?: EvmTransactionData;
   token?: string;
   wallet: EthWallet;
 }
@@ -292,3 +270,34 @@ export type CoinflowWithdrawProps =
   | CoinflowNearWithdrawProps
   | CoinflowEthWithdrawProps
   | CoinflowPolygonWithdrawProps;
+
+export interface NormalRedeem {
+  transaction: {to: string; data: string};
+}
+
+export interface KnownTokenIdRedeem extends NormalRedeem {
+  nftContract: string;
+  nftId: string;
+}
+
+export interface SafeMintRedeem extends NormalRedeem {
+  type: 'safeMint';
+  nftContract?: string;
+}
+
+export interface ReturnedTokenIdRedeem extends NormalRedeem {
+  type: 'returned';
+  nftContract?: string;
+}
+
+export interface ReservoirRedeem
+  extends Omit<KnownTokenIdRedeem, keyof NormalRedeem> {
+  type: 'reservoir';
+}
+
+export type EvmTransactionData =
+  | SafeMintRedeem
+  | ReturnedTokenIdRedeem
+  | ReservoirRedeem
+  | KnownTokenIdRedeem
+  | NormalRedeem;
