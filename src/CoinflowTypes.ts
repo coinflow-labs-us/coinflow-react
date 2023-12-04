@@ -110,7 +110,7 @@ export interface CoinflowIFrameProps
   route: string;
   routePrefix?: string;
   transaction?: string;
-  token?: string | PublicKey;
+  tokens?: string[] | PublicKey[];
   lockDefaultToken?: boolean;
   email?: string;
   supportsVersionedTransactions?: boolean;
@@ -230,7 +230,7 @@ export type CoinflowPurchaseProps =
 
 export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
   onSuccess?: OnSuccessMethod;
-  token?: string;
+  tokens?: string[];
   lockDefaultToken?: boolean;
   amount?: number;
   email?: string;

@@ -68,7 +68,6 @@ export class CoinflowUtils {
     blockchain,
     supportsVersionedTransactions,
     webhookInfo,
-    token,
     email,
     loaderBackground,
     handleHeightChange,
@@ -81,6 +80,7 @@ export class CoinflowUtils {
     color,
     rent,
     lockDefaultToken,
+    tokens,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -110,8 +110,8 @@ export class CoinflowUtils {
       url.searchParams.append('email', email);
     }
 
-    if (token) {
-      url.searchParams.append('token', token.toString());
+    if (tokens) {
+      url.searchParams.append('tokens', tokens.toString());
     }
 
     if (loaderBackground) {
