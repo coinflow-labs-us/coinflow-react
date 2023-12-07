@@ -81,6 +81,7 @@ export class CoinflowUtils {
     rent,
     lockDefaultToken,
     tokens,
+    planCode,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -156,6 +157,7 @@ export class CoinflowUtils {
     if (color) url.searchParams.append('color', color);
     if (rent) url.searchParams.append('rent', rent.lamports.toString());
     if (lockDefaultToken) url.searchParams.append('lockDefaultToken', 'true');
+    if (planCode) url.searchParams.append('planCode', planCode);
 
     return url.toString();
   }

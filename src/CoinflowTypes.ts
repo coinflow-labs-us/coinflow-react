@@ -118,6 +118,7 @@ export interface CoinflowIFrameProps
   merchantCss?: string;
   color?: 'white' | 'black';
   rent?: {lamports: string | number};
+  planCode?: string;
 }
 
 /** Transactions **/
@@ -184,6 +185,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   webhookInfo?: object;
   email?: string;
   chargebackProtectionData?: ChargebackProtectionData;
+  planCode?: string;
 }
 
 export interface CoinflowSolanaPurchaseProps
