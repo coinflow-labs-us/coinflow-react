@@ -110,6 +110,7 @@ export interface CoinflowIFrameProps
   route: string;
   routePrefix?: string;
   transaction?: string;
+  token?: string | PublicKey;
   tokens?: string[] | PublicKey[];
   lockDefaultToken?: boolean;
   email?: string;

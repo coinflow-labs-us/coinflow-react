@@ -80,6 +80,7 @@ export class CoinflowUtils {
     color,
     rent,
     lockDefaultToken,
+    token,
     tokens,
     planCode,
   }: CoinflowIFrameProps): string {
@@ -109,6 +110,10 @@ export class CoinflowUtils {
 
     if (email) {
       url.searchParams.append('email', email);
+    }
+
+    if (token) {
+      url.searchParams.append('token', token.toString());
     }
 
     if (tokens) {
