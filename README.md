@@ -46,7 +46,11 @@ Props:
 
 # Changelog
 
-## 3.0.2
+## 3.1.2
+
+- Added disableGooglePay and disableApplePay props to CoinflowPurchase
+
+## 3.1.1
 
 - Added support for EVM NFT purchases
 

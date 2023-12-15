@@ -83,6 +83,8 @@ export class CoinflowUtils {
     token,
     tokens,
     planCode,
+    disableApplePay,
+    disableGooglePay,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -163,6 +165,9 @@ export class CoinflowUtils {
     if (rent) url.searchParams.append('rent', rent.lamports.toString());
     if (lockDefaultToken) url.searchParams.append('lockDefaultToken', 'true');
     if (planCode) url.searchParams.append('planCode', planCode);
+
+    if (disableApplePay) url.searchParams.append('disableApplePay', 'true');
+    if (disableGooglePay) url.searchParams.append('disableGooglePay', 'true');
 
     return url.toString();
   }

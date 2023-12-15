@@ -120,6 +120,8 @@ export interface CoinflowIFrameProps
   color?: 'white' | 'black';
   rent?: {lamports: string | number};
   planCode?: string;
+  disableApplePay?: boolean;
+  disableGooglePay?: boolean;
 }
 
 /** Transactions **/
@@ -187,6 +189,8 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   email?: string;
   chargebackProtectionData?: ChargebackProtectionData;
   planCode?: string;
+  disableApplePay?: boolean;
+  disableGooglePay?: boolean;
 }
 
 export interface CoinflowSolanaPurchaseProps
