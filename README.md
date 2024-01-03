@@ -46,6 +46,10 @@ Props:
 
 # Changelog
 
+## 3.1.4
+
+- Customer info param for added reporting capabilities
+
 ## 3.1.2
 
 - Added disableGooglePay and disableApplePay props to CoinflowPurchase

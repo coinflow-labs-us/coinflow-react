@@ -2,6 +2,7 @@ import type {Connection, VersionedTransaction} from '@solana/web3.js';
 import {PublicKey, Signer, Transaction} from '@solana/web3.js';
 import {WalletContextState} from '@solana/wallet-adapter-react';
 import {Wallet} from '@near-wallet-selector/core';
+import {CustomerInfo} from '@coinflow/common';
 
 /** Coinflow Types **/
 export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon';
@@ -99,7 +100,7 @@ export interface CoinflowIFrameProps
   extends Omit<CoinflowTypes, 'merchantId'>,
     Pick<
       CoinflowCommonPurchaseProps,
-      'chargebackProtectionData' | 'webhookInfo' | 'amount'
+      'chargebackProtectionData' | 'webhookInfo' | 'amount' | 'customerInfo'
     >,
     Pick<
       CoinflowCommonWithdrawProps,
@@ -191,6 +192,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   planCode?: string;
   disableApplePay?: boolean;
   disableGooglePay?: boolean;
+  customerInfo?: CustomerInfo;
 }
 
 export interface CoinflowSolanaPurchaseProps

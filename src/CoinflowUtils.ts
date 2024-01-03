@@ -6,6 +6,7 @@ import {
   CoinflowIFrameProps,
   SolanaWallet,
 } from './CoinflowTypes';
+import { Cents } from "@coinflow/common";
 
 export class CoinflowUtils {
   env: CoinflowEnvs;
@@ -35,13 +36,21 @@ export class CoinflowUtils {
 
   async getCreditBalance(
     publicKey: string,
+    merchantId: string,
     blockchain: 'solana' | 'near'
-  ): Promise<number> {
+  ): Promise<Cents> {
     const response = await fetch(
-      this.url + `/mint/balance/${publicKey}/${blockchain}`
+      this.url + `/api/customer/balances/${merchantId}`,
+      {
+        method: "GET",
+        headers: {
+          'x-coinflow-auth-wallet': publicKey,
+          'x-coinflow-auth-blockchain': blockchain,
+        },
+      }
     );
-    const {balance} = await response.json();
-    return balance;
+    const {credits} = await response.json();
+    return credits;
   }
 
   static getCoinflowBaseUrl(env?: CoinflowEnvs): string {
@@ -85,6 +94,7 @@ export class CoinflowUtils {
     planCode,
     disableApplePay,
     disableGooglePay,
+    customerInfo,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -107,6 +117,13 @@ export class CoinflowUtils {
       url.searchParams.append(
         'webhookInfo',
         Buffer.from(JSON.stringify(webhookInfo)).toString('base64')
+      );
+    }
+
+    if (customerInfo) {
+      url.searchParams.append(
+        'customerInfo',
+        Buffer.from(JSON.stringify(customerInfo)).toString('base64')
       );
     }
 
