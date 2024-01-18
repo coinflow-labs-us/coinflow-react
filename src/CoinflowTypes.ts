@@ -2,7 +2,7 @@ import type {Connection, VersionedTransaction} from '@solana/web3.js';
 import {PublicKey, Signer, Transaction} from '@solana/web3.js';
 import {WalletContextState} from '@solana/wallet-adapter-react';
 import {Wallet} from '@near-wallet-selector/core';
-import {CustomerInfo} from '@coinflow/common';
+import {CustomerInfo, SettlementType} from '@coinflow/common';
 
 /** Coinflow Types **/
 export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon';
@@ -123,6 +123,8 @@ export interface CoinflowIFrameProps
   planCode?: string;
   disableApplePay?: boolean;
   disableGooglePay?: boolean;
+  settlementType?: SettlementType;
+  lockAmount?: boolean;
 }
 
 /** Transactions **/
@@ -249,6 +251,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     blockchain: 'solana' | 'eth' | 'near' | 'polygon';
   }[];
   supportsVersionedTransactions?: boolean;
+  lockAmount?: boolean;
 }
 
 export interface CoinflowSolanaWithdrawProps

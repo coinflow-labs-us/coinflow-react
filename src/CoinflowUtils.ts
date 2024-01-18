@@ -6,7 +6,7 @@ import {
   CoinflowIFrameProps,
   SolanaWallet,
 } from './CoinflowTypes';
-import { Cents } from "@coinflow/common";
+import {Cents} from '@coinflow/common';
 
 export class CoinflowUtils {
   env: CoinflowEnvs;
@@ -42,7 +42,7 @@ export class CoinflowUtils {
     const response = await fetch(
       this.url + `/api/customer/balances/${merchantId}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
           'x-coinflow-auth-wallet': publicKey,
           'x-coinflow-auth-blockchain': blockchain,
@@ -95,6 +95,8 @@ export class CoinflowUtils {
     disableApplePay,
     disableGooglePay,
     customerInfo,
+    settlementType,
+    lockAmount,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -185,6 +187,10 @@ export class CoinflowUtils {
 
     if (disableApplePay) url.searchParams.append('disableApplePay', 'true');
     if (disableGooglePay) url.searchParams.append('disableGooglePay', 'true');
+    if (settlementType)
+      url.searchParams.append('settlementType', settlementType);
+
+    if (lockAmount) url.searchParams.append('lockAmount', 'true');
 
     return url.toString();
   }
