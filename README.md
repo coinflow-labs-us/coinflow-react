@@ -17,6 +17,13 @@ Props:
     - For testing set to `staging`
 * `onSuccess` (optional): function to run when the withdrawal process is successful
 * `lockAmount` (optional): Whether to let the user select the amount to withdraw or to disable the input
+* `amount` (optional): The amount to withdraw - required if `lockAmount=true`
+* `tokens` (optional): Define a list to filter the available tokens
+* `lockDefaultToken` (optional): Only allow the default token to be used
+* `email` (optional): Set the default email to be used in entry fields
+* `bankAccountLinkRedirect` (optional): The URL to be used for bank account setup
+* `supportsVersionedTransactions` (optional): Instruct the system that versioned transactions are supported
+* `additionalWallets` (optional): Define additional wallets to assign to the user
 
 ## Purchase Usage
 ```
@@ -40,6 +47,15 @@ Props:
 * `token` (optional): The token to use for the purchase. Defaults to USDC. Currently only supported for the Solana Blockchain.
 * `planCode` (optional): When a subscription is being purchased, the code of the subscription plan.
 * `settlementType` (optional): The settlement method to use for the proceeds of a purchase. (Credits, USDC, or Bank)
+* `amount` (optional): Fix the amount of purchase
+* `webhookInfo` (optional): Product or transaction based information that you want transmitted when you receive webhooks regarding the purchase
+* `email` (optional): Set the default email to use in email entry fields
+* `chargebackProtectionData` (optional):
+* `disableApplePay` (optional): Ability to disable Apple Pay
+* `disableGooglePay` (optional): Ability to disable Google Pay
+* `customerInfo` (optional): Additional information about the customer
+* `supportsVersionedTransactions` (optional): Instruct the system that you support versioned transactions
+* `rent` (optional): Specify the blockchain rent amount to add to the total
 
 ## Utils
 
