@@ -195,6 +195,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   disableApplePay?: boolean;
   disableGooglePay?: boolean;
   customerInfo?: CustomerInfo;
+  settlementType?: SettlementType;
 }
 
 export interface CoinflowSolanaPurchaseProps
