@@ -97,6 +97,7 @@ export class CoinflowUtils {
     customerInfo,
     settlementType,
     lockAmount,
+    nativeSolToConvert,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -182,6 +183,11 @@ export class CoinflowUtils {
     if (merchantCss) url.searchParams.append('merchantCss', merchantCss);
     if (color) url.searchParams.append('color', color);
     if (rent) url.searchParams.append('rent', rent.lamports.toString());
+    if (nativeSolToConvert)
+      url.searchParams.append(
+        'nativeSolToConvert',
+        nativeSolToConvert.lamports.toString()
+      );
     if (lockDefaultToken) url.searchParams.append('lockDefaultToken', 'true');
     if (planCode) url.searchParams.append('planCode', planCode);
 

@@ -55,7 +55,8 @@ Props:
 * `disableGooglePay` (optional): Ability to disable Google Pay
 * `customerInfo` (optional): Additional information about the customer
 * `supportsVersionedTransactions` (optional): Instruct the system that you support versioned transactions
-* `rent` (optional): Specify the blockchain rent amount to add to the total
+* `rent` (optional, Solana only): Specify the blockchain rent amount to add to the total
+* `nativeSolToConvert` (optional, Solana only): Specify the amount of native SOL to convert wSOL for the purchase
 
 ## Utils
 
@@ -64,6 +65,10 @@ Props:
 * `getFeePayer` - Return the `PublicKey` of the Coinflow Fee Payer
 
 # Changelog
+
+## 3.1.7
+
+- Added `nativeSolToConvert` for Solana transactions
 
 ## 3.1.5
 

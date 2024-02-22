@@ -120,6 +120,7 @@ export interface CoinflowIFrameProps
   merchantCss?: string;
   color?: 'white' | 'black';
   rent?: {lamports: string | number};
+  nativeSolToConvert?: {lamports: string | number};
   planCode?: string;
   disableApplePay?: boolean;
   disableGooglePay?: boolean;
@@ -209,6 +210,7 @@ export interface CoinflowSolanaPurchaseProps
   token?: PublicKey | string;
   supportsVersionedTransactions?: boolean;
   rent?: {lamports: string | number};
+  nativeSolToConvert?: {lamports: string | number};
 }
 
 export interface CoinflowNearPurchaseProps extends CoinflowCommonPurchaseProps {
@@ -303,9 +305,11 @@ export interface ReturnedTokenIdRedeem extends NormalRedeem {
   nftContract?: string;
 }
 
-export interface ReservoirRedeem
-  extends Omit<KnownTokenIdRedeem, keyof NormalRedeem> {
+export interface ReservoirRedeem {
   type: 'reservoir';
+  items:
+    | Omit<KnownTokenIdRedeem, keyof NormalRedeem>
+    | Omit<KnownTokenIdRedeem, keyof NormalRedeem>[];
 }
 
 export type EvmTransactionData =
