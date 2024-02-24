@@ -305,11 +305,16 @@ export interface ReturnedTokenIdRedeem extends NormalRedeem {
   nftContract?: string;
 }
 
+type ReservoirNftIdItem = Omit<KnownTokenIdRedeem, keyof NormalRedeem>;
+interface ReservoirOrderIdItem {
+  orderId: string;
+}
+type ReservoirItem = ReservoirNftIdItem | ReservoirOrderIdItem;
+type ReservoirItems = ReservoirItem | ReservoirItem[];
+
 export interface ReservoirRedeem {
   type: 'reservoir';
-  items:
-    | Omit<KnownTokenIdRedeem, keyof NormalRedeem>
-    | Omit<KnownTokenIdRedeem, keyof NormalRedeem>[];
+  items: ReservoirItems;
 }
 
 export type EvmTransactionData =

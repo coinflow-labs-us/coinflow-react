@@ -66,6 +66,10 @@ Props:
 
 # Changelog
 
+## 3.1.8
+
+- Added `orderId` option for reservoir items
+
 ## 3.1.7
 
 - Added `nativeSolToConvert` for Solana transactions
