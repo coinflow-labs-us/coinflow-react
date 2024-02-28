@@ -1,6 +1,6 @@
 {
   "name": "@coinflowlabs/react",
-  "version": "3.1.8",
+  "version": "3.1.9",
   "description": "React Component for Coinflow Withdraw",
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
@@ -34,7 +34,7 @@
   "devDependencies": {
     "@solana/wallet-adapter-react": "^0.15.32",
     "@near-wallet-selector/core": "^8.9.3",
-    "@types/react": "^18.2.56",
+    "@types/react": "^18.2.58",
     "eslint-config-react-app": "^7.0.1",
     "typescript": "^5.3.2",
     "csstype": "^3.1.3"

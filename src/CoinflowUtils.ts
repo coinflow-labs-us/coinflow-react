@@ -98,6 +98,7 @@ export class CoinflowUtils {
     settlementType,
     lockAmount,
     nativeSolToConvert,
+    theme,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -120,6 +121,13 @@ export class CoinflowUtils {
       url.searchParams.append(
         'webhookInfo',
         Buffer.from(JSON.stringify(webhookInfo)).toString('base64')
+      );
+    }
+
+    if (theme) {
+      url.searchParams.append(
+        'theme',
+        Buffer.from(JSON.stringify(theme)).toString('base64')
       );
     }
 

@@ -2,7 +2,44 @@ import type {Connection, VersionedTransaction} from '@solana/web3.js';
 import {PublicKey, Signer, Transaction} from '@solana/web3.js';
 import {WalletContextState} from '@solana/wallet-adapter-react';
 import {Wallet} from '@near-wallet-selector/core';
-import {CustomerInfo, SettlementType} from '@coinflow/common';
+
+enum SettlementType {
+  Credits = 'Credits',
+  USDC = 'USDC',
+  Bank = 'Bank',
+}
+
+enum MerchantStyle {
+  Rounded = 'rounded',
+  Sharp = 'sharp',
+  Pill = 'pill',
+}
+
+type MerchantTheme = {
+  primary?: string;
+  background?: string;
+  backgroundAccent?: string;
+  backgroundAccent2?: string;
+  textColor?: string;
+  textColorAccent?: string;
+  textColorAction?: string;
+  font?: string;
+  style?: MerchantStyle;
+};
+
+interface CustomerInfo {
+  name?: string;
+  verificationId?: string;
+  displayName?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+  ip?: string;
+  lat?: string;
+  lng?: string;
+}
 
 /** Coinflow Types **/
 export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon';
@@ -15,6 +52,7 @@ export interface CoinflowTypes {
   blockchain: CoinflowBlockchain;
   handleHeightChange?: (height: string) => void;
   useSocket?: boolean;
+  theme?: MerchantTheme;
 }
 
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
@@ -126,6 +164,7 @@ export interface CoinflowIFrameProps
   disableGooglePay?: boolean;
   settlementType?: SettlementType;
   lockAmount?: boolean;
+  theme?: MerchantTheme;
 }
 
 /** Transactions **/
