@@ -66,6 +66,10 @@ Props:
 
 # Changelog
 
+## 3.1.10
+
+- Added `waitForHash` to EvmTransactionData
+
 ## 3.1.9
 
 - Added `theme` props to Coinflow components for easy color control

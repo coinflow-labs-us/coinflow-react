@@ -1,6 +1,6 @@
 {
   "name": "@coinflowlabs/react",
-  "version": "3.1.9",
+  "version": "3.1.10",
   "description": "React Component for Coinflow Withdraw",
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",

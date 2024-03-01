@@ -325,7 +325,11 @@ export type CoinflowWithdrawProps =
   | CoinflowEthWithdrawProps
   | CoinflowPolygonWithdrawProps;
 
-export interface NormalRedeem {
+export interface CommonEvmRedeem {
+  waitForHash?: boolean;
+}
+
+export interface NormalRedeem extends CommonEvmRedeem {
   transaction: {to: string; data: string};
 }
 
@@ -351,7 +355,7 @@ interface ReservoirOrderIdItem {
 type ReservoirItem = ReservoirNftIdItem | ReservoirOrderIdItem;
 type ReservoirItems = ReservoirItem | ReservoirItem[];
 
-export interface ReservoirRedeem {
+export interface ReservoirRedeem extends CommonEvmRedeem {
   type: 'reservoir';
   items: ReservoirItems;
 }
