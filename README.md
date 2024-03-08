@@ -66,6 +66,10 @@ Props:
 
 # Changelog
 
+## 3.1.11
+
+- Added new ChargebackProtectionData productTypes
+
 ## 3.1.10
 
 - Added `waitForHash` to EvmTransactionData

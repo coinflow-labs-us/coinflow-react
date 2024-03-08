@@ -211,7 +211,8 @@ export interface ChargebackProtectionItem {
     | 'realEstate'
     | 'computingContract'
     | 'digitalArt'
-    | 'topUp';
+    | 'topUp'
+    | 'ownershipContract';
   /**
    * The item's list price
    */
