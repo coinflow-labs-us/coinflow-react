@@ -24,6 +24,7 @@ Props:
 * `bankAccountLinkRedirect` (optional): The URL to be used for bank account setup
 * `supportsVersionedTransactions` (optional): Instruct the system that versioned transactions are supported
 * `additionalWallets` (optional): Define additional wallets to assign to the user
+* `transactionSigner` (optional): Public Key of the wallet which will actually execute the withdrawal transaction. Must be associated with the same withdrawer as the main wallet.
 
 ## Purchase Usage
 ```
@@ -65,6 +66,10 @@ Props:
 * `getFeePayer` - Return the `PublicKey` of the Coinflow Fee Payer
 
 # Changelog
+
+## 4.0.0
+
+- Require `signMessage` on wallets for stronger withdraw authentication
 
 ## 3.1.11
 

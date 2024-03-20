@@ -115,8 +115,23 @@ export function useSolanaIFrameMessageHandlers({
     [partialSigners, wallet]
   );
 
+  const handleSignMessage = useCallback(
+    async ({data}: WalletCall) => {
+      if (!wallet.signMessage) {
+        throw new Error('signTransaction is not supported by this wallet');
+      }
+
+      const signedMessage = await wallet.signMessage(new TextEncoder().encode(data));
+      return base58.encode(
+        signedMessage
+      );
+    },
+    [wallet]
+  );
+
   return {
     handleSignTransaction,
     handleSendTransaction,
+    handleSignMessage,
   };
 }

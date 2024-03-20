@@ -99,6 +99,7 @@ export class CoinflowUtils {
     lockAmount,
     nativeSolToConvert,
     theme,
+    transactionSigner,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -205,6 +206,8 @@ export class CoinflowUtils {
       url.searchParams.append('settlementType', settlementType);
 
     if (lockAmount) url.searchParams.append('lockAmount', 'true');
+
+    if (transactionSigner) url.searchParams.append('transactionSigner', transactionSigner);
 
     return url.toString();
   }

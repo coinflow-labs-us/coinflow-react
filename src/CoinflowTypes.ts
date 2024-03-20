@@ -63,7 +63,7 @@ export type OnSuccessMethod = (params: string) => void | Promise<void>;
 export type SolanaWallet = PartialBy<
   Pick<
     WalletContextState,
-    'wallet' | 'signTransaction' | 'publicKey' | 'sendTransaction'
+    'wallet' | 'signTransaction' | 'publicKey' | 'sendTransaction' | 'signMessage'
   >,
   'wallet' | 'signTransaction'
 >;
@@ -138,11 +138,18 @@ export interface CoinflowIFrameProps
   extends Omit<CoinflowTypes, 'merchantId'>,
     Pick<
       CoinflowCommonPurchaseProps,
-      'chargebackProtectionData' | 'webhookInfo' | 'amount' | 'customerInfo'
+      | 'chargebackProtectionData'
+      | 'webhookInfo'
+      | 'amount'
+      | 'customerInfo'
+      | 'settlementType'
     >,
     Pick<
       CoinflowCommonWithdrawProps,
-      'bankAccountLinkRedirect' | 'additionalWallets'
+      | 'bankAccountLinkRedirect'
+      | 'additionalWallets'
+      | 'transactionSigner'
+      | 'lockAmount'
     > {
   walletPubkey: string;
   IFrameRef: React.RefObject<HTMLIFrameElement>;
@@ -163,7 +170,6 @@ export interface CoinflowIFrameProps
   disableApplePay?: boolean;
   disableGooglePay?: boolean;
   settlementType?: SettlementType;
-  lockAmount?: boolean;
   theme?: MerchantTheme;
 }
 
@@ -295,6 +301,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
   }[];
   supportsVersionedTransactions?: boolean;
   lockAmount?: boolean;
+  transactionSigner?: string;
 }
 
 export interface CoinflowSolanaWithdrawProps
