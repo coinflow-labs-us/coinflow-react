@@ -99,6 +99,7 @@ export class CoinflowUtils {
     lockAmount,
     nativeSolToConvert,
     theme,
+    usePermit,
     transactionSigner,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
@@ -207,6 +208,7 @@ export class CoinflowUtils {
 
     if (lockAmount) url.searchParams.append('lockAmount', 'true');
 
+    if (usePermit === false) url.searchParams.append('usePermit', 'false');
     if (transactionSigner) url.searchParams.append('transactionSigner', transactionSigner);
 
     return url.toString();

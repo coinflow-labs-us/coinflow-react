@@ -171,6 +171,7 @@ export interface CoinflowIFrameProps
   disableGooglePay?: boolean;
   settlementType?: SettlementType;
   theme?: MerchantTheme;
+  usePermit?: boolean;
 }
 
 /** Transactions **/
@@ -319,12 +320,14 @@ export interface CoinflowNearWithdrawProps extends CoinflowCommonWithdrawProps {
 export interface CoinflowEthWithdrawProps extends CoinflowCommonWithdrawProps {
   wallet: Omit<EthWallet, 'signMessage'>;
   blockchain: 'eth';
+  usePermit?: boolean;
 }
 
 export interface CoinflowPolygonWithdrawProps
   extends CoinflowCommonWithdrawProps {
   wallet: Omit<EthWallet, 'signMessage'>;
   blockchain: 'polygon';
+  usePermit?: boolean;
 }
 
 export type CoinflowWithdrawProps =
