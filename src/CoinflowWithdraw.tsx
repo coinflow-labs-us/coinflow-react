@@ -7,10 +7,11 @@ import {useIframeWallet} from './wallet/useIframeWallet';
 import {useSolanaIFrameMessageHandlers} from './wallet/SolanaIFrameMessageHandlers';
 import {useNearIFrameMessageHandlers} from './wallet/NearIFrameMessageHandlers';
 import {
+  CoinflowBaseWithdrawProps,
   CoinflowEthWithdrawProps,
   CoinflowIFrameProps, CoinflowNearWithdrawProps, CoinflowPolygonWithdrawProps, CoinflowSolanaWithdrawProps,
-  CoinflowWithdrawProps,
-} from './CoinflowTypes';
+  CoinflowWithdrawProps
+} from "./CoinflowTypes";
 import {useEthIFrameMessageHandlers} from './wallet/EthIFrameMessageHandlers';
 
 export function CoinflowWithdraw(
@@ -24,6 +25,9 @@ export function CoinflowWithdraw(
     eth: <CoinflowEthWithdraw {...(props as CoinflowEthWithdrawProps)} />,
     polygon: (
       <CoinflowEthWithdraw {...(props as CoinflowPolygonWithdrawProps)} />
+    ),
+    base: (
+      <CoinflowEthWithdraw {...(props as CoinflowBaseWithdrawProps)} />
     ),
   });
 }
@@ -67,7 +71,7 @@ function CoinflowNearWithdraw(props: CoinflowNearWithdrawProps) {
   );
 }
 
-function CoinflowEthWithdraw(props: CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps) {
+function CoinflowEthWithdraw(props: CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps | CoinflowBaseWithdrawProps) {
   const handlers = useEthIFrameMessageHandlers(props);
   const {wallet} = props;
   const {IFrameRef} = useIframeWallet(handlers, props, wallet.address);

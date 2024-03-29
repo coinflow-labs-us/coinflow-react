@@ -8,8 +8,8 @@ import {
   CoinflowNearHistoryProps,
   CoinflowSolanaHistoryProps,
   CoinflowEthHistoryProps,
-  CoinflowPolygonHistoryProps, CoinflowIFrameProps,
-} from './CoinflowTypes';
+  CoinflowPolygonHistoryProps, CoinflowIFrameProps, CoinflowBaseHistoryProps
+} from "./CoinflowTypes";
 import {useEthIFrameMessageHandlers} from './wallet/EthIFrameMessageHandlers';
 
 export function CoinflowWithdrawHistory(
@@ -18,6 +18,7 @@ export function CoinflowWithdrawHistory(
     | CoinflowNearHistoryProps
     | CoinflowEthHistoryProps
     | CoinflowPolygonHistoryProps
+    | CoinflowBaseHistoryProps
 ) {
   return CoinflowUtils.byBlockchain(props.blockchain, {
     solana: (
@@ -26,6 +27,7 @@ export function CoinflowWithdrawHistory(
     near: <NearWithdrawHistory {...(props as CoinflowNearHistoryProps)} />,
     eth: <EthWithdrawHistory {...(props as CoinflowEthHistoryProps)} />,
     polygon: <EthWithdrawHistory {...(props as CoinflowPolygonHistoryProps)} />,
+    base: <EthWithdrawHistory {...(props as CoinflowBaseHistoryProps)} />,
   });
 }
 
@@ -67,7 +69,7 @@ function NearWithdrawHistory(props: CoinflowNearHistoryProps) {
   );
 }
 
-function EthWithdrawHistory(props: CoinflowEthHistoryProps | CoinflowPolygonHistoryProps) {
+function EthWithdrawHistory(props: CoinflowEthHistoryProps | CoinflowPolygonHistoryProps | CoinflowBaseHistoryProps) {
   const handlers = useEthIFrameMessageHandlers(props);
   const {wallet} = props;
   const {IFrameRef} = useIframeWallet(handlers, props, wallet.address);

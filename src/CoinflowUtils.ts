@@ -101,6 +101,7 @@ export class CoinflowUtils {
     theme,
     usePermit,
     transactionSigner,
+    authOnly,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -209,7 +210,9 @@ export class CoinflowUtils {
     if (lockAmount) url.searchParams.append('lockAmount', 'true');
 
     if (usePermit === false) url.searchParams.append('usePermit', 'false');
-    if (transactionSigner) url.searchParams.append('transactionSigner', transactionSigner);
+    if (transactionSigner)
+      url.searchParams.append('transactionSigner', transactionSigner);
+    if (authOnly === true) url.searchParams.append('authOnly', 'true');
 
     return url.toString();
   }
@@ -234,7 +237,7 @@ export class CoinflowUtils {
 
   static byBlockchain<T>(
     blockchain: CoinflowBlockchain,
-    args: {solana: T; near: T; eth?: T; polygon: T}
+    args: {solana: T; near: T; eth?: T; polygon: T; base: T}
   ): T {
     switch (blockchain) {
       case 'solana':
@@ -247,6 +250,8 @@ export class CoinflowUtils {
         if (args.eth === undefined)
           throw new Error('blockchain not supported for this operation!');
         return args.eth;
+      case 'base':
+        return args.base;
       default:
         throw new Error('blockchain not supported!');
     }

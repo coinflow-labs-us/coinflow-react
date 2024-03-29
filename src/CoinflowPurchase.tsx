@@ -5,14 +5,15 @@ import {CoinflowUtils} from './CoinflowUtils';
 import {useIframeWallet} from './wallet/useIframeWallet';
 import {useNearIFrameMessageHandlers} from './wallet/NearIFrameMessageHandlers';
 import {
+  CoinflowBasePurchaseProps,
   CoinflowEthPurchaseProps,
   CoinflowEvmPurchaseProps,
   CoinflowIFrameProps,
   CoinflowNearPurchaseProps,
   CoinflowPolygonPurchaseProps,
   CoinflowPurchaseProps,
-  CoinflowSolanaPurchaseProps,
-} from './CoinflowTypes';
+  CoinflowSolanaPurchaseProps
+} from "./CoinflowTypes";
 import {useEthIFrameMessageHandlers} from './wallet/EthIFrameMessageHandlers';
 
 export function CoinflowPurchase(props: CoinflowPurchaseProps) {
@@ -26,6 +27,9 @@ export function CoinflowPurchase(props: CoinflowPurchaseProps) {
     ),
     eth: (
       <EvmCoinflowPurchase {...(props as CoinflowEthPurchaseProps)} />
+    ),
+    base: (
+      <EvmCoinflowPurchase {...(props as CoinflowBasePurchaseProps)} />
     )
   });
 }

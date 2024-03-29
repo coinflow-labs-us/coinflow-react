@@ -5,13 +5,14 @@ import {useSolanaIFrameMessageHandlers} from './wallet/SolanaIFrameMessageHandle
 import {useNearIFrameMessageHandlers} from './wallet/NearIFrameMessageHandlers';
 import {CoinflowUtils} from './CoinflowUtils';
 import {
+  CoinflowBaseHistoryProps,
   CoinflowEthHistoryProps, CoinflowEvmHistoryProps,
   CoinflowHistoryProps,
   CoinflowIFrameProps,
   CoinflowNearHistoryProps,
   CoinflowPolygonHistoryProps,
-  CoinflowSolanaHistoryProps,
-} from './CoinflowTypes';
+  CoinflowSolanaHistoryProps
+} from "./CoinflowTypes";
 import {useEthIFrameMessageHandlers} from './wallet/EthIFrameMessageHandlers';
 
 export function CoinflowPurchaseHistory(
@@ -24,6 +25,7 @@ export function CoinflowPurchaseHistory(
     near: <NearPurchaseHistory {...(props as CoinflowNearHistoryProps)} />,
     polygon: <EvmPurchaseHistory {...(props as CoinflowPolygonHistoryProps)} />,
     eth: <EvmPurchaseHistory {...(props as CoinflowEthHistoryProps)} />,
+    base: <EvmPurchaseHistory {...(props as CoinflowBaseHistoryProps)} />,
   });
 }
 

@@ -42,7 +42,7 @@ interface CustomerInfo {
 }
 
 /** Coinflow Types **/
-export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon';
+export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon' | 'base';
 export type CoinflowEnvs = 'prod' | 'staging' | 'sandbox' | 'local';
 
 export interface CoinflowTypes {
@@ -63,7 +63,11 @@ export type OnSuccessMethod = (params: string) => void | Promise<void>;
 export type SolanaWallet = PartialBy<
   Pick<
     WalletContextState,
-    'wallet' | 'signTransaction' | 'publicKey' | 'sendTransaction' | 'signMessage'
+    | 'wallet'
+    | 'signTransaction'
+    | 'publicKey'
+    | 'sendTransaction'
+    | 'signMessage'
   >,
   'wallet' | 'signTransaction'
 >;
@@ -128,11 +132,16 @@ export interface CoinflowPolygonHistoryProps extends CoinflowEvmHistoryProps {
   blockchain: 'polygon';
 }
 
+export interface CoinflowBaseHistoryProps extends CoinflowEvmHistoryProps {
+  blockchain: 'base';
+}
+
 export type CoinflowHistoryProps =
   | CoinflowSolanaHistoryProps
   | CoinflowNearHistoryProps
   | CoinflowPolygonHistoryProps
-  | CoinflowEthHistoryProps;
+  | CoinflowEthHistoryProps
+  | CoinflowBaseHistoryProps;
 
 export interface CoinflowIFrameProps
   extends Omit<CoinflowTypes, 'merchantId'>,
@@ -150,7 +159,8 @@ export interface CoinflowIFrameProps
       | 'additionalWallets'
       | 'transactionSigner'
       | 'lockAmount'
-    > {
+    >,
+    Pick<CoinflowEvmPurchaseProps, 'authOnly'> {
   walletPubkey: string;
   IFrameRef: React.RefObject<HTMLIFrameElement>;
   route: string;
@@ -244,6 +254,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   disableGooglePay?: boolean;
   customerInfo?: CustomerInfo;
   settlementType?: SettlementType;
+  authOnly?: boolean;
 }
 
 export interface CoinflowSolanaPurchaseProps
@@ -281,11 +292,16 @@ export interface CoinflowEthPurchaseProps extends CoinflowEvmPurchaseProps {
   blockchain: 'eth';
 }
 
+export interface CoinflowBasePurchaseProps extends CoinflowEvmPurchaseProps {
+  blockchain: 'base';
+}
+
 export type CoinflowPurchaseProps =
   | CoinflowSolanaPurchaseProps
   | CoinflowNearPurchaseProps
   | CoinflowPolygonPurchaseProps
-  | CoinflowEthPurchaseProps;
+  | CoinflowEthPurchaseProps
+  | CoinflowBasePurchaseProps;
 
 /** Withdraw **/
 
@@ -317,24 +333,32 @@ export interface CoinflowNearWithdrawProps extends CoinflowCommonWithdrawProps {
   blockchain: 'near';
 }
 
-export interface CoinflowEthWithdrawProps extends CoinflowCommonWithdrawProps {
-  wallet: Omit<EthWallet, 'signMessage'>;
+export interface CoinflowEvmWithdrawProps extends CoinflowCommonWithdrawProps {
+  wallet: EthWallet;
+  usePermit?: boolean;
+}
+
+export interface CoinflowEthWithdrawProps extends CoinflowEvmWithdrawProps {
   blockchain: 'eth';
   usePermit?: boolean;
 }
 
 export interface CoinflowPolygonWithdrawProps
-  extends CoinflowCommonWithdrawProps {
-  wallet: Omit<EthWallet, 'signMessage'>;
+  extends CoinflowEvmWithdrawProps {
   blockchain: 'polygon';
-  usePermit?: boolean;
+}
+
+export interface CoinflowBaseWithdrawProps
+  extends CoinflowEvmWithdrawProps {
+  blockchain: 'base';
 }
 
 export type CoinflowWithdrawProps =
   | CoinflowSolanaWithdrawProps
   | CoinflowNearWithdrawProps
   | CoinflowEthWithdrawProps
-  | CoinflowPolygonWithdrawProps;
+  | CoinflowPolygonWithdrawProps
+  | CoinflowBaseWithdrawProps;
 
 export interface CommonEvmRedeem {
   waitForHash?: boolean;

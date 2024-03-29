@@ -68,6 +68,11 @@ Props:
 
 # Changelog
 
+## 4.1.0
+
+- Add base blockchain support
+- Added AuthOnly parameter to CoinflowPurchase
+
 ## 4.0.0
 
 - Require `signMessage` on wallets for stronger withdraw authentication

@@ -45,6 +45,7 @@ export function useStringWalletPubkey(props: CoinflowPurchaseProps) {
       near: () => (props as CoinflowNearPurchaseProps).wallet.accountId,
       eth: () => (props as CoinflowEvmPurchaseProps).wallet.address,
       polygon: () => (props as CoinflowEvmPurchaseProps).wallet.address,
+      base: () => (props as CoinflowEvmPurchaseProps).wallet.address,
     });
     return getWalletPubkey();
   }, [props]);
