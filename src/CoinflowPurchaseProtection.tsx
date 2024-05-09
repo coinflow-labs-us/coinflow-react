@@ -1,6 +1,5 @@
 import {useEffect, useMemo, useState} from 'react';
-import {CoinflowEnvs} from './CoinflowTypes';
-import {CoinflowUtils} from './CoinflowUtils';
+import {CoinflowEnvs, CoinflowUtils} from './common';
 
 export function CoinflowPurchaseProtection({
   coinflowEnv,

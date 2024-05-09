@@ -1,6 +1,6 @@
 import {
   CoinflowPurchaseProps,
-} from './CoinflowTypes';
+} from './common';
 import React from 'react';
 import {MobileWalletButton, MobileWalletButtonProps} from './CoinflowApplePayButton';
 

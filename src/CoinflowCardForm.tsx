@@ -1,8 +1,6 @@
-import React, {CSSProperties, forwardRef, useImperativeHandle, useMemo, useRef} from 'react';
-import {getMessageHandler} from './wallet/useIframeWallet';
-import {CoinflowIFrame} from './CoinflowIFrame';
-import {CoinflowBlockchain, CoinflowEnvs, CoinflowIFrameProps} from './CoinflowTypes';
-import {useHandleHeightChange} from './useHandleHeightChange';
+import React, { CSSProperties, forwardRef, useImperativeHandle, useMemo, useRef } from "react";
+import { CoinflowIFrame, CoinflowIFrameExposedFunctions } from "./CoinflowIFrame";
+import {CoinflowBlockchain, CoinflowEnvs, CoinflowIFrameProps, IFrameMessageHandlers} from './common';
 
 export type CoinflowCardTokenResponse = {
   last4: string;
@@ -40,56 +38,54 @@ export interface CoinflowCardFormProps {
  *
  * ```
  */
-export const CoinflowCardForm = forwardRef(({handleHeightChange, walletPubkey, env, customCss, merchantId, blockchain}: CoinflowCardFormProps, ref) => {
-  const IFrameRef = useRef<HTMLIFrameElement | null>(null);
-
-  useHandleHeightChange(handleHeightChange);
-
+export const CoinflowCardForm = forwardRef((props: CoinflowCardFormProps, ref) => {
+  const iframeRef = useRef<CoinflowIFrameExposedFunctions>();
   useImperativeHandle(ref, () => ({
     async getToken(): Promise<CoinflowCardTokenResponse> {
-      if (!IFrameRef.current?.contentWindow) throw new Error('content window not found');
-
-      IFrameRef.current.contentWindow.postMessage('getToken', '*');
-      return new Promise<CoinflowCardTokenResponse>((resolve, reject) => {
-        const handler = getMessageHandler('getToken', (data: string) => {
-          if (data.startsWith('ERROR')) {
-            reject(new Error(data.replace('ERROR', '')));
-            return;
-          }
-
-          resolve(JSON.parse(data));
-        });
-
-        if (!window) throw new Error('Window not defined');
-        window.addEventListener('message', handler);
-      });
+      const methodName = 'getToken';
+      if (!iframeRef.current) throw new Error('Unable to get token');
+      const isValid = (data: string) => {
+        try {
+          const res = JSON.parse(data);
+          return 'method' in res && res.method === methodName
+        } catch (e) {
+          return false;
+        }
+      };
+      const response = await iframeRef.current.sendAndReceiveMessage(methodName, isValid);
+      return JSON.parse(response).data;
     }
   }));
 
   const merchantCss = useMemo(() => {
-    if (!customCss) return undefined;
+    if (!props.customCss) return undefined;
 
-    const cssStr = Object.entries(customCss).reduce((acc, [key, value]) => {
+    const cssStr = Object.entries(props.customCss).reduce((acc, [key, value]) => {
       return acc + `${key} {${CSSPropertiesToComponent(value)}}\n`;
     }, '');
 
     return Buffer.from(cssStr).toString('base64');
-  }, [customCss]);
+  }, [props.customCss]);
 
-  if (!walletPubkey) return null;
+  const iframeProps = useMemo<CoinflowIFrameProps>(() => {
+    return {
+      ...props,
+      walletPubkey: props.walletPubkey,
+      route: `/checkout-form/${props.merchantId}`,
+      routePrefix: 'form',
+      merchantCss,
+      transaction: undefined,
+    };
+  }, [merchantCss, props]);
 
-  const iFrameProps: CoinflowIFrameProps = {
-    walletPubkey: walletPubkey as string,
-    blockchain,
-    route: `/checkout-form/${merchantId}`,
-    env,
-    IFrameRef,
-    routePrefix: 'form',
-    merchantCss,
-    handleHeightChange,
-  };
+  const messageHandlers = useMemo<IFrameMessageHandlers>(() => {
+    return {
+      handleSendTransaction: () => {throw new Error('Not Supported')},
+      handleHeightChange: props.handleHeightChange
+    };
+  } , [props]);
 
-  return <CoinflowIFrame {...iFrameProps} />;
+  return <CoinflowIFrame ref={iframeRef} {...iframeProps } {...messageHandlers} />;
 });
 
 function CSSPropertiesToComponent(dict: CSSProperties){

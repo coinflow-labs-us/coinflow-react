@@ -59,6 +59,7 @@ Props:
 * `supportsVersionedTransactions` (optional): Instruct the system that you support versioned transactions
 * `rent` (optional, Solana only): Specify the blockchain rent amount to add to the total
 * `nativeSolToConvert` (optional, Solana only): Specify the amount of native SOL to convert wSOL for the purchase
+* `jwtToken` (optional): A JWT token which encodes verified checkout parameters to prevent spoofing of arguments.
 
 ## Utils
 

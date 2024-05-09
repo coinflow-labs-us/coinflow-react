@@ -1,0 +1,1 @@
+{"version":3,"file":"CoinflowGooglePayButton.js","sourceRoot":"","sources":["../../src/CoinflowGooglePayButton.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,MAAM,OAAO,CAAC;AAC1B,OAAO,EAAC,kBAAkB,EAA0B,MAAM,0BAA0B,CAAC;AAErF,MAAM,UAAU,uBAAuB,CAAC,KAAsD;IAC5F,OAAO,oBAAC,kBAAkB,IAAC,KAAK,EAAE,KAAK,EAAE,KAAK,EAAE,YAAY,GAAI,CAAC;AACnE,CAAC"}
