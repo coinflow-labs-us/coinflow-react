@@ -1,5 +1,6 @@
 import { __awaiter, __generator } from "tslib";
 import { web3, base58 } from './SolanaPeerDeps';
+import LZString from 'lz-string';
 var CoinflowUtils = /** @class */ (function () {
     function CoinflowUtils(env) {
         this.env = env !== null && env !== void 0 ? env : 'prod';
@@ -77,13 +78,13 @@ var CoinflowUtils = /** @class */ (function () {
             url.searchParams.append('supportsVersionedTransactions', 'true');
         }
         if (webhookInfo) {
-            url.searchParams.append('webhookInfo', Buffer.from(JSON.stringify(webhookInfo)).toString('base64'));
+            url.searchParams.append('webhookInfo', LZString.compressToEncodedURIComponent(JSON.stringify(webhookInfo)));
         }
         if (theme) {
-            url.searchParams.append('theme', Buffer.from(JSON.stringify(theme)).toString('base64'));
+            url.searchParams.append('theme', LZString.compressToEncodedURIComponent(JSON.stringify(theme)));
         }
         if (customerInfo) {
-            url.searchParams.append('customerInfo', Buffer.from(JSON.stringify(customerInfo)).toString('base64'));
+            url.searchParams.append('customerInfo', LZString.compressToEncodedURIComponent(JSON.stringify(customerInfo)));
         }
         if (email) {
             url.searchParams.append('email', email);
@@ -104,11 +105,11 @@ var CoinflowUtils = /** @class */ (function () {
             url.searchParams.append('bankAccountLinkRedirect', bankAccountLinkRedirect);
         }
         if (additionalWallets)
-            url.searchParams.append('additionalWallets', JSON.stringify(additionalWallets));
+            url.searchParams.append('additionalWallets', LZString.compressToEncodedURIComponent(JSON.stringify(additionalWallets)));
         if (nearDeposit)
             url.searchParams.append('nearDeposit', nearDeposit);
         if (chargebackProtectionData)
-            url.searchParams.append('chargebackProtectionData', JSON.stringify(chargebackProtectionData));
+            url.searchParams.append('chargebackProtectionData', LZString.compressToEncodedURIComponent(JSON.stringify(chargebackProtectionData)));
         if (deviceId) {
             url.searchParams.append('deviceId', deviceId);
         }
@@ -152,27 +153,49 @@ var CoinflowUtils = /** @class */ (function () {
         return url.toString();
     };
     CoinflowUtils.getTransaction = function (props) {
-        if ('transaction' in props && props.transaction !== undefined) {
-            var transaction = props.transaction;
-            if (web3 && transaction instanceof web3.Transaction) {
+        return this.byBlockchain(props.blockchain, {
+            solana: function () {
+                if (!('transaction' in props))
+                    return undefined;
+                var transaction = props.transaction;
+                if (!web3)
+                    throw new Error('@solana/web3.js dependency is required for Solana');
                 if (!base58)
                     throw new Error('bs58 dependency is required for Solana');
-                return base58.encode(transaction.serialize({
-                    requireAllSignatures: false,
-                    verifySignatures: false,
-                }));
-            }
-            if (web3 && transaction instanceof web3.VersionedTransaction) {
-                if (!base58)
-                    throw new Error('bs58 dependency is required for Solana');
-                return base58.encode(transaction.serialize());
-            }
-            return btoa(JSON.stringify(transaction));
-        }
-        if ('action' in props && props.action !== undefined) {
-            return btoa(JSON.stringify(props.action));
-        }
-        return undefined;
+                if (transaction instanceof web3.Transaction)
+                    return base58.encode(transaction.serialize({
+                        requireAllSignatures: false,
+                        verifySignatures: false,
+                    }));
+                if (transaction instanceof web3.VersionedTransaction)
+                    return base58.encode(transaction.serialize());
+                return undefined;
+            },
+            polygon: function () {
+                if (!('transaction' in props))
+                    return undefined;
+                var transaction = props.transaction;
+                return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
+            },
+            eth: function () {
+                if (!('transaction' in props))
+                    return undefined;
+                var transaction = props.transaction;
+                return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
+            },
+            base: function () {
+                if (!('transaction' in props))
+                    return undefined;
+                var transaction = props.transaction;
+                return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
+            },
+            near: function () {
+                if (!('action' in props))
+                    return undefined;
+                var action = props.action;
+                return LZString.compressToEncodedURIComponent(JSON.stringify(action));
+            },
+        })();
     };
     CoinflowUtils.byBlockchain = function (blockchain, args) {
         switch (blockchain) {
@@ -183,8 +206,6 @@ var CoinflowUtils = /** @class */ (function () {
             case 'polygon':
                 return args.polygon;
             case 'eth':
-                if (args.eth === undefined)
-                    throw new Error('blockchain not supported for this operation!');
                 return args.eth;
             case 'base':
                 return args.base;

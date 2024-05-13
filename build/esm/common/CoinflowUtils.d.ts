@@ -14,7 +14,7 @@ export declare class CoinflowUtils {
     static byBlockchain<T>(blockchain: CoinflowBlockchain, args: {
         solana: T;
         near: T;
-        eth?: T;
+        eth: T;
         polygon: T;
         base: T;
     }): T;
