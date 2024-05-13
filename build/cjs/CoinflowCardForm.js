@@ -52,7 +52,7 @@ exports.CoinflowCardForm = (0, react_1.forwardRef)(function (props, ref) {
                     }
                 });
             });
-        }
+        },
     }); });
     var merchantCss = (0, react_1.useMemo)(function () {
         if (!props.customCss)
@@ -68,11 +68,14 @@ exports.CoinflowCardForm = (0, react_1.forwardRef)(function (props, ref) {
     }, [merchantCss, props]);
     var messageHandlers = (0, react_1.useMemo)(function () {
         return {
-            handleSendTransaction: function () { throw new Error('Not Supported'); },
-            handleHeightChange: props.handleHeightChange
+            handleSendTransaction: function () {
+                throw new Error('Not Supported');
+            },
+            handleHeightChange: props.handleHeightChange,
+            onSuccess: undefined,
         };
     }, [props]);
-    return react_1.default.createElement(CoinflowIFrame_1.CoinflowIFrame, tslib_1.__assign({ ref: iframeRef }, iframeProps, messageHandlers));
+    return (react_1.default.createElement(CoinflowIFrame_1.CoinflowIFrame, tslib_1.__assign({ ref: iframeRef }, iframeProps, messageHandlers)));
 });
 function CSSPropertiesToComponent(dict) {
     var str = '';

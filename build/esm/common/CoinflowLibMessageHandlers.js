@@ -7,6 +7,7 @@ var IFrameMessageMethods;
     IFrameMessageMethods["SignTransaction"] = "signTransaction";
     IFrameMessageMethods["SendTransaction"] = "sendTransaction";
     IFrameMessageMethods["HeightChange"] = "heightChange";
+    IFrameMessageMethods["Success"] = "success";
 })(IFrameMessageMethods || (IFrameMessageMethods = {}));
 export function getWalletPubkey(_a) {
     var wallet = _a.wallet;
@@ -48,22 +49,26 @@ export function handleIFrameMessage(rawMessage, handlers) {
             if (!handlers.handleHeightChange)
                 return;
             return handlers.handleHeightChange(data);
+        case IFrameMessageMethods.Success:
+            if (!handlers.onSuccess)
+                return;
+            handlers.onSuccess(walletCall.info);
+            return;
     }
     console.warn("Didn't expect to get here, handleIFrameMessage method:".concat(method, " is not one of ").concat(Object.values(IFrameMessageMethods)));
 }
-export function getHandlers(_a) {
-    var wallet = _a.wallet, blockchain = _a.blockchain;
-    return CoinflowUtils.byBlockchain(blockchain, {
-        solana: function () { return getSolanaWalletHandlers({ wallet: wallet }); },
-        near: function () { return getNearWalletHandlers({ wallet: wallet }); },
-        eth: function () { return getEvmWalletHandlers({ wallet: wallet }); },
-        polygon: function () { return getEvmWalletHandlers({ wallet: wallet }); },
-        base: function () { return getEvmWalletHandlers({ wallet: wallet }); },
+export function getHandlers(props) {
+    return CoinflowUtils.byBlockchain(props.blockchain, {
+        solana: function () { return getSolanaWalletHandlers(props); },
+        near: function () { return getNearWalletHandlers(props); },
+        eth: function () { return getEvmWalletHandlers(props); },
+        polygon: function () { return getEvmWalletHandlers(props); },
+        base: function () { return getEvmWalletHandlers(props); },
     })();
 }
 function getSolanaWalletHandlers(_a) {
     var _this = this;
-    var wallet = _a.wallet;
+    var wallet = _a.wallet, onSuccess = _a.onSuccess;
     return {
         handleSendTransaction: function (transaction) { return __awaiter(_this, void 0, void 0, function () {
             var tx;
@@ -116,6 +121,7 @@ function getSolanaWalletHandlers(_a) {
                 }
             });
         }); },
+        onSuccess: onSuccess,
     };
 }
 function getSolanaTransaction(data) {
@@ -131,7 +137,7 @@ function getSolanaTransaction(data) {
 }
 function getNearWalletHandlers(_a) {
     var _this = this;
-    var wallet = _a.wallet;
+    var wallet = _a.wallet, onSuccess = _a.onSuccess;
     var nearWallet = wallet;
     return {
         handleSendTransaction: function (transaction) { return __awaiter(_this, void 0, void 0, function () {
@@ -150,11 +156,12 @@ function getNearWalletHandlers(_a) {
                 }
             });
         }); },
+        onSuccess: onSuccess,
     };
 }
 function getEvmWalletHandlers(_a) {
     var _this = this;
-    var wallet = _a.wallet;
+    var wallet = _a.wallet, onSuccess = _a.onSuccess;
     var evmWallet = wallet;
     return {
         handleSendTransaction: function (transaction) { return __awaiter(_this, void 0, void 0, function () {
@@ -175,6 +182,7 @@ function getEvmWalletHandlers(_a) {
                 return [2 /*return*/, evmWallet.signMessage(message)];
             });
         }); },
+        onSuccess: onSuccess,
     };
 }
 //# sourceMappingURL=CoinflowLibMessageHandlers.js.map

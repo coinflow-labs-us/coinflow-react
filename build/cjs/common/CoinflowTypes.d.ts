@@ -45,7 +45,10 @@ export interface CoinflowTypes {
     theme?: MerchantTheme;
 }
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-export type OnSuccessMethod = (params: string) => void | Promise<void>;
+export type OnSuccessMethod = (args: {
+    paymentId: string;
+    hash?: string | undefined;
+} | string) => void | Promise<void>;
 /** Wallets **/
 export interface SolanaWallet {
     publicKey: PublicKey | null;

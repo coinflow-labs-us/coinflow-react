@@ -1,6 +1,6 @@
 import { __assign, __awaiter, __generator } from "tslib";
-import React, { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
-import { CoinflowIFrame } from "./CoinflowIFrame";
+import React, { forwardRef, useImperativeHandle, useMemo, useRef, } from 'react';
+import { CoinflowIFrame } from './CoinflowIFrame';
 /**
  * Allows merchants to collect card information from their customers in a PCI-compliant way and receive a token for use with the `/api/checkout/token` endpoint.
  *
@@ -49,7 +49,7 @@ export var CoinflowCardForm = forwardRef(function (props, ref) {
                     }
                 });
             });
-        }
+        },
     }); });
     var merchantCss = useMemo(function () {
         if (!props.customCss)
@@ -65,11 +65,14 @@ export var CoinflowCardForm = forwardRef(function (props, ref) {
     }, [merchantCss, props]);
     var messageHandlers = useMemo(function () {
         return {
-            handleSendTransaction: function () { throw new Error('Not Supported'); },
-            handleHeightChange: props.handleHeightChange
+            handleSendTransaction: function () {
+                throw new Error('Not Supported');
+            },
+            handleHeightChange: props.handleHeightChange,
+            onSuccess: undefined,
         };
     }, [props]);
-    return React.createElement(CoinflowIFrame, __assign({ ref: iframeRef }, iframeProps, messageHandlers));
+    return (React.createElement(CoinflowIFrame, __assign({ ref: iframeRef }, iframeProps, messageHandlers)));
 });
 function CSSPropertiesToComponent(dict) {
     var str = '';

@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties } from 'react';
 import { CoinflowBlockchain, CoinflowEnvs } from './common';
 export type CoinflowCardTokenResponse = {
     last4: string;
