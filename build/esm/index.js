@@ -5,7 +5,7 @@ export * from './CoinflowIFrame';
 export * from './CoinflowPurchaseHistory';
 export * from './CoinflowWithdrawHistory';
 export * from './CoinflowPurchaseProtection';
-export * from './CoinflowCardForm';
+export * from './card-form/CoinflowCardForm';
 export * from './CoinflowApplePayButton';
 export * from './CoinflowGooglePayButton';
 //# sourceMappingURL=index.js.map

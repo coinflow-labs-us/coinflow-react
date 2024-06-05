@@ -69,6 +69,10 @@ Props:
 
 # Changelog
 
+## 4.2.4
+
+- Memoize styles on credit card inputs
+
 ## 4.1.0
 
 - Add base blockchain support

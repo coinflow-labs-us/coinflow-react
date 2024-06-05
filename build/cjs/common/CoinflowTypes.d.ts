@@ -35,7 +35,7 @@ export interface CustomerInfo {
 }
 /** Coinflow Types **/
 export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon' | 'base';
-export type CoinflowEnvs = 'prod' | 'staging' | 'sandbox' | 'local';
+export type CoinflowEnvs = 'prod' | 'staging' | 'staging-live' | 'sandbox' | 'local';
 export interface CoinflowTypes {
     merchantId: string;
     env?: CoinflowEnvs;
@@ -162,6 +162,15 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     authOnly?: boolean;
     deviceId?: string;
     jwtToken?: string;
+    /**
+     * If rendering the Coinflow component within multiple nested iframes, all ancestors in the chain must be provided as a comma-separated list.
+     *
+     * Example:
+     * Primary origin that will be interacting with the Coinflow iFrame: foo.com
+     * Subsequent origins that will render foo.com: bar.com
+     * The origin array would then be: [https://foo.com,https://bar.com]
+     */
+    origins?: string[];
 }
 export interface CoinflowSolanaPurchaseProps extends CoinflowCommonPurchaseProps {
     wallet: SolanaWallet;
@@ -215,6 +224,15 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     supportsVersionedTransactions?: boolean;
     lockAmount?: boolean;
     transactionSigner?: string;
+    /**
+     * If rendering the Coinflow component within multiple nested iframes, all ancestors in the chain must be provided as a comma-separated list.
+     *
+     * Example:
+     * Primary origin that will be interacting with the Coinflow iFrame: foo.com
+     * Subsequent origins that will render foo.com: bar.com
+     * The origin array would then be: [https://foo.com,https://bar.com]
+     */
+    origins?: string[];
 }
 export interface CoinflowSolanaWithdrawProps extends CoinflowCommonWithdrawProps {
     wallet: SolanaWallet;
@@ -272,7 +290,7 @@ export interface ReservoirRedeem extends CommonEvmRedeem {
     items: ReservoirItems;
 }
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | ReservoirRedeem | KnownTokenIdRedeem | NormalRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'amount' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'token'> {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'amount' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'token'> {
     walletPubkey: string | null | undefined;
     route: string;
     routePrefix?: string;
@@ -286,5 +304,11 @@ export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, 
     disableGooglePay?: boolean;
     theme?: MerchantTheme;
     usePermit?: boolean;
+}
+export declare enum CardType {
+    VISA = "VISA",
+    MASTERCARD = "MSTR",
+    AMEX = "AMEX",
+    DISCOVER = "DISC"
 }
 export {};

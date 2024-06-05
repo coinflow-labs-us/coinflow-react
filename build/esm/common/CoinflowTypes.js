@@ -10,4 +10,11 @@ export var MerchantStyle;
     MerchantStyle["Sharp"] = "sharp";
     MerchantStyle["Pill"] = "pill";
 })(MerchantStyle || (MerchantStyle = {}));
+export var CardType;
+(function (CardType) {
+    CardType["VISA"] = "VISA";
+    CardType["MASTERCARD"] = "MSTR";
+    CardType["AMEX"] = "AMEX";
+    CardType["DISCOVER"] = "DISC";
+})(CardType || (CardType = {}));
 //# sourceMappingURL=CoinflowTypes.js.map
