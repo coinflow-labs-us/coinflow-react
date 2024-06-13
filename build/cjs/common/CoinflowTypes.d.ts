@@ -180,7 +180,6 @@ export interface CoinflowSolanaPurchaseProps extends CoinflowCommonPurchaseProps
     connection: Connection;
     blockchain: 'solana';
     token?: PublicKey | string;
-    supportsVersionedTransactions?: boolean;
     rent?: {
         lamports: string | number;
     };
@@ -221,7 +220,6 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
         wallet: string;
         blockchain: 'solana' | 'eth' | 'near' | 'polygon';
     }[];
-    supportsVersionedTransactions?: boolean;
     lockAmount?: boolean;
     transactionSigner?: string;
     /**
@@ -296,7 +294,6 @@ export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, 
     routePrefix?: string;
     transaction?: string;
     tokens?: string[] | PublicKey[];
-    supportsVersionedTransactions?: boolean;
     nearDeposit?: string;
     merchantCss?: string;
     color?: 'white' | 'black';

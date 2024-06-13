@@ -22,7 +22,6 @@ Props:
 * `lockDefaultToken` (optional): Only allow the default token to be used
 * `email` (optional): Set the default email to be used in entry fields
 * `bankAccountLinkRedirect` (optional): The URL to be used for bank account setup
-* `supportsVersionedTransactions` (optional): Instruct the system that versioned transactions are supported
 * `additionalWallets` (optional): Define additional wallets to assign to the user
 * `usePermit` (optional): Pass as false to disable permit message signing for EVM and use approve transactions
 * `transactionSigner` (optional): Public Key of the wallet which will actually execute the withdrawal transaction. Must be associated with the same withdrawer as the main wallet.
@@ -56,7 +55,6 @@ Props:
 * `disableApplePay` (optional): Ability to disable Apple Pay
 * `disableGooglePay` (optional): Ability to disable Google Pay
 * `customerInfo` (optional): Additional information about the customer
-* `supportsVersionedTransactions` (optional): Instruct the system that you support versioned transactions
 * `rent` (optional, Solana only): Specify the blockchain rent amount to add to the total
 * `nativeSolToConvert` (optional, Solana only): Specify the amount of native SOL to convert wSOL for the purchase
 * `jwtToken` (optional): A JWT token which encodes verified checkout parameters to prevent spoofing of arguments.

@@ -9,7 +9,7 @@ export declare class CoinflowUtils {
     }>;
     static getCoinflowBaseUrl(env?: CoinflowEnvs): string;
     static getCoinflowApiUrl(env?: CoinflowEnvs): string;
-    static getCoinflowUrl({ walletPubkey, route, routePrefix, env, amount, transaction, blockchain, supportsVersionedTransactions, webhookInfo, email, loaderBackground, handleHeightChange, bankAccountLinkRedirect, additionalWallets, nearDeposit, chargebackProtectionData, merchantCss, color, rent, lockDefaultToken, token, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, }: CoinflowIFrameProps): string;
+    static getCoinflowUrl({ walletPubkey, route, routePrefix, env, amount, transaction, blockchain, webhookInfo, email, loaderBackground, handleHeightChange, bankAccountLinkRedirect, additionalWallets, nearDeposit, chargebackProtectionData, merchantCss, color, rent, lockDefaultToken, token, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, }: CoinflowIFrameProps): string;
     static getTransaction(props: CoinflowPurchaseProps): string | undefined;
     static byBlockchain<T>(blockchain: CoinflowBlockchain, args: {
         solana: T;

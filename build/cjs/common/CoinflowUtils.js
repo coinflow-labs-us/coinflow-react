@@ -65,7 +65,7 @@ var CoinflowUtils = /** @class */ (function () {
     };
     CoinflowUtils.getCoinflowUrl = function (_a) {
         var _b;
-        var walletPubkey = _a.walletPubkey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, amount = _a.amount, transaction = _a.transaction, blockchain = _a.blockchain, supportsVersionedTransactions = _a.supportsVersionedTransactions, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChange = _a.handleHeightChange, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, nearDeposit = _a.nearDeposit, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, token = _a.token, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins;
+        var walletPubkey = _a.walletPubkey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, amount = _a.amount, transaction = _a.transaction, blockchain = _a.blockchain, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChange = _a.handleHeightChange, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, nearDeposit = _a.nearDeposit, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, token = _a.token, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins;
         var prefix = routePrefix
             ? "/".concat(routePrefix, "/").concat(blockchain)
             : "/".concat(blockchain);
@@ -76,9 +76,6 @@ var CoinflowUtils = /** @class */ (function () {
         }
         if (amount) {
             url.searchParams.append('amount', amount.toString());
-        }
-        if (supportsVersionedTransactions) {
-            url.searchParams.append('supportsVersionedTransactions', 'true');
         }
         if (webhookInfo) {
             url.searchParams.append('webhookInfo', lz_string_1.default.compressToEncodedURIComponent(JSON.stringify(webhookInfo)));
@@ -167,14 +164,12 @@ var CoinflowUtils = /** @class */ (function () {
                     throw new Error('@solana/web3.js dependency is required for Solana');
                 if (!SolanaPeerDeps_1.base58)
                     throw new Error('bs58 dependency is required for Solana');
-                if (transaction instanceof SolanaPeerDeps_1.web3.Transaction)
-                    return SolanaPeerDeps_1.base58.encode(transaction.serialize({
-                        requireAllSignatures: false,
-                        verifySignatures: false,
-                    }));
-                if (transaction instanceof SolanaPeerDeps_1.web3.VersionedTransaction)
-                    return SolanaPeerDeps_1.base58.encode(transaction.serialize());
-                return undefined;
+                if (!transaction)
+                    return undefined;
+                return SolanaPeerDeps_1.base58.encode(transaction.serialize({
+                    requireAllSignatures: false,
+                    verifySignatures: false,
+                }));
             },
             polygon: function () {
                 if (!('transaction' in props))
