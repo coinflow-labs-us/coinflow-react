@@ -13,8 +13,9 @@ var CARD_TYPE_MAPPING = (_a = {},
 export function useCardFormIframe(env) {
     var _this = this;
     var _a = useState(false), loaded = _a[0], setLoaded = _a[1];
-    var _b = useState(undefined), tokenExIframe = _b[0], setTokenExIframe = _b[1];
-    var _c = useState(undefined), cachedToken = _c[0], setCachedToken = _c[1];
+    var _b = useState(false), tokenExScriptLoaded = _b[0], setTokenExScriptLoaded = _b[1];
+    var _c = useState(undefined), tokenExIframe = _c[0], setTokenExIframe = _c[1];
+    var _d = useState(undefined), cachedToken = _d[0], setCachedToken = _d[1];
     var getIframeConfig = useCallback(function (_a) {
         var token = _a.token;
         return fetch(new CoinflowUtils(env).url + '/api/checkout/authentication-key', {
@@ -61,6 +62,10 @@ export function useCardFormIframe(env) {
                 : 'https://test-htp.tokenex.com/iframe/iframe-v3.min.js';
         sdkScriptTag.id = scriptTagId;
         document.head.appendChild(sdkScriptTag);
+        document.getElementById(scriptTagId).addEventListener('load', function () {
+            console.log('Setting tokenExScriptLoaded to true!');
+            setTokenExScriptLoaded(true);
+        });
     }, [env]);
     useEffect(function () {
         setTokenExScriptTag();
@@ -107,6 +112,10 @@ export function useCardFormIframe(env) {
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
+                    if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
+                        console.warn("Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#".concat('tokenex-script'));
+                        return [2 /*return*/];
+                    }
                     type = CARD_TYPE_MAPPING[cardType];
                     return [4 /*yield*/, getIframeConfig({ token: token })];
                 case 1:
@@ -117,13 +126,18 @@ export function useCardFormIframe(env) {
                     return [2 /*return*/, loadIframe(iframe)];
             }
         });
-    }); }, [getIframeConfig, getStylesAndFont, loadIframe]);
+    }); }, [getIframeConfig, getStylesAndFont, loadIframe, tokenExScriptLoaded]);
     var initializeTokenExIframe = useCallback(function (_a) { return __awaiter(_this, [_a], void 0, function (_b) {
         var iframeConfig, styles, iframe;
         var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug;
         return __generator(this, function (_c) {
             switch (_c.label) {
-                case 0: return [4 /*yield*/, getIframeConfig({})];
+                case 0:
+                    if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
+                        console.warn("Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#".concat('tokenex-script'));
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, getIframeConfig({})];
                 case 1:
                     iframeConfig = _c.sent();
                     styles = getStylesAndFont(css).styles;
@@ -131,13 +145,18 @@ export function useCardFormIframe(env) {
                     return [2 /*return*/, loadIframe(iframe)];
             }
         });
-    }); }, [getIframeConfig, getStylesAndFont, loadIframe]);
+    }); }, [getIframeConfig, getStylesAndFont, loadIframe, tokenExScriptLoaded]);
     var initializeTokenExCardOnlyIframe = useCallback(function (_a) { return __awaiter(_this, [_a], void 0, function (_b) {
         var iframeConfig, styles, iframe;
         var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug;
         return __generator(this, function (_c) {
             switch (_c.label) {
-                case 0: return [4 /*yield*/, getIframeConfig({})];
+                case 0:
+                    if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
+                        console.warn("Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#".concat('tokenex-script'));
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, getIframeConfig({})];
                 case 1:
                     iframeConfig = _c.sent();
                     styles = getStylesAndFont(css).styles;
@@ -145,7 +164,7 @@ export function useCardFormIframe(env) {
                     return [2 /*return*/, loadIframe(iframe)];
             }
         });
-    }); }, [getIframeConfig, getStylesAndFont, loadIframe]);
+    }); }, [getIframeConfig, getStylesAndFont, loadIframe, tokenExScriptLoaded]);
     useEffect(function () {
         if (!tokenExIframe)
             return;
@@ -159,6 +178,7 @@ export function useCardFormIframe(env) {
         initializeTokenExCardOnlyIframe: initializeTokenExCardOnlyIframe,
         loaded: loaded,
         cachedToken: cachedToken,
+        setTokenExScriptTag: setTokenExScriptTag,
     };
 }
 function CSSPropertiesToComponent(dict) {

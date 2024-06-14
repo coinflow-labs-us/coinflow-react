@@ -43,7 +43,7 @@ export declare function useCardFormIframe(env: CoinflowEnvs): {
         binLookup(): void;
         validateConfig(): void;
         setFraudServicesRequestDetails(data: string): void;
-    }>;
+    } | undefined>;
     initializeCvvOnlyTokenExIframe: ({ token, cardType, css, debug, fontFamily, }: {
         token: string;
         cardType: CardType;
@@ -67,7 +67,7 @@ export declare function useCardFormIframe(env: CoinflowEnvs): {
         binLookup(): void;
         validateConfig(): void;
         setFraudServicesRequestDetails(data: string): void;
-    }>;
+    } | undefined>;
     initializeTokenExCardOnlyIframe: ({ css, fontFamily, debug, }: {
         css: string;
         fontFamily?: string;
@@ -89,7 +89,8 @@ export declare function useCardFormIframe(env: CoinflowEnvs): {
         binLookup(): void;
         validateConfig(): void;
         setFraudServicesRequestDetails(data: string): void;
-    }>;
+    } | undefined>;
     loaded: boolean;
     cachedToken: string | undefined;
+    setTokenExScriptTag: () => void;
 };

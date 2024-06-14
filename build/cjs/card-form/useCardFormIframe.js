@@ -16,8 +16,9 @@ var CARD_TYPE_MAPPING = (_a = {},
 function useCardFormIframe(env) {
     var _this = this;
     var _a = (0, react_1.useState)(false), loaded = _a[0], setLoaded = _a[1];
-    var _b = (0, react_1.useState)(undefined), tokenExIframe = _b[0], setTokenExIframe = _b[1];
-    var _c = (0, react_1.useState)(undefined), cachedToken = _c[0], setCachedToken = _c[1];
+    var _b = (0, react_1.useState)(false), tokenExScriptLoaded = _b[0], setTokenExScriptLoaded = _b[1];
+    var _c = (0, react_1.useState)(undefined), tokenExIframe = _c[0], setTokenExIframe = _c[1];
+    var _d = (0, react_1.useState)(undefined), cachedToken = _d[0], setCachedToken = _d[1];
     var getIframeConfig = (0, react_1.useCallback)(function (_a) {
         var token = _a.token;
         return fetch(new common_1.CoinflowUtils(env).url + '/api/checkout/authentication-key', {
@@ -64,6 +65,10 @@ function useCardFormIframe(env) {
                 : 'https://test-htp.tokenex.com/iframe/iframe-v3.min.js';
         sdkScriptTag.id = scriptTagId;
         document.head.appendChild(sdkScriptTag);
+        document.getElementById(scriptTagId).addEventListener('load', function () {
+            console.log('Setting tokenExScriptLoaded to true!');
+            setTokenExScriptLoaded(true);
+        });
     }, [env]);
     (0, react_1.useEffect)(function () {
         setTokenExScriptTag();
@@ -110,6 +115,10 @@ function useCardFormIframe(env) {
         return tslib_1.__generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
+                    if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
+                        console.warn("Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#".concat('tokenex-script'));
+                        return [2 /*return*/];
+                    }
                     type = CARD_TYPE_MAPPING[cardType];
                     return [4 /*yield*/, getIframeConfig({ token: token })];
                 case 1:
@@ -120,13 +129,18 @@ function useCardFormIframe(env) {
                     return [2 /*return*/, loadIframe(iframe)];
             }
         });
-    }); }, [getIframeConfig, getStylesAndFont, loadIframe]);
+    }); }, [getIframeConfig, getStylesAndFont, loadIframe, tokenExScriptLoaded]);
     var initializeTokenExIframe = (0, react_1.useCallback)(function (_a) { return tslib_1.__awaiter(_this, [_a], void 0, function (_b) {
         var iframeConfig, styles, iframe;
         var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug;
         return tslib_1.__generator(this, function (_c) {
             switch (_c.label) {
-                case 0: return [4 /*yield*/, getIframeConfig({})];
+                case 0:
+                    if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
+                        console.warn("Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#".concat('tokenex-script'));
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, getIframeConfig({})];
                 case 1:
                     iframeConfig = _c.sent();
                     styles = getStylesAndFont(css).styles;
@@ -134,13 +148,18 @@ function useCardFormIframe(env) {
                     return [2 /*return*/, loadIframe(iframe)];
             }
         });
-    }); }, [getIframeConfig, getStylesAndFont, loadIframe]);
+    }); }, [getIframeConfig, getStylesAndFont, loadIframe, tokenExScriptLoaded]);
     var initializeTokenExCardOnlyIframe = (0, react_1.useCallback)(function (_a) { return tslib_1.__awaiter(_this, [_a], void 0, function (_b) {
         var iframeConfig, styles, iframe;
         var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug;
         return tslib_1.__generator(this, function (_c) {
             switch (_c.label) {
-                case 0: return [4 /*yield*/, getIframeConfig({})];
+                case 0:
+                    if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
+                        console.warn("Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#".concat('tokenex-script'));
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, getIframeConfig({})];
                 case 1:
                     iframeConfig = _c.sent();
                     styles = getStylesAndFont(css).styles;
@@ -148,7 +167,7 @@ function useCardFormIframe(env) {
                     return [2 /*return*/, loadIframe(iframe)];
             }
         });
-    }); }, [getIframeConfig, getStylesAndFont, loadIframe]);
+    }); }, [getIframeConfig, getStylesAndFont, loadIframe, tokenExScriptLoaded]);
     (0, react_1.useEffect)(function () {
         if (!tokenExIframe)
             return;
@@ -162,6 +181,7 @@ function useCardFormIframe(env) {
         initializeTokenExCardOnlyIframe: initializeTokenExCardOnlyIframe,
         loaded: loaded,
         cachedToken: cachedToken,
+        setTokenExScriptTag: setTokenExScriptTag,
     };
 }
 exports.useCardFormIframe = useCardFormIframe;
