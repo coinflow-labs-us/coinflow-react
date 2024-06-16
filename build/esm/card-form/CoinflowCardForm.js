@@ -18,8 +18,12 @@ var CoinflowCardNumberInputComponent = forwardRef(function (props, ref) {
         },
     }); });
     useEffect(function () {
-        initializeTokenExIframe({ css: css, debug: props.debug });
-    }, [initializeTokenExIframe, css, props.debug]);
+        initializeTokenExIframe({
+            css: css,
+            debug: props.debug,
+            origins: props.origins,
+        });
+    }, [initializeTokenExIframe, css, props.debug, props.origins]);
     return React.createElement("div", { id: TokenExCardNumberIframeId });
 });
 /**
@@ -85,6 +89,7 @@ var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
             debug: props.debug,
             token: props.token,
             cardType: props.cardType,
+            origins: props.origins,
         });
     }, [
         css,
@@ -92,6 +97,7 @@ var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
         props.debug,
         props.token,
         props.cardType,
+        props.origins,
     ]);
     return useMemo(function () { return React.createElement("div", { id: TokenExCvvContainerID }); }, []);
 });
@@ -150,8 +156,12 @@ var CoinflowCardOnlyInputComponent = forwardRef(function (props, ref) {
         },
     }); });
     useEffect(function () {
-        initializeTokenExCardOnlyIframe({ css: css, debug: props.debug });
-    }, [initializeTokenExCardOnlyIframe, props.debug, css]);
+        initializeTokenExCardOnlyIframe({
+            css: css,
+            debug: props.debug,
+            origins: props.origins,
+        });
+    }, [initializeTokenExCardOnlyIframe, props.debug, css, props.origins]);
     return React.createElement("div", { id: TokenExCardNumberIframeId });
 });
 /**

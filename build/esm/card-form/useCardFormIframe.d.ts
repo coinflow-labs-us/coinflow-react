@@ -22,10 +22,11 @@ export interface CardFormInputStyles {
 }
 export declare function useCardFormIframe(env: CoinflowEnvs): {
     tokenExIframe: TokenExIframe | undefined;
-    initializeTokenExIframe: ({ css, fontFamily, debug, }: {
+    initializeTokenExIframe: ({ css, fontFamily, debug, origins, }: {
         css: string;
         fontFamily?: string;
         debug?: boolean;
+        origins: string[] | undefined;
     }) => Promise<{
         tokenize: () => Promise<TokenizationResponse>;
         load(): void;
@@ -44,12 +45,13 @@ export declare function useCardFormIframe(env: CoinflowEnvs): {
         validateConfig(): void;
         setFraudServicesRequestDetails(data: string): void;
     } | undefined>;
-    initializeCvvOnlyTokenExIframe: ({ token, cardType, css, debug, fontFamily, }: {
+    initializeCvvOnlyTokenExIframe: ({ token, cardType, css, debug, fontFamily, origins, }: {
         token: string;
         cardType: CardType;
         css: string;
         debug?: boolean;
         fontFamily?: string;
+        origins: string[] | undefined;
     }) => Promise<{
         tokenize: () => Promise<TokenizationResponse>;
         load(): void;
@@ -68,10 +70,11 @@ export declare function useCardFormIframe(env: CoinflowEnvs): {
         validateConfig(): void;
         setFraudServicesRequestDetails(data: string): void;
     } | undefined>;
-    initializeTokenExCardOnlyIframe: ({ css, fontFamily, debug, }: {
+    initializeTokenExCardOnlyIframe: ({ css, fontFamily, debug, origins, }: {
         css: string;
         fontFamily?: string;
         debug?: boolean;
+        origins: string[] | undefined;
     }) => Promise<{
         tokenize: () => Promise<TokenizationResponse>;
         load(): void;

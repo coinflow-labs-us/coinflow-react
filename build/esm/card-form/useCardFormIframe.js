@@ -1,5 +1,5 @@
 var _a;
-import { __assign, __awaiter, __generator } from "tslib";
+import { __assign, __awaiter, __generator, __spreadArray } from "tslib";
 import { useCallback, useEffect, useState } from 'react';
 import { CardType, CoinflowUtils } from '../common';
 export var TokenExCardNumberIframeId = 'tokenExCardNumber';
@@ -17,14 +17,14 @@ export function useCardFormIframe(env) {
     var _c = useState(undefined), tokenExIframe = _c[0], setTokenExIframe = _c[1];
     var _d = useState(undefined), cachedToken = _d[0], setCachedToken = _d[1];
     var getIframeConfig = useCallback(function (_a) {
-        var token = _a.token;
+        var token = _a.token, origins = _a.origins;
         return fetch(new CoinflowUtils(env).url + '/api/checkout/authentication-key', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                origins: [window.location.origin],
+                origins: __spreadArray(__spreadArray([], (origins !== null && origins !== void 0 ? origins : []), true), [window.location.origin], false),
                 token: token,
             }),
         }).then(function (res) { return __awaiter(_this, void 0, void 0, function () {
@@ -97,8 +97,10 @@ export function useCardFormIframe(env) {
         iframe.on('load', function () {
             setTimeout(function () { return setLoaded(true); }, 350);
             var el = document.querySelector('#tx_iframe_tokenExCardNumber');
-            if (el)
+            if (el) {
+                // noinspection JSDeprecatedSymbols
                 el.scrolling = 'no';
+            }
         });
         setLoaded(false);
         iframe.load();
@@ -108,7 +110,7 @@ export function useCardFormIframe(env) {
     }, []);
     var initializeCvvOnlyTokenExIframe = useCallback(function (_a) { return __awaiter(_this, [_a], void 0, function (_b) {
         var type, iframeConfig, styles, config, iframe;
-        var token = _b.token, cardType = _b.cardType, css = _b.css, debug = _b.debug, fontFamily = _b.fontFamily;
+        var token = _b.token, cardType = _b.cardType, css = _b.css, debug = _b.debug, fontFamily = _b.fontFamily, origins = _b.origins;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -117,7 +119,7 @@ export function useCardFormIframe(env) {
                         return [2 /*return*/];
                     }
                     type = CARD_TYPE_MAPPING[cardType];
-                    return [4 /*yield*/, getIframeConfig({ token: token })];
+                    return [4 /*yield*/, getIframeConfig({ token: token, origins: origins })];
                 case 1:
                     iframeConfig = _c.sent();
                     styles = getStylesAndFont(css).styles;
@@ -129,7 +131,7 @@ export function useCardFormIframe(env) {
     }); }, [getIframeConfig, getStylesAndFont, loadIframe, tokenExScriptLoaded]);
     var initializeTokenExIframe = useCallback(function (_a) { return __awaiter(_this, [_a], void 0, function (_b) {
         var iframeConfig, styles, iframe;
-        var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug;
+        var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug, origins = _b.origins;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -137,7 +139,7 @@ export function useCardFormIframe(env) {
                         console.warn("Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#".concat('tokenex-script'));
                         return [2 /*return*/];
                     }
-                    return [4 /*yield*/, getIframeConfig({})];
+                    return [4 /*yield*/, getIframeConfig({ origins: origins })];
                 case 1:
                     iframeConfig = _c.sent();
                     styles = getStylesAndFont(css).styles;
@@ -148,15 +150,15 @@ export function useCardFormIframe(env) {
     }); }, [getIframeConfig, getStylesAndFont, loadIframe, tokenExScriptLoaded]);
     var initializeTokenExCardOnlyIframe = useCallback(function (_a) { return __awaiter(_this, [_a], void 0, function (_b) {
         var iframeConfig, styles, iframe;
-        var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug;
+        var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug, origins = _b.origins;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
                     if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
-                        console.warn("Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#".concat('tokenex-script'));
+                        console.warn('Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#tokenex-script');
                         return [2 /*return*/];
                     }
-                    return [4 /*yield*/, getIframeConfig({})];
+                    return [4 /*yield*/, getIframeConfig({ origins: origins })];
                 case 1:
                     iframeConfig = _c.sent();
                     styles = getStylesAndFont(css).styles;

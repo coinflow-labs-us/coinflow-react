@@ -21,8 +21,12 @@ var CoinflowCardNumberInputComponent = (0, react_1.forwardRef)(function (props, 
         },
     }); });
     (0, react_1.useEffect)(function () {
-        initializeTokenExIframe({ css: css, debug: props.debug });
-    }, [initializeTokenExIframe, css, props.debug]);
+        initializeTokenExIframe({
+            css: css,
+            debug: props.debug,
+            origins: props.origins,
+        });
+    }, [initializeTokenExIframe, css, props.debug, props.origins]);
     return react_1.default.createElement("div", { id: useCardFormIframe_1.TokenExCardNumberIframeId });
 });
 /**
@@ -88,6 +92,7 @@ var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref
             debug: props.debug,
             token: props.token,
             cardType: props.cardType,
+            origins: props.origins,
         });
     }, [
         css,
@@ -95,6 +100,7 @@ var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref
         props.debug,
         props.token,
         props.cardType,
+        props.origins,
     ]);
     return (0, react_1.useMemo)(function () { return react_1.default.createElement("div", { id: useCardFormIframe_1.TokenExCvvContainerID }); }, []);
 });
@@ -153,8 +159,12 @@ var CoinflowCardOnlyInputComponent = (0, react_1.forwardRef)(function (props, re
         },
     }); });
     (0, react_1.useEffect)(function () {
-        initializeTokenExCardOnlyIframe({ css: css, debug: props.debug });
-    }, [initializeTokenExCardOnlyIframe, props.debug, css]);
+        initializeTokenExCardOnlyIframe({
+            css: css,
+            debug: props.debug,
+            origins: props.origins,
+        });
+    }, [initializeTokenExCardOnlyIframe, props.debug, css, props.origins]);
     return react_1.default.createElement("div", { id: useCardFormIframe_1.TokenExCardNumberIframeId });
 });
 /**

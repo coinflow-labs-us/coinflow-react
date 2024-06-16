@@ -43,14 +43,14 @@ export function useCardFormIframe(env: CoinflowEnvs) {
   const [cachedToken, setCachedToken] = useState<string | undefined>(undefined);
 
   const getIframeConfig = useCallback(
-    ({token}: {token?: string}) =>
+    ({token, origins}: {token?: string; origins: string[] | undefined}) =>
       fetch(new CoinflowUtils(env).url + '/api/checkout/authentication-key', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          origins: [window.location.origin],
+          origins: [...(origins ?? []), window.location.origin],
           token,
         }),
       }).then(async res => {
@@ -126,7 +126,10 @@ export function useCardFormIframe(env: CoinflowEnvs) {
         const el: HTMLIFrameElement | null = document.querySelector(
           '#tx_iframe_tokenExCardNumber'
         );
-        if (el) el.scrolling = 'no';
+        if (el) {
+          // noinspection JSDeprecatedSymbols
+          el.scrolling = 'no';
+        }
       });
 
       setLoaded(false);
@@ -146,12 +149,14 @@ export function useCardFormIframe(env: CoinflowEnvs) {
       css,
       debug,
       fontFamily,
+      origins,
     }: {
       token: string;
       cardType: CardType;
       css: string;
       debug?: boolean;
       fontFamily?: string;
+      origins: string[] | undefined;
     }) => {
       if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
         console.warn(
@@ -160,7 +165,7 @@ export function useCardFormIframe(env: CoinflowEnvs) {
         return;
       }
       const type = CARD_TYPE_MAPPING[cardType];
-      const iframeConfig = await getIframeConfig({token});
+      const iframeConfig = await getIframeConfig({token, origins});
       const {styles} = getStylesAndFont(css);
       const config: TokenEx.Config = {
         ...iframeConfig,
@@ -191,10 +196,12 @@ export function useCardFormIframe(env: CoinflowEnvs) {
       css,
       fontFamily,
       debug,
+      origins,
     }: {
       css: string;
       fontFamily?: string;
       debug?: boolean;
+      origins: string[] | undefined;
     }) => {
       if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
         console.warn(
@@ -202,7 +209,7 @@ export function useCardFormIframe(env: CoinflowEnvs) {
         );
         return;
       }
-      const iframeConfig = await getIframeConfig({});
+      const iframeConfig = await getIframeConfig({origins});
       const {styles} = getStylesAndFont(css);
       const iframe: ReturnType<typeof TokenEx.Iframe> = TokenEx.Iframe(
         TokenExCardNumberIframeId,
@@ -229,18 +236,20 @@ export function useCardFormIframe(env: CoinflowEnvs) {
       css,
       fontFamily,
       debug,
+      origins,
     }: {
       css: string;
       fontFamily?: string;
       debug?: boolean;
+      origins: string[] | undefined;
     }) => {
       if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
         console.warn(
-          `Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#${'tokenex-script'}`
+          'Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#tokenex-script'
         );
         return;
       }
-      const iframeConfig = await getIframeConfig({});
+      const iframeConfig = await getIframeConfig({origins});
       const {styles} = getStylesAndFont(css);
       const iframe: ReturnType<typeof TokenEx.Iframe> = TokenEx.Iframe(
         TokenExCardNumberIframeId,

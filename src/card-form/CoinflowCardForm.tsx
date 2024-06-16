@@ -21,6 +21,7 @@ export interface CoinflowCardNumberInputProps {
   env: CoinflowEnvs;
   css: CardFormInputStyles & {cvv: CardFormInputStyles};
   debug?: boolean;
+  origins?: string[];
 }
 
 export interface CoinflowCvvOnlyInputProps {
@@ -29,6 +30,7 @@ export interface CoinflowCvvOnlyInputProps {
   env: CoinflowEnvs;
   css: CardFormInputStyles & {cvv: CardFormInputStyles};
   debug?: boolean;
+  origins?: string[];
 }
 
 const CoinflowCardNumberInputComponent = forwardRef(
@@ -49,8 +51,12 @@ const CoinflowCardNumberInputComponent = forwardRef(
     }));
 
     useEffect(() => {
-      initializeTokenExIframe({css, debug: props.debug});
-    }, [initializeTokenExIframe, css, props.debug]);
+      initializeTokenExIframe({
+        css,
+        debug: props.debug,
+        origins: props.origins,
+      });
+    }, [initializeTokenExIframe, css, props.debug, props.origins]);
 
     return <div id={TokenExCardNumberIframeId} />;
   }
@@ -122,6 +128,7 @@ const CoinflowCvvOnlyInputComponent = forwardRef(
         debug: props.debug,
         token: props.token,
         cardType: props.cardType,
+        origins: props.origins,
       });
     }, [
       css,
@@ -129,6 +136,7 @@ const CoinflowCvvOnlyInputComponent = forwardRef(
       props.debug,
       props.token,
       props.cardType,
+      props.origins,
     ]);
 
     return useMemo(() => <div id={TokenExCvvContainerID}></div>, []);
@@ -192,8 +200,12 @@ const CoinflowCardOnlyInputComponent = forwardRef(
     }));
 
     useEffect(() => {
-      initializeTokenExCardOnlyIframe({css, debug: props.debug});
-    }, [initializeTokenExCardOnlyIframe, props.debug, css]);
+      initializeTokenExCardOnlyIframe({
+        css,
+        debug: props.debug,
+        origins: props.origins,
+      });
+    }, [initializeTokenExCardOnlyIframe, props.debug, css, props.origins]);
 
     return <div id={TokenExCardNumberIframeId} />;
   }
