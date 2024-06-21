@@ -144,9 +144,7 @@ export interface ChargebackProtectionItem {
     /**
      * Any additional data that the store can provide on the product, e.g. description, link to image, etc.
      */
-    rawProductData?: {
-        [key: string]: any;
-    };
+    rawProductData?: Record<string, any>;
 }
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     amount?: number | string;
