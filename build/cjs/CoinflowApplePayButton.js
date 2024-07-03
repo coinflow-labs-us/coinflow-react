@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MobileWalletButton = exports.CoinflowApplePayButton = void 0;
+exports.CoinflowApplePayButton = CoinflowApplePayButton;
+exports.MobileWalletButton = MobileWalletButton;
 var tslib_1 = require("tslib");
 var common_1 = require("./common");
 var CoinflowIFrame_1 = require("./CoinflowIFrame");
@@ -8,7 +9,6 @@ var react_1 = tslib_1.__importStar(require("react"));
 function CoinflowApplePayButton(props) {
     return react_1.default.createElement(MobileWalletButton, { props: props, route: 'apple-pay' });
 }
-exports.CoinflowApplePayButton = CoinflowApplePayButton;
 function MobileWalletButton(_a) {
     var props = _a.props, route = _a.route;
     var iframeRef = (0, react_1.useRef)(null);
@@ -37,7 +37,6 @@ function MobileWalletButton(_a) {
     }, [props]);
     return react_1.default.createElement(CoinflowIFrame_1.CoinflowIFrame, tslib_1.__assign({ ref: iframeRef }, iframeProps, messageHandlers));
 }
-exports.MobileWalletButton = MobileWalletButton;
 // TODO
 // export function useGetTokenHandler(props: CoinflowPurchaseProps) {
 //   const {onSuccess} = props;

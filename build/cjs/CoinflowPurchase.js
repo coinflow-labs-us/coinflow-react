@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CoinflowPurchase = void 0;
+exports.CoinflowPurchase = CoinflowPurchase;
 var tslib_1 = require("tslib");
 var react_1 = tslib_1.__importStar(require("react"));
 var common_1 = require("./common");
@@ -15,5 +15,4 @@ function CoinflowPurchase(purchaseProps) {
     }, [purchaseProps]);
     return react_1.default.createElement(CoinflowIFrame_1.CoinflowIFrame, tslib_1.__assign({}, iframeProps, messageHandlers));
 }
-exports.CoinflowPurchase = CoinflowPurchase;
 //# sourceMappingURL=CoinflowPurchase.js.map

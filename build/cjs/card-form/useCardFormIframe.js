@@ -1,7 +1,8 @@
 "use strict";
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useCardFormIframe = exports.TokenExCvvContainerID = exports.TokenExCardNumberIframeId = void 0;
+exports.TokenExCvvContainerID = exports.TokenExCardNumberIframeId = void 0;
+exports.useCardFormIframe = useCardFormIframe;
 var tslib_1 = require("tslib");
 var react_1 = require("react");
 var common_1 = require("../common");
@@ -186,7 +187,6 @@ function useCardFormIframe(env) {
         setTokenExScriptTag: setTokenExScriptTag,
     };
 }
-exports.useCardFormIframe = useCardFormIframe;
 function CSSPropertiesToComponent(dict) {
     if (!dict)
         return '';

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CoinflowPurchaseProtection = void 0;
+exports.CoinflowPurchaseProtection = CoinflowPurchaseProtection;
 var react_1 = require("react");
 var common_1 = require("./common");
 function CoinflowPurchaseProtection(_a) {
@@ -38,5 +38,4 @@ function CoinflowPurchaseProtection(_a) {
     }, [initializeScript, partnerId, sdkUrl]);
     return null;
 }
-exports.CoinflowPurchaseProtection = CoinflowPurchaseProtection;
 //# sourceMappingURL=CoinflowPurchaseProtection.js.map

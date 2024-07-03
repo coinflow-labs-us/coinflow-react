@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CoinflowCardFormHeader = void 0;
+exports.CoinflowCardFormHeader = CoinflowCardFormHeader;
 var react_1 = require("react");
 var useCardFormIframe_1 = require("./useCardFormIframe");
 function CoinflowCardFormHeader(_a) {
@@ -11,5 +11,4 @@ function CoinflowCardFormHeader(_a) {
     }, [setTokenExScriptTag]);
     return null;
 }
-exports.CoinflowCardFormHeader = CoinflowCardFormHeader;
 //# sourceMappingURL=CoinflowCardFormHeader.js.map

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CoinflowWithdraw = void 0;
+exports.CoinflowWithdraw = CoinflowWithdraw;
 var tslib_1 = require("tslib");
 var react_1 = tslib_1.__importStar(require("react"));
 var CoinflowIFrame_1 = require("./CoinflowIFrame");
@@ -15,5 +15,4 @@ function CoinflowWithdraw(withdrawProps) {
     }, [withdrawProps]);
     return react_1.default.createElement(CoinflowIFrame_1.CoinflowIFrame, tslib_1.__assign({}, iframeProps, messageHandlers));
 }
-exports.CoinflowWithdraw = CoinflowWithdraw;
 //# sourceMappingURL=CoinflowWithdraw.js.map

@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getHandlers = exports.handleIFrameMessage = exports.getWalletPubkey = void 0;
+exports.getWalletPubkey = getWalletPubkey;
+exports.handleIFrameMessage = handleIFrameMessage;
+exports.getHandlers = getHandlers;
 var tslib_1 = require("tslib");
 var CoinflowUtils_1 = require("./CoinflowUtils");
 var SolanaPeerDeps_1 = require("./SolanaPeerDeps");
@@ -25,7 +27,6 @@ function getWalletPubkey(_a) {
     }
     return null;
 }
-exports.getWalletPubkey = getWalletPubkey;
 function handleIFrameMessage(rawMessage, handlers) {
     var walletCall;
     try {
@@ -61,7 +62,6 @@ function handleIFrameMessage(rawMessage, handlers) {
     }
     console.warn("Didn't expect to get here, handleIFrameMessage method:".concat(method, " is not one of ").concat(Object.values(IFrameMessageMethods)));
 }
-exports.handleIFrameMessage = handleIFrameMessage;
 function getHandlers(props) {
     return CoinflowUtils_1.CoinflowUtils.byBlockchain(props.blockchain, {
         solana: function () { return getSolanaWalletHandlers(props); },
@@ -71,7 +71,6 @@ function getHandlers(props) {
         base: function () { return getEvmWalletHandlers(props); },
     })();
 }
-exports.getHandlers = getHandlers;
 function getSolanaWalletHandlers(_a) {
     var _this = this;
     var wallet = _a.wallet, onSuccess = _a.onSuccess;
