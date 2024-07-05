@@ -4,6 +4,7 @@ exports.CoinflowCardOnlyInput = exports.CoinflowCvvOnlyInput = exports.CoinflowC
 var tslib_1 = require("tslib");
 var react_1 = tslib_1.__importStar(require("react"));
 var useCardFormIframe_1 = require("./useCardFormIframe");
+var cardFormTypes_1 = require("../common/card-form/cardFormTypes");
 var CoinflowCardNumberInputComponent = (0, react_1.forwardRef)(function (props, ref) {
     var css = (0, react_1.useMemo)(function () {
         return JSON.stringify(props.css);
@@ -27,7 +28,7 @@ var CoinflowCardNumberInputComponent = (0, react_1.forwardRef)(function (props, 
             origins: props.origins,
         });
     }, [initializeTokenExIframe, css, props.debug, props.origins]);
-    return react_1.default.createElement("div", { id: useCardFormIframe_1.TokenExCardNumberIframeId });
+    return react_1.default.createElement("div", { id: cardFormTypes_1.TokenExCardNumberIframeId });
 });
 /**
  * Allows merchants to collect card information from their customers in a PCI-compliant way and receive the tokenized card number.
@@ -69,7 +70,7 @@ exports.CoinflowCardNumberInput = (0, react_1.memo)(CoinflowCardNumberInputCompo
 /**
  * The CVV number input for creating a new tokenized card
  */
-exports.CoinflowCvvInput = (0, react_1.memo)(function () { return react_1.default.createElement("div", { id: useCardFormIframe_1.TokenExCvvContainerID }); });
+exports.CoinflowCvvInput = (0, react_1.memo)(function () { return react_1.default.createElement("div", { id: cardFormTypes_1.TokenExCvvContainerID }); });
 var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref) {
     var css = (0, react_1.useMemo)(function () {
         return JSON.stringify(props.css);
@@ -102,7 +103,7 @@ var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref
         props.cardType,
         props.origins,
     ]);
-    return (0, react_1.useMemo)(function () { return react_1.default.createElement("div", { id: useCardFormIframe_1.TokenExCvvContainerID }); }, []);
+    return (0, react_1.useMemo)(function () { return react_1.default.createElement("div", { id: cardFormTypes_1.TokenExCvvContainerID }); }, []);
 });
 /**
  * Allows merchants to collect the CVV for an already tokenized card in a PCI-compliant way and receive the token with the CVV linked.
@@ -165,7 +166,7 @@ var CoinflowCardOnlyInputComponent = (0, react_1.forwardRef)(function (props, re
             origins: props.origins,
         });
     }, [initializeTokenExCardOnlyIframe, props.debug, css, props.origins]);
-    return react_1.default.createElement("div", { id: useCardFormIframe_1.TokenExCardNumberIframeId });
+    return react_1.default.createElement("div", { id: cardFormTypes_1.TokenExCardNumberIframeId });
 });
 /**
  * Allows merchants to collect card information from their customers in a PCI-compliant way and receive the tokenized card number.

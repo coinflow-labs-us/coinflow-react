@@ -6,8 +6,8 @@ export function CoinflowCardFormHeader({env}: {env: CoinflowEnvs}) {
   const {setTokenExScriptTag} = useCardFormIframe(env);
 
   useEffect(() => {
-    setTokenExScriptTag();
-  }, [setTokenExScriptTag]);
+    setTokenExScriptTag({env, setTokenExScriptLoaded: () => {}});
+  }, [env, setTokenExScriptTag]);
 
   return null;
 }

@@ -1,99 +1,10 @@
-import { CSSProperties } from 'react';
-import { CardType, CoinflowEnvs } from '../common';
-import { TokenizationResponse } from './TokenEx';
-export declare const TokenExCardNumberIframeId = "tokenExCardNumber";
-export declare const TokenExCvvContainerID = "tokenExCardCvv";
-export interface TokenExIframe extends ReturnType<typeof TokenEx.Iframe> {
-    tokenize: () => Promise<TokenizationResponse>;
-}
-export interface TokenExIFrameConfiguration {
-    origin: string;
-    timestamp: string;
-    tokenExID: string;
-    tokenScheme: string;
-    authenticationKey: string;
-    pci: true;
-    token?: string;
-}
-export interface CardFormInputStyles {
-    base: CSSProperties | string;
-    focus?: CSSProperties | string;
-    error?: CSSProperties | string;
-}
+import { CoinflowEnvs, doInitializeCvvOnlyTokenExIframe, doInitializeTokenExCardOnlyIframe, doInitializeTokenExIframe, setTokenExScriptTag, TokenExIframe } from '../common';
 export declare function useCardFormIframe(env: CoinflowEnvs): {
     tokenExIframe: TokenExIframe | undefined;
-    initializeTokenExIframe: ({ css, fontFamily, debug, origins, }: {
-        css: string;
-        fontFamily?: string;
-        debug?: boolean;
-        origins: string[] | undefined;
-    }) => Promise<{
-        tokenize: () => Promise<TokenizationResponse>;
-        load(): void;
-        on: (event: string, callback: (data?: any) => void) => void;
-        validate(): void;
-        reset(): void;
-        blur(): void;
-        cvvBlur(): void;
-        focus(): void;
-        cvvFocus(): void;
-        remove(): void;
-        toggleMask(): void;
-        toggleCvvMask(): void;
-        setPAN(pan: string): void;
-        binLookup(): void;
-        validateConfig(): void;
-        setFraudServicesRequestDetails(data: string): void;
-    } | undefined>;
-    initializeCvvOnlyTokenExIframe: ({ token, cardType, css, debug, fontFamily, origins, }: {
-        token: string;
-        cardType: CardType;
-        css: string;
-        debug?: boolean;
-        fontFamily?: string;
-        origins: string[] | undefined;
-    }) => Promise<{
-        tokenize: () => Promise<TokenizationResponse>;
-        load(): void;
-        on: (event: string, callback: (data?: any) => void) => void;
-        validate(): void;
-        reset(): void;
-        blur(): void;
-        cvvBlur(): void;
-        focus(): void;
-        cvvFocus(): void;
-        remove(): void;
-        toggleMask(): void;
-        toggleCvvMask(): void;
-        setPAN(pan: string): void;
-        binLookup(): void;
-        validateConfig(): void;
-        setFraudServicesRequestDetails(data: string): void;
-    } | undefined>;
-    initializeTokenExCardOnlyIframe: ({ css, fontFamily, debug, origins, }: {
-        css: string;
-        fontFamily?: string;
-        debug?: boolean;
-        origins: string[] | undefined;
-    }) => Promise<{
-        tokenize: () => Promise<TokenizationResponse>;
-        load(): void;
-        on: (event: string, callback: (data?: any) => void) => void;
-        validate(): void;
-        reset(): void;
-        blur(): void;
-        cvvBlur(): void;
-        focus(): void;
-        cvvFocus(): void;
-        remove(): void;
-        toggleMask(): void;
-        toggleCvvMask(): void;
-        setPAN(pan: string): void;
-        binLookup(): void;
-        validateConfig(): void;
-        setFraudServicesRequestDetails(data: string): void;
-    } | undefined>;
+    initializeTokenExIframe: ({ css, fontFamily, debug, origins, }: Omit<Parameters<typeof doInitializeTokenExIframe>[0], "env" | "tokenExScriptLoaded" | "setCachedToken" | "setLoaded">) => Promise<TokenExIframe | undefined>;
+    initializeCvvOnlyTokenExIframe: ({ token, cardType, css, debug, fontFamily, origins, }: Omit<Parameters<typeof doInitializeCvvOnlyTokenExIframe>[0], "env" | "tokenExScriptLoaded" | "setCachedToken" | "setLoaded">) => Promise<TokenExIframe | undefined>;
+    initializeTokenExCardOnlyIframe: ({ css, fontFamily, debug, origins, }: Omit<Parameters<typeof doInitializeTokenExCardOnlyIframe>[0], "env" | "tokenExScriptLoaded" | "setCachedToken" | "setLoaded">) => Promise<TokenExIframe | undefined>;
     loaded: boolean;
     cachedToken: string | undefined;
-    setTokenExScriptTag: () => void;
+    setTokenExScriptTag: typeof setTokenExScriptTag;
 };

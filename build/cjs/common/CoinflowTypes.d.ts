@@ -123,7 +123,6 @@ export type NearFtTransferCallAction = {
 };
 type Bytes = ArrayLike<number>;
 type BytesLike = Bytes | string;
-type RawProductData = Record<string, string | number | boolean | object>;
 /** Purchase **/
 export type ChargebackProtectionData = ChargebackProtectionItem[];
 export interface ChargebackProtectionItem {
@@ -145,7 +144,7 @@ export interface ChargebackProtectionItem {
     /**
      * Any additional data that the store can provide on the product, e.g. description, link to image, etc.
      */
-    rawProductData?: RawProductData;
+    rawProductData?: Record<string, any>;
 }
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     amount?: number | string;

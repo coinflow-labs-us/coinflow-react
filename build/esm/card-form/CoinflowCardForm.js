@@ -1,6 +1,7 @@
 import { __awaiter, __generator } from "tslib";
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useMemo, } from 'react';
-import { TokenExCardNumberIframeId, TokenExCvvContainerID, useCardFormIframe, } from './useCardFormIframe';
+import { useCardFormIframe, } from './useCardFormIframe';
+import { TokenExCardNumberIframeId, TokenExCvvContainerID } from '../common/card-form/cardFormTypes';
 var CoinflowCardNumberInputComponent = forwardRef(function (props, ref) {
     var css = useMemo(function () {
         return JSON.stringify(props.css);

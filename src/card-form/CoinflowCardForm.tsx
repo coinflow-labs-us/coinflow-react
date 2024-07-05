@@ -5,33 +5,10 @@ import React, {
   useImperativeHandle,
   useMemo,
 } from 'react';
-import {CardType, CoinflowEnvs} from '../common';
 import {
-  CardFormInputStyles,
-  TokenExCardNumberIframeId,
-  TokenExCvvContainerID,
   useCardFormIframe,
 } from './useCardFormIframe';
-
-export type CoinflowCardTokenResponse = {
-  token: string;
-};
-
-export interface CoinflowCardNumberInputProps {
-  env: CoinflowEnvs;
-  css: CardFormInputStyles & {cvv: CardFormInputStyles};
-  debug?: boolean;
-  origins?: string[];
-}
-
-export interface CoinflowCvvOnlyInputProps {
-  token: string;
-  cardType: CardType;
-  env: CoinflowEnvs;
-  css: CardFormInputStyles & {cvv: CardFormInputStyles};
-  debug?: boolean;
-  origins?: string[];
-}
+import { CoinflowCardNumberInputProps, CoinflowCardTokenResponse, CoinflowCvvOnlyInputProps, TokenExCardNumberIframeId, TokenExCvvContainerID } from '../common/card-form/cardFormTypes';
 
 const CoinflowCardNumberInputComponent = forwardRef(
   (props: CoinflowCardNumberInputProps, ref) => {

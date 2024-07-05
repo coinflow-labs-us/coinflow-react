@@ -7,8 +7,8 @@ function CoinflowCardFormHeader(_a) {
     var env = _a.env;
     var setTokenExScriptTag = (0, useCardFormIframe_1.useCardFormIframe)(env).setTokenExScriptTag;
     (0, react_1.useEffect)(function () {
-        setTokenExScriptTag();
-    }, [setTokenExScriptTag]);
+        setTokenExScriptTag({ env: env, setTokenExScriptLoaded: function () { } });
+    }, [env, setTokenExScriptTag]);
     return null;
 }
 //# sourceMappingURL=CoinflowCardFormHeader.js.map

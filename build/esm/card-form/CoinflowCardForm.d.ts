@@ -1,27 +1,5 @@
 import React from 'react';
-import { CardType, CoinflowEnvs } from '../common';
-import { CardFormInputStyles } from './useCardFormIframe';
-export type CoinflowCardTokenResponse = {
-    token: string;
-};
-export interface CoinflowCardNumberInputProps {
-    env: CoinflowEnvs;
-    css: CardFormInputStyles & {
-        cvv: CardFormInputStyles;
-    };
-    debug?: boolean;
-    origins?: string[];
-}
-export interface CoinflowCvvOnlyInputProps {
-    token: string;
-    cardType: CardType;
-    env: CoinflowEnvs;
-    css: CardFormInputStyles & {
-        cvv: CardFormInputStyles;
-    };
-    debug?: boolean;
-    origins?: string[];
-}
+import { CoinflowCardNumberInputProps, CoinflowCvvOnlyInputProps } from '../common/card-form/cardFormTypes';
 /**
  * Allows merchants to collect card information from their customers in a PCI-compliant way and receive the tokenized card number.
  *
