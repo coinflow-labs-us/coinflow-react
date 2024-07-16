@@ -162,10 +162,12 @@ function getStylesAndFont(s) {
         base: CSSPropertiesToComponent(css.base),
         focus: CSSPropertiesToComponent(css.focus),
         error: CSSPropertiesToComponent(css.error),
+        placeholder: CSSPropertiesToComponent(css.placeholder),
         cvv: {
             base: CSSPropertiesToComponent((_a = css.cvv) === null || _a === void 0 ? void 0 : _a.base),
             focus: CSSPropertiesToComponent((_b = css.cvv) === null || _b === void 0 ? void 0 : _b.focus),
             error: CSSPropertiesToComponent((_c = css.cvv) === null || _c === void 0 ? void 0 : _c.error),
+            placeholder: CSSPropertiesToComponent(css === null || css === void 0 ? void 0 : css.placeholder),
         },
     };
     return { styles: styles };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CoinflowCardNumberInputProps, CoinflowCvvOnlyInputProps } from '../common/card-form/cardFormTypes';
+import { CoinflowCardNumberInputProps, CoinflowCvvOnlyInputProps } from '../common';
 /**
  * Allows merchants to collect card information from their customers in a PCI-compliant way and receive the tokenized card number.
  *

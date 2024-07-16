@@ -5,10 +5,14 @@ import React, {
   useImperativeHandle,
   useMemo,
 } from 'react';
+import {useCardFormIframe} from './useCardFormIframe';
 import {
-  useCardFormIframe,
-} from './useCardFormIframe';
-import { CoinflowCardNumberInputProps, CoinflowCardTokenResponse, CoinflowCvvOnlyInputProps, TokenExCardNumberIframeId, TokenExCvvContainerID } from '../common/card-form/cardFormTypes';
+  CoinflowCardNumberInputProps,
+  CoinflowCardTokenResponse,
+  CoinflowCvvOnlyInputProps,
+  TokenExCardNumberIframeId,
+  TokenExCvvContainerID,
+} from '../common';
 
 const CoinflowCardNumberInputComponent = forwardRef(
   (props: CoinflowCardNumberInputProps, ref) => {
@@ -32,8 +36,9 @@ const CoinflowCardNumberInputComponent = forwardRef(
         css,
         debug: props.debug,
         origins: props.origins,
+        fontFamily: props.font,
       });
-    }, [initializeTokenExIframe, css, props.debug, props.origins]);
+    }, [initializeTokenExIframe, css, props.debug, props.origins, props.font]);
 
     return <div id={TokenExCardNumberIframeId} />;
   }
@@ -106,6 +111,7 @@ const CoinflowCvvOnlyInputComponent = forwardRef(
         token: props.token,
         cardType: props.cardType,
         origins: props.origins,
+        fontFamily: props.font,
       });
     }, [
       css,
@@ -114,6 +120,7 @@ const CoinflowCvvOnlyInputComponent = forwardRef(
       props.token,
       props.cardType,
       props.origins,
+      props.font,
     ]);
 
     return useMemo(() => <div id={TokenExCvvContainerID}></div>, []);
@@ -181,8 +188,15 @@ const CoinflowCardOnlyInputComponent = forwardRef(
         css,
         debug: props.debug,
         origins: props.origins,
+        fontFamily: props.font,
       });
-    }, [initializeTokenExCardOnlyIframe, props.debug, css, props.origins]);
+    }, [
+      initializeTokenExCardOnlyIframe,
+      props.debug,
+      css,
+      props.origins,
+      props.font,
+    ]);
 
     return <div id={TokenExCardNumberIframeId} />;
   }

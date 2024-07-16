@@ -123,6 +123,7 @@ export type NearFtTransferCallAction = {
 };
 type Bytes = ArrayLike<number>;
 type BytesLike = Bytes | string;
+type RawProductData = Record<string, string | number | boolean | object>;
 /** Purchase **/
 export type ChargebackProtectionData = ChargebackProtectionItem[];
 export interface ChargebackProtectionItem {
@@ -144,7 +145,7 @@ export interface ChargebackProtectionItem {
     /**
      * Any additional data that the store can provide on the product, e.g. description, link to image, etc.
      */
-    rawProductData?: Record<string, any>;
+    rawProductData?: RawProductData;
 }
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     amount?: number | string;
@@ -284,6 +285,7 @@ type ReservoirItems = ReservoirItem | ReservoirItem[];
 export interface ReservoirRedeem extends CommonEvmRedeem {
     type: 'reservoir';
     items: ReservoirItems;
+    taker?: string;
 }
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | ReservoirRedeem | KnownTokenIdRedeem | NormalRedeem;
 export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'amount' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'token'> {

@@ -18,6 +18,7 @@ export interface TokenExIFrameConfiguration {
 }
 export interface CardFormInputStyles {
     base: CSSProperties | string;
+    placeholder?: CSSProperties | string;
     focus?: CSSProperties | string;
     error?: CSSProperties | string;
 }
@@ -31,6 +32,7 @@ export interface CoinflowCardNumberInputProps {
     };
     debug?: boolean;
     origins?: string[];
+    font?: string;
 }
 export interface CoinflowCvvOnlyInputProps {
     token: string;
@@ -41,4 +43,5 @@ export interface CoinflowCvvOnlyInputProps {
     };
     debug?: boolean;
     origins?: string[];
+    font?: string;
 }

@@ -67,6 +67,18 @@ Props:
 
 # Changelog
 
+## 4.2.9
+
+- Added placeholder CSS to card form elements
+
+## 4.2.8
+
+- Custom fonts for card elements
+
+## 4.2.5
+
+- Allow custom taker on reservoir transactions
+
 ## 4.2.4
 
 - Memoize styles on credit card inputs

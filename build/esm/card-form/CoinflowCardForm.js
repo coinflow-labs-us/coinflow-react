@@ -1,7 +1,7 @@
 import { __awaiter, __generator } from "tslib";
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useMemo, } from 'react';
-import { useCardFormIframe, } from './useCardFormIframe';
-import { TokenExCardNumberIframeId, TokenExCvvContainerID } from '../common/card-form/cardFormTypes';
+import { useCardFormIframe } from './useCardFormIframe';
+import { TokenExCardNumberIframeId, TokenExCvvContainerID, } from '../common';
 var CoinflowCardNumberInputComponent = forwardRef(function (props, ref) {
     var css = useMemo(function () {
         return JSON.stringify(props.css);
@@ -23,8 +23,9 @@ var CoinflowCardNumberInputComponent = forwardRef(function (props, ref) {
             css: css,
             debug: props.debug,
             origins: props.origins,
+            fontFamily: props.font,
         });
-    }, [initializeTokenExIframe, css, props.debug, props.origins]);
+    }, [initializeTokenExIframe, css, props.debug, props.origins, props.font]);
     return React.createElement("div", { id: TokenExCardNumberIframeId });
 });
 /**
@@ -91,6 +92,7 @@ var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
             token: props.token,
             cardType: props.cardType,
             origins: props.origins,
+            fontFamily: props.font,
         });
     }, [
         css,
@@ -99,6 +101,7 @@ var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
         props.token,
         props.cardType,
         props.origins,
+        props.font,
     ]);
     return useMemo(function () { return React.createElement("div", { id: TokenExCvvContainerID }); }, []);
 });
@@ -161,8 +164,15 @@ var CoinflowCardOnlyInputComponent = forwardRef(function (props, ref) {
             css: css,
             debug: props.debug,
             origins: props.origins,
+            fontFamily: props.font,
         });
-    }, [initializeTokenExCardOnlyIframe, props.debug, css, props.origins]);
+    }, [
+        initializeTokenExCardOnlyIframe,
+        props.debug,
+        css,
+        props.origins,
+        props.font,
+    ]);
     return React.createElement("div", { id: TokenExCardNumberIframeId });
 });
 /**
