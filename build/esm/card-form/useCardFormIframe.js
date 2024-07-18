@@ -1,6 +1,6 @@
 import { __awaiter, __generator } from "tslib";
 import { useCallback, useEffect, useState } from 'react';
-import { doInitializeCvvOnlyTokenExIframe, doInitializeTokenExCardOnlyIframe, doInitializeTokenExIframe, setTokenExScriptTag } from '../common';
+import { doInitializeCvvOnlyTokenExIframe, doInitializeTokenExCardOnlyIframe, doInitializeTokenExIframe, setTokenExScriptTag, } from '../common';
 export function useCardFormIframe(env) {
     var _this = this;
     var _a = useState(false), loaded = _a[0], setLoaded = _a[1];
@@ -29,6 +29,14 @@ export function useCardFormIframe(env) {
                     })];
                 case 1:
                     iframe = _c.sent();
+                    if (iframe) {
+                        iframe.on('focus', function () {
+                            iframe.focus();
+                        });
+                        iframe.on('cvvFocus', function () {
+                            iframe.cvvFocus();
+                        });
+                    }
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
@@ -51,6 +59,14 @@ export function useCardFormIframe(env) {
                     })];
                 case 1:
                     iframe = _c.sent();
+                    if (iframe) {
+                        iframe.on('focus', function () {
+                            iframe.focus();
+                        });
+                        iframe.on('cvvFocus', function () {
+                            iframe.cvvFocus();
+                        });
+                    }
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
@@ -73,6 +89,14 @@ export function useCardFormIframe(env) {
                     })];
                 case 1:
                     iframe = _c.sent();
+                    if (iframe) {
+                        iframe.on('focus', function () {
+                            iframe.focus();
+                        });
+                        iframe.on('cvvFocus', function () {
+                            iframe.cvvFocus();
+                        });
+                    }
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }

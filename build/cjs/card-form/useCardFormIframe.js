@@ -32,6 +32,14 @@ function useCardFormIframe(env) {
                     })];
                 case 1:
                     iframe = _c.sent();
+                    if (iframe) {
+                        iframe.on('focus', function () {
+                            iframe.focus();
+                        });
+                        iframe.on('cvvFocus', function () {
+                            iframe.cvvFocus();
+                        });
+                    }
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
@@ -54,6 +62,14 @@ function useCardFormIframe(env) {
                     })];
                 case 1:
                     iframe = _c.sent();
+                    if (iframe) {
+                        iframe.on('focus', function () {
+                            iframe.focus();
+                        });
+                        iframe.on('cvvFocus', function () {
+                            iframe.cvvFocus();
+                        });
+                    }
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
@@ -76,6 +92,14 @@ function useCardFormIframe(env) {
                     })];
                 case 1:
                     iframe = _c.sent();
+                    if (iframe) {
+                        iframe.on('focus', function () {
+                            iframe.focus();
+                        });
+                        iframe.on('cvvFocus', function () {
+                            iframe.cvvFocus();
+                        });
+                    }
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
