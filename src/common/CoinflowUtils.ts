@@ -3,10 +3,12 @@ import {
   CoinflowEnvs,
   CoinflowIFrameProps,
   CoinflowPurchaseProps,
+  SolanaWallet,
 } from './CoinflowTypes';
 import {web3, base58} from './SolanaPeerDeps';
 import LZString from 'lz-string';
-import type {Transaction, VersionedTransaction} from '@solana/web3.js';
+import {Keypair, Transaction, VersionedTransaction} from '@solana/web3.js';
+import {sign} from 'tweetnacl';
 
 export class CoinflowUtils {
   env: CoinflowEnvs;
@@ -288,5 +290,66 @@ export class CoinflowUtils {
       default:
         throw new Error('blockchain not supported!');
     }
+  }
+
+  static async getWalletFromEmail({
+    email,
+    merchantId,
+    env,
+  }: {
+    email: string;
+    merchantId: string;
+    env: CoinflowEnvs;
+  }): Promise<SolanaWallet> {
+    const buffer = new TextEncoder().encode(email);
+    const crypto = window.crypto.subtle;
+    const hash = await crypto.digest('SHA-256', buffer);
+    const seed = new Uint8Array(hash);
+    const keypair = Keypair.fromSeed(seed);
+    return {
+      publicKey: keypair.publicKey,
+      signMessage: (message: Uint8Array) =>
+        Promise.resolve(sign.detached(message, keypair.secretKey)),
+      signTransaction: async <T extends Transaction | VersionedTransaction>(
+        transaction: T
+      ): Promise<T> => {
+        if (transaction instanceof Transaction) {
+          transaction.sign(keypair);
+          return transaction;
+        } else {
+          transaction.sign([keypair]);
+          return transaction;
+        }
+      },
+      sendTransaction: async <T extends Transaction | VersionedTransaction>(
+        transaction: T
+      ): Promise<string> => {
+        if (transaction instanceof Transaction) {
+          transaction.sign(keypair);
+        } else {
+          transaction.sign([keypair]);
+        }
+
+        const coinflowBaseUrl = this.getCoinflowApiUrl(env);
+        const options = {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'x-coinflow-auth-wallet': keypair.publicKey.toString(),
+            'x-coinflow-auth-blockchain': 'solana',
+          },
+          body: JSON.stringify({
+            merchantId,
+            signedTransaction: base58?.encode(transaction.serialize()),
+          }),
+        };
+
+        const {signature} = await fetch(
+          coinflowBaseUrl + '/api/utils/send-coinflow-tx',
+          options
+        ).then(res => res.json());
+        return signature;
+      },
+    };
   }
 }

@@ -1,4 +1,4 @@
-import { __awaiter, __generator } from "tslib";
+import { __assign, __awaiter, __generator } from "tslib";
 import { useCallback, useEffect, useState } from 'react';
 import { doInitializeCvvOnlyTokenExIframe, doInitializeTokenExCardOnlyIframe, doInitializeTokenExIframe, setTokenExScriptTag, } from '../common';
 export function useCardFormIframe(env) {
@@ -10,93 +10,37 @@ export function useCardFormIframe(env) {
     useEffect(function () {
         setTokenExScriptTag({ env: env, setTokenExScriptLoaded: setTokenExScriptLoaded });
     }, [env, setTokenExScriptLoaded]);
-    var initializeCvvOnlyTokenExIframe = useCallback(function (_a) { return __awaiter(_this, [_a], void 0, function (_b) {
+    var initializeCvvOnlyTokenExIframe = useCallback(function (args) { return __awaiter(_this, void 0, void 0, function () {
         var iframe;
-        var token = _b.token, cardType = _b.cardType, css = _b.css, debug = _b.debug, fontFamily = _b.fontFamily, origins = _b.origins;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0: return [4 /*yield*/, doInitializeCvvOnlyTokenExIframe({
-                        token: token,
-                        cardType: cardType,
-                        css: css,
-                        debug: debug,
-                        fontFamily: fontFamily,
-                        origins: origins,
-                        tokenExScriptLoaded: tokenExScriptLoaded,
-                        env: env,
-                        setCachedToken: setCachedToken,
-                        setLoaded: setLoaded,
-                    })];
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, doInitializeCvvOnlyTokenExIframe(__assign(__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, env: env, setCachedToken: setCachedToken, setLoaded: setLoaded }))];
                 case 1:
-                    iframe = _c.sent();
-                    if (iframe) {
-                        iframe.on('focus', function () {
-                            iframe.focus();
-                        });
-                        iframe.on('cvvFocus', function () {
-                            iframe.cvvFocus();
-                        });
-                    }
+                    iframe = _a.sent();
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
         });
     }); }, [env, tokenExScriptLoaded]);
-    var initializeTokenExIframe = useCallback(function (_a) { return __awaiter(_this, [_a], void 0, function (_b) {
+    var initializeTokenExIframe = useCallback(function (args) { return __awaiter(_this, void 0, void 0, function () {
         var iframe;
-        var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug, origins = _b.origins;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0: return [4 /*yield*/, doInitializeTokenExIframe({
-                        css: css,
-                        debug: debug,
-                        fontFamily: fontFamily,
-                        origins: origins,
-                        tokenExScriptLoaded: tokenExScriptLoaded,
-                        env: env,
-                        setCachedToken: setCachedToken,
-                        setLoaded: setLoaded,
-                    })];
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, doInitializeTokenExIframe(__assign(__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, env: env, setCachedToken: setCachedToken, setLoaded: setLoaded }))];
                 case 1:
-                    iframe = _c.sent();
-                    if (iframe) {
-                        iframe.on('focus', function () {
-                            iframe.focus();
-                        });
-                        iframe.on('cvvFocus', function () {
-                            iframe.cvvFocus();
-                        });
-                    }
+                    iframe = _a.sent();
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
         });
     }); }, [env, tokenExScriptLoaded]);
-    var initializeTokenExCardOnlyIframe = useCallback(function (_a) { return __awaiter(_this, [_a], void 0, function (_b) {
+    var initializeTokenExCardOnlyIframe = useCallback(function (args) { return __awaiter(_this, void 0, void 0, function () {
         var iframe;
-        var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug, origins = _b.origins;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0: return [4 /*yield*/, doInitializeTokenExCardOnlyIframe({
-                        css: css,
-                        debug: debug,
-                        fontFamily: fontFamily,
-                        origins: origins,
-                        tokenExScriptLoaded: tokenExScriptLoaded,
-                        env: env,
-                        setCachedToken: setCachedToken,
-                        setLoaded: setLoaded,
-                    })];
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, doInitializeTokenExCardOnlyIframe(__assign(__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, env: env, setCachedToken: setCachedToken, setLoaded: setLoaded }))];
                 case 1:
-                    iframe = _c.sent();
-                    if (iframe) {
-                        iframe.on('focus', function () {
-                            iframe.focus();
-                        });
-                        iframe.on('cvvFocus', function () {
-                            iframe.cvvFocus();
-                        });
-                    }
+                    iframe = _a.sent();
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }

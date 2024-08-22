@@ -13,93 +13,37 @@ function useCardFormIframe(env) {
     (0, react_1.useEffect)(function () {
         (0, common_1.setTokenExScriptTag)({ env: env, setTokenExScriptLoaded: setTokenExScriptLoaded });
     }, [env, setTokenExScriptLoaded]);
-    var initializeCvvOnlyTokenExIframe = (0, react_1.useCallback)(function (_a) { return tslib_1.__awaiter(_this, [_a], void 0, function (_b) {
+    var initializeCvvOnlyTokenExIframe = (0, react_1.useCallback)(function (args) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
         var iframe;
-        var token = _b.token, cardType = _b.cardType, css = _b.css, debug = _b.debug, fontFamily = _b.fontFamily, origins = _b.origins;
-        return tslib_1.__generator(this, function (_c) {
-            switch (_c.label) {
-                case 0: return [4 /*yield*/, (0, common_1.doInitializeCvvOnlyTokenExIframe)({
-                        token: token,
-                        cardType: cardType,
-                        css: css,
-                        debug: debug,
-                        fontFamily: fontFamily,
-                        origins: origins,
-                        tokenExScriptLoaded: tokenExScriptLoaded,
-                        env: env,
-                        setCachedToken: setCachedToken,
-                        setLoaded: setLoaded,
-                    })];
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, common_1.doInitializeCvvOnlyTokenExIframe)(tslib_1.__assign(tslib_1.__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, env: env, setCachedToken: setCachedToken, setLoaded: setLoaded }))];
                 case 1:
-                    iframe = _c.sent();
-                    if (iframe) {
-                        iframe.on('focus', function () {
-                            iframe.focus();
-                        });
-                        iframe.on('cvvFocus', function () {
-                            iframe.cvvFocus();
-                        });
-                    }
+                    iframe = _a.sent();
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
         });
     }); }, [env, tokenExScriptLoaded]);
-    var initializeTokenExIframe = (0, react_1.useCallback)(function (_a) { return tslib_1.__awaiter(_this, [_a], void 0, function (_b) {
+    var initializeTokenExIframe = (0, react_1.useCallback)(function (args) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
         var iframe;
-        var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug, origins = _b.origins;
-        return tslib_1.__generator(this, function (_c) {
-            switch (_c.label) {
-                case 0: return [4 /*yield*/, (0, common_1.doInitializeTokenExIframe)({
-                        css: css,
-                        debug: debug,
-                        fontFamily: fontFamily,
-                        origins: origins,
-                        tokenExScriptLoaded: tokenExScriptLoaded,
-                        env: env,
-                        setCachedToken: setCachedToken,
-                        setLoaded: setLoaded,
-                    })];
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, common_1.doInitializeTokenExIframe)(tslib_1.__assign(tslib_1.__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, env: env, setCachedToken: setCachedToken, setLoaded: setLoaded }))];
                 case 1:
-                    iframe = _c.sent();
-                    if (iframe) {
-                        iframe.on('focus', function () {
-                            iframe.focus();
-                        });
-                        iframe.on('cvvFocus', function () {
-                            iframe.cvvFocus();
-                        });
-                    }
+                    iframe = _a.sent();
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
         });
     }); }, [env, tokenExScriptLoaded]);
-    var initializeTokenExCardOnlyIframe = (0, react_1.useCallback)(function (_a) { return tslib_1.__awaiter(_this, [_a], void 0, function (_b) {
+    var initializeTokenExCardOnlyIframe = (0, react_1.useCallback)(function (args) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
         var iframe;
-        var css = _b.css, fontFamily = _b.fontFamily, debug = _b.debug, origins = _b.origins;
-        return tslib_1.__generator(this, function (_c) {
-            switch (_c.label) {
-                case 0: return [4 /*yield*/, (0, common_1.doInitializeTokenExCardOnlyIframe)({
-                        css: css,
-                        debug: debug,
-                        fontFamily: fontFamily,
-                        origins: origins,
-                        tokenExScriptLoaded: tokenExScriptLoaded,
-                        env: env,
-                        setCachedToken: setCachedToken,
-                        setLoaded: setLoaded,
-                    })];
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, common_1.doInitializeTokenExCardOnlyIframe)(tslib_1.__assign(tslib_1.__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, env: env, setCachedToken: setCachedToken, setLoaded: setLoaded }))];
                 case 1:
-                    iframe = _c.sent();
-                    if (iframe) {
-                        iframe.on('focus', function () {
-                            iframe.focus();
-                        });
-                        iframe.on('cvvFocus', function () {
-                            iframe.cvvFocus();
-                        });
-                    }
+                    iframe = _a.sent();
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }

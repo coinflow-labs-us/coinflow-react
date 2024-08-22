@@ -389,12 +389,18 @@ export interface ReservoirRedeem extends CommonEvmRedeem {
   taker?: string;
 }
 
+export interface TokenRedeem extends CommonEvmRedeem {
+  type: 'token';
+  destination: string;
+}
+
 export type EvmTransactionData =
   | SafeMintRedeem
   | ReturnedTokenIdRedeem
   | ReservoirRedeem
   | KnownTokenIdRedeem
-  | NormalRedeem;
+  | NormalRedeem
+  | TokenRedeem;
 
 export interface CoinflowIFrameProps
   extends Omit<CoinflowTypes, 'merchantId'>,

@@ -4,6 +4,8 @@ exports.CoinflowUtils = void 0;
 var tslib_1 = require("tslib");
 var SolanaPeerDeps_1 = require("./SolanaPeerDeps");
 var lz_string_1 = tslib_1.__importDefault(require("lz-string"));
+var web3_js_1 = require("@solana/web3.js");
+var tweetnacl_1 = require("tweetnacl");
 var CoinflowUtils = /** @class */ (function () {
     function CoinflowUtils(env) {
         this.env = env !== null && env !== void 0 ? env : 'prod';
@@ -212,6 +214,75 @@ var CoinflowUtils = /** @class */ (function () {
             default:
                 throw new Error('blockchain not supported!');
         }
+    };
+    CoinflowUtils.getWalletFromEmail = function (_a) {
+        return tslib_1.__awaiter(this, arguments, void 0, function (_b) {
+            var buffer, crypto, hash, seed, keypair;
+            var _this = this;
+            var email = _b.email, merchantId = _b.merchantId, env = _b.env;
+            return tslib_1.__generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        buffer = new TextEncoder().encode(email);
+                        crypto = window.crypto.subtle;
+                        return [4 /*yield*/, crypto.digest('SHA-256', buffer)];
+                    case 1:
+                        hash = _c.sent();
+                        seed = new Uint8Array(hash);
+                        keypair = web3_js_1.Keypair.fromSeed(seed);
+                        return [2 /*return*/, {
+                                publicKey: keypair.publicKey,
+                                signMessage: function (message) {
+                                    return Promise.resolve(tweetnacl_1.sign.detached(message, keypair.secretKey));
+                                },
+                                signTransaction: function (transaction) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
+                                    return tslib_1.__generator(this, function (_a) {
+                                        if (transaction instanceof web3_js_1.Transaction) {
+                                            transaction.sign(keypair);
+                                            return [2 /*return*/, transaction];
+                                        }
+                                        else {
+                                            transaction.sign([keypair]);
+                                            return [2 /*return*/, transaction];
+                                        }
+                                        return [2 /*return*/];
+                                    });
+                                }); },
+                                sendTransaction: function (transaction) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
+                                    var coinflowBaseUrl, options, signature;
+                                    return tslib_1.__generator(this, function (_a) {
+                                        switch (_a.label) {
+                                            case 0:
+                                                if (transaction instanceof web3_js_1.Transaction) {
+                                                    transaction.sign(keypair);
+                                                }
+                                                else {
+                                                    transaction.sign([keypair]);
+                                                }
+                                                coinflowBaseUrl = this.getCoinflowApiUrl(env);
+                                                options = {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'content-type': 'application/json',
+                                                        'x-coinflow-auth-wallet': keypair.publicKey.toString(),
+                                                        'x-coinflow-auth-blockchain': 'solana',
+                                                    },
+                                                    body: JSON.stringify({
+                                                        merchantId: merchantId,
+                                                        signedTransaction: SolanaPeerDeps_1.base58 === null || SolanaPeerDeps_1.base58 === void 0 ? void 0 : SolanaPeerDeps_1.base58.encode(transaction.serialize()),
+                                                    }),
+                                                };
+                                                return [4 /*yield*/, fetch(coinflowBaseUrl + '/api/utils/send-coinflow-tx', options).then(function (res) { return res.json(); })];
+                                            case 1:
+                                                signature = (_a.sent()).signature;
+                                                return [2 /*return*/, signature];
+                                        }
+                                    });
+                                }); },
+                            }];
+                }
+            });
+        });
     };
     return CoinflowUtils;
 }());

@@ -6,8 +6,8 @@ exports.doInitializeCvvOnlyTokenExIframe = doInitializeCvvOnlyTokenExIframe;
 exports.doInitializeTokenExIframe = doInitializeTokenExIframe;
 exports.doInitializeTokenExCardOnlyIframe = doInitializeTokenExCardOnlyIframe;
 var tslib_1 = require("tslib");
+var TokenEx_1 = require("./TokenEx");
 var CoinflowUtils_1 = require("../CoinflowUtils");
-var cardFormTypes_1 = require("./cardFormTypes");
 function getIframeConfig(_a) {
     return tslib_1.__awaiter(this, arguments, void 0, function (_b) {
         var _this = this;
@@ -93,58 +93,64 @@ function loadIframe(_a) {
             el.scrolling = 'no';
         }
     });
+    iframe.on('focus', function () {
+        iframe.focus();
+    });
+    iframe.on('cvvFocus', function () {
+        iframe.cvvFocus();
+    });
     setLoaded(false);
     iframe.load();
     return tslib_1.__assign(tslib_1.__assign({}, iframe), { tokenize: tokenize });
 }
-function doInitializeCvvOnlyTokenExIframe(_a) {
-    return tslib_1.__awaiter(this, arguments, void 0, function (_b) {
-        var type, iframeConfig, styles, config, iframe;
-        var token = _b.token, cardType = _b.cardType, css = _b.css, debug = _b.debug, fontFamily = _b.fontFamily, origins = _b.origins, tokenExScriptLoaded = _b.tokenExScriptLoaded, env = _b.env, setCachedToken = _b.setCachedToken, setLoaded = _b.setLoaded;
-        return tslib_1.__generator(this, function (_c) {
-            switch (_c.label) {
+function doInitializeCvvOnlyTokenExIframe(args) {
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
+        var token, cardType;
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
-                        console.warn("Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#".concat('tokenex-script'));
-                        return [2 /*return*/];
-                    }
-                    type = cardFormTypes_1.CARD_TYPE_MAPPING[cardType];
-                    return [4 /*yield*/, getIframeConfig({ token: token, origins: origins, env: env })];
-                case 1:
-                    iframeConfig = _c.sent();
-                    styles = getStylesAndFont(css).styles;
-                    config = tslib_1.__assign(tslib_1.__assign({}, iframeConfig), { placeholder: 'CVV', enablePrettyFormat: true, styles: styles, token: token, cvvOnly: true, cvv: true, cvvContainerID: cardFormTypes_1.TokenExCvvContainerID, cardType: type, debug: debug !== null && debug !== void 0 ? debug : false, font: fontFamily });
-                    iframe = TokenEx.Iframe(cardFormTypes_1.TokenExCvvContainerID, config);
-                    return [2 /*return*/, loadIframe({ iframe: iframe, setCachedToken: setCachedToken, setLoaded: setLoaded })];
+                    token = args.token, cardType = args.cardType;
+                    return [4 /*yield*/, doInitialize(TokenEx_1.TokenExCvvContainerID, args, {
+                            cvvOnly: true,
+                            cvv: true,
+                            cvvContainerID: TokenEx_1.TokenExCvvContainerID,
+                            placeholder: 'CVV',
+                            token: token,
+                            cardType: TokenEx_1.CARD_TYPE_MAPPING[cardType],
+                        })];
+                case 1: return [2 /*return*/, _a.sent()];
             }
         });
     });
 }
-function doInitializeTokenExIframe(_a) {
-    return tslib_1.__awaiter(this, arguments, void 0, function (_b) {
-        var iframeConfig, styles, iframe;
-        var css = _b.css, debug = _b.debug, fontFamily = _b.fontFamily, origins = _b.origins, tokenExScriptLoaded = _b.tokenExScriptLoaded, env = _b.env, setCachedToken = _b.setCachedToken, setLoaded = _b.setLoaded;
-        return tslib_1.__generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
-                        console.warn("Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#".concat('tokenex-script'));
-                        return [2 /*return*/];
-                    }
-                    return [4 /*yield*/, getIframeConfig({ origins: origins, env: env })];
-                case 1:
-                    iframeConfig = _c.sent();
-                    styles = getStylesAndFont(css).styles;
-                    iframe = TokenEx.Iframe(cardFormTypes_1.TokenExCardNumberIframeId, tslib_1.__assign(tslib_1.__assign({}, iframeConfig), { placeholder: '0000 0000 0000 0000', cvvPlaceholder: 'CVV', enablePrettyFormat: true, cvv: true, cvvContainerID: cardFormTypes_1.TokenExCvvContainerID, styles: styles, font: fontFamily, debug: debug !== null && debug !== void 0 ? debug : false }));
-                    return [2 /*return*/, loadIframe({ iframe: iframe, setCachedToken: setCachedToken, setLoaded: setLoaded })];
+function doInitializeTokenExIframe(args) {
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, doInitialize(TokenEx_1.TokenExCardNumberIframeId, args, {
+                        cvv: true,
+                        cvvContainerID: TokenEx_1.TokenExCvvContainerID,
+                        cvvPlaceholder: 'CVV',
+                    })];
+                case 1: return [2 /*return*/, _a.sent()];
             }
         });
     });
 }
-function doInitializeTokenExCardOnlyIframe(_a) {
-    return tslib_1.__awaiter(this, arguments, void 0, function (_b) {
-        var iframeConfig, styles, iframe;
-        var css = _b.css, debug = _b.debug, fontFamily = _b.fontFamily, origins = _b.origins, tokenExScriptLoaded = _b.tokenExScriptLoaded, env = _b.env, setCachedToken = _b.setCachedToken, setLoaded = _b.setLoaded;
+function doInitializeTokenExCardOnlyIframe(args) {
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, doInitialize(TokenEx_1.TokenExCardNumberIframeId, args, { cvv: false })];
+                case 1: return [2 /*return*/, _a.sent()];
+            }
+        });
+    });
+}
+function doInitialize(id_1, _a, configOverrides_1) {
+    return tslib_1.__awaiter(this, arguments, void 0, function (id, _b, configOverrides) {
+        var iframeConfig, styles, config, iframe;
+        var tokenExScriptLoaded = _b.tokenExScriptLoaded, origins = _b.origins, env = _b.env, css = _b.css, debug = _b.debug, font = _b.font, setCachedToken = _b.setCachedToken, setLoaded = _b.setLoaded;
         return tslib_1.__generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -152,17 +158,22 @@ function doInitializeTokenExCardOnlyIframe(_a) {
                         console.warn('Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#tokenex-script');
                         return [2 /*return*/];
                     }
-                    return [4 /*yield*/, getIframeConfig({ origins: origins, env: env })];
+                    return [4 /*yield*/, getIframeConfig({
+                            token: configOverrides.token,
+                            origins: origins,
+                            env: env,
+                        })];
                 case 1:
                     iframeConfig = _c.sent();
-                    styles = getStylesAndFont(css).styles;
-                    iframe = TokenEx.Iframe(cardFormTypes_1.TokenExCardNumberIframeId, tslib_1.__assign(tslib_1.__assign({}, iframeConfig), { placeholder: '0000 0000 0000 0000', enablePrettyFormat: true, cvv: false, styles: styles, font: fontFamily, debug: debug !== null && debug !== void 0 ? debug : false }));
+                    styles = getStyles(css).styles;
+                    config = tslib_1.__assign(tslib_1.__assign(tslib_1.__assign({}, iframeConfig), { placeholder: '0000 0000 0000 0000', enablePrettyFormat: true, styles: styles, font: font, debug: debug !== null && debug !== void 0 ? debug : false }), configOverrides);
+                    iframe = TokenEx.Iframe(id, config);
                     return [2 /*return*/, loadIframe({ iframe: iframe, setCachedToken: setCachedToken, setLoaded: setLoaded })];
             }
         });
     });
 }
-function getStylesAndFont(s) {
+function getStyles(s) {
     var _a, _b, _c;
     var css = JSON.parse(s);
     var styles = {

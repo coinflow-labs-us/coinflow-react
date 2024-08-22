@@ -36,7 +36,7 @@ const CoinflowCardNumberInputComponent = forwardRef(
         css,
         debug: props.debug,
         origins: props.origins,
-        fontFamily: props.font,
+        font: props.font,
       });
     }, [initializeTokenExIframe, css, props.debug, props.origins, props.font]);
 
@@ -111,7 +111,7 @@ const CoinflowCvvOnlyInputComponent = forwardRef(
         token: props.token,
         cardType: props.cardType,
         origins: props.origins,
-        fontFamily: props.font,
+        font: props.font,
       });
     }, [
       css,
@@ -188,7 +188,7 @@ const CoinflowCardOnlyInputComponent = forwardRef(
         css,
         debug: props.debug,
         origins: props.origins,
-        fontFamily: props.font,
+        font: props.font,
       });
     }, [
       initializeTokenExCardOnlyIframe,

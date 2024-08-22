@@ -1,4 +1,4 @@
-import { CoinflowBlockchain, CoinflowEnvs, CoinflowIFrameProps, CoinflowPurchaseProps } from './CoinflowTypes';
+import { CoinflowBlockchain, CoinflowEnvs, CoinflowIFrameProps, CoinflowPurchaseProps, SolanaWallet } from './CoinflowTypes';
 export declare class CoinflowUtils {
     env: CoinflowEnvs;
     url: string;
@@ -18,4 +18,9 @@ export declare class CoinflowUtils {
         polygon: T;
         base: T;
     }): T;
+    static getWalletFromEmail({ email, merchantId, env, }: {
+        email: string;
+        merchantId: string;
+        env: CoinflowEnvs;
+    }): Promise<SolanaWallet>;
 }

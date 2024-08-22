@@ -23,7 +23,7 @@ var CoinflowCardNumberInputComponent = forwardRef(function (props, ref) {
             css: css,
             debug: props.debug,
             origins: props.origins,
-            fontFamily: props.font,
+            font: props.font,
         });
     }, [initializeTokenExIframe, css, props.debug, props.origins, props.font]);
     return React.createElement("div", { id: TokenExCardNumberIframeId });
@@ -92,7 +92,7 @@ var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
             token: props.token,
             cardType: props.cardType,
             origins: props.origins,
-            fontFamily: props.font,
+            font: props.font,
         });
     }, [
         css,
@@ -164,7 +164,7 @@ var CoinflowCardOnlyInputComponent = forwardRef(function (props, ref) {
             css: css,
             debug: props.debug,
             origins: props.origins,
-            fontFamily: props.font,
+            font: props.font,
         });
     }, [
         initializeTokenExCardOnlyIframe,

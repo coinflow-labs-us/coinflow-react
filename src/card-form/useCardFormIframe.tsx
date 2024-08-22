@@ -24,37 +24,19 @@ export function useCardFormIframe(env: CoinflowEnvs) {
   }, [env, setTokenExScriptLoaded]);
 
   const initializeCvvOnlyTokenExIframe = useCallback(
-    async ({
-      token,
-      cardType,
-      css,
-      debug,
-      fontFamily,
-      origins,
-    }: Omit<
-      Parameters<typeof doInitializeCvvOnlyTokenExIframe>[0],
-      'env' | 'tokenExScriptLoaded' | 'setCachedToken' | 'setLoaded'
-    >) => {
+    async (
+      args: Omit<
+        Parameters<typeof doInitializeCvvOnlyTokenExIframe>[0],
+        'env' | 'tokenExScriptLoaded' | 'setCachedToken' | 'setLoaded'
+      >
+    ) => {
       const iframe = await doInitializeCvvOnlyTokenExIframe({
-        token,
-        cardType,
-        css,
-        debug,
-        fontFamily,
-        origins,
+        ...args,
         tokenExScriptLoaded,
         env,
         setCachedToken,
         setLoaded,
       });
-      if (iframe) {
-        iframe.on('focus', () => {
-          iframe.focus();
-        });
-        iframe.on('cvvFocus', () => {
-          iframe.cvvFocus();
-        });
-      }
 
       setTokenExIframe(iframe);
       return iframe;
@@ -63,34 +45,19 @@ export function useCardFormIframe(env: CoinflowEnvs) {
   );
 
   const initializeTokenExIframe = useCallback(
-    async ({
-      css,
-      fontFamily,
-      debug,
-      origins,
-    }: Omit<
-      Parameters<typeof doInitializeTokenExIframe>[0],
-      'env' | 'tokenExScriptLoaded' | 'setCachedToken' | 'setLoaded'
-    >) => {
+    async (
+      args: Omit<
+        Parameters<typeof doInitializeTokenExIframe>[0],
+        'env' | 'tokenExScriptLoaded' | 'setCachedToken' | 'setLoaded'
+      >
+    ) => {
       const iframe = await doInitializeTokenExIframe({
-        css,
-        debug,
-        fontFamily,
-        origins,
+        ...args,
         tokenExScriptLoaded,
         env,
         setCachedToken,
         setLoaded,
       });
-
-      if (iframe) {
-        iframe.on('focus', () => {
-          iframe.focus();
-        });
-        iframe.on('cvvFocus', () => {
-          iframe.cvvFocus();
-        });
-      }
 
       setTokenExIframe(iframe);
       return iframe;
@@ -99,34 +66,19 @@ export function useCardFormIframe(env: CoinflowEnvs) {
   );
 
   const initializeTokenExCardOnlyIframe = useCallback(
-    async ({
-      css,
-      fontFamily,
-      debug,
-      origins,
-    }: Omit<
-      Parameters<typeof doInitializeTokenExCardOnlyIframe>[0],
-      'env' | 'tokenExScriptLoaded' | 'setCachedToken' | 'setLoaded'
-    >) => {
+    async (
+      args: Omit<
+        Parameters<typeof doInitializeTokenExCardOnlyIframe>[0],
+        'env' | 'tokenExScriptLoaded' | 'setCachedToken' | 'setLoaded'
+      >
+    ) => {
       const iframe = await doInitializeTokenExCardOnlyIframe({
-        css,
-        debug,
-        fontFamily,
-        origins,
+        ...args,
         tokenExScriptLoaded,
         env,
         setCachedToken,
         setLoaded,
       });
-
-      if (iframe) {
-        iframe.on('focus', () => {
-          iframe.focus();
-        });
-        iframe.on('cvvFocus', () => {
-          iframe.cvvFocus();
-        });
-      }
 
       setTokenExIframe(iframe);
       return iframe;

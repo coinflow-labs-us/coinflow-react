@@ -26,7 +26,7 @@ var CoinflowCardNumberInputComponent = (0, react_1.forwardRef)(function (props, 
             css: css,
             debug: props.debug,
             origins: props.origins,
-            fontFamily: props.font,
+            font: props.font,
         });
     }, [initializeTokenExIframe, css, props.debug, props.origins, props.font]);
     return react_1.default.createElement("div", { id: common_1.TokenExCardNumberIframeId });
@@ -95,7 +95,7 @@ var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref
             token: props.token,
             cardType: props.cardType,
             origins: props.origins,
-            fontFamily: props.font,
+            font: props.font,
         });
     }, [
         css,
@@ -167,7 +167,7 @@ var CoinflowCardOnlyInputComponent = (0, react_1.forwardRef)(function (props, re
             css: css,
             debug: props.debug,
             origins: props.origins,
-            fontFamily: props.font,
+            font: props.font,
         });
     }, [
         initializeTokenExCardOnlyIframe,

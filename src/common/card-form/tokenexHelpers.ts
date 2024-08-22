@@ -1,14 +1,31 @@
 import {CSSProperties} from 'react';
-import {TokenizationResponse} from './TokenEx';
-import {CoinflowUtils} from '../CoinflowUtils';
-import {CardType, CoinflowEnvs} from '../CoinflowTypes';
 import {
+  TokenizationResponse,
   TokenExCvvContainerID,
   TokenExIframe,
   TokenExIFrameConfiguration,
   CARD_TYPE_MAPPING,
   TokenExCardNumberIframeId,
-} from './cardFormTypes';
+} from './TokenEx';
+import {CoinflowUtils} from '../CoinflowUtils';
+import {CardType, CoinflowEnvs} from '../CoinflowTypes';
+
+export interface DoInitializeTokenExIframeArgs {
+  css: string;
+  debug?: boolean;
+  font?: string;
+  origins: string[] | undefined;
+  tokenExScriptLoaded: boolean;
+  env: CoinflowEnvs;
+  setCachedToken: (s: string | undefined) => void;
+  setLoaded: (b: boolean) => void;
+}
+
+export interface DoInitializeCvvOnlyTokenExIframeArgs
+  extends DoInitializeTokenExIframeArgs {
+  token: string;
+  cardType: CardType;
+}
 
 export async function getIframeConfig({
   token,
@@ -100,155 +117,90 @@ function loadIframe({
     }
   });
 
+  iframe.on('focus', () => {
+    iframe.focus();
+  });
+  iframe.on('cvvFocus', () => {
+    iframe.cvvFocus();
+  });
+
   setLoaded(false);
   iframe.load();
 
   return {...iframe, tokenize};
 }
 
-export async function doInitializeCvvOnlyTokenExIframe({
-  token,
-  cardType,
-  css,
-  debug,
-  fontFamily,
-  origins,
-  tokenExScriptLoaded,
-  env,
-  setCachedToken,
-  setLoaded,
-}: {
-  token: string;
-  cardType: CardType;
-  css: string;
-  debug?: boolean;
-  fontFamily?: string;
-  origins: string[] | undefined;
-  tokenExScriptLoaded: boolean;
-  env: CoinflowEnvs;
-  setCachedToken: (s: string | undefined) => void;
-  setLoaded: (b: boolean) => void;
-}) {
-  if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
-    console.warn(
-      `Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#${'tokenex-script'}`
-    );
-    return;
-  }
-  const type = CARD_TYPE_MAPPING[cardType];
-  const iframeConfig = await getIframeConfig({token, origins, env});
-  const {styles} = getStylesAndFont(css);
-  const config: TokenEx.Config = {
-    ...iframeConfig,
-    placeholder: 'CVV',
-    enablePrettyFormat: true,
-    styles,
-    token,
+export async function doInitializeCvvOnlyTokenExIframe(
+  args: DoInitializeCvvOnlyTokenExIframeArgs
+) {
+  const {token, cardType} = args;
+  return await doInitialize(TokenExCvvContainerID, args, {
     cvvOnly: true,
     cvv: true,
     cvvContainerID: TokenExCvvContainerID,
-    cardType: type,
-    debug: debug ?? false,
-    font: fontFamily,
-  };
-
-  const iframe: ReturnType<typeof TokenEx.Iframe> = TokenEx.Iframe(
-    TokenExCvvContainerID,
-    config
-  );
-
-  return loadIframe({iframe, setCachedToken, setLoaded});
+    placeholder: 'CVV',
+    token,
+    cardType: CARD_TYPE_MAPPING[cardType],
+  });
 }
 
-export async function doInitializeTokenExIframe({
-  css,
-  debug,
-  fontFamily,
-  origins,
-  tokenExScriptLoaded,
-  env,
-  setCachedToken,
-  setLoaded,
-}: {
-  css: string;
-  debug?: boolean;
-  fontFamily?: string;
-  origins: string[] | undefined;
-  tokenExScriptLoaded: boolean;
-  env: CoinflowEnvs;
-  setCachedToken: (s: string | undefined) => void;
-  setLoaded: (b: boolean) => void;
-}) {
-  if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
-    console.warn(
-      `Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#${'tokenex-script'}`
-    );
-    return;
-  }
-  const iframeConfig = await getIframeConfig({origins, env});
-  const {styles} = getStylesAndFont(css);
-  const iframe: ReturnType<typeof TokenEx.Iframe> = TokenEx.Iframe(
-    TokenExCardNumberIframeId,
-    {
-      ...iframeConfig,
-      placeholder: '0000 0000 0000 0000',
-      cvvPlaceholder: 'CVV',
-      enablePrettyFormat: true,
-      cvv: true,
-      cvvContainerID: TokenExCvvContainerID,
-      styles,
-      font: fontFamily,
-      debug: debug ?? false,
-    }
-  );
-
-  return loadIframe({iframe, setCachedToken, setLoaded});
+export async function doInitializeTokenExIframe(
+  args: DoInitializeTokenExIframeArgs
+) {
+  return await doInitialize(TokenExCardNumberIframeId, args, {
+    cvv: true,
+    cvvContainerID: TokenExCvvContainerID,
+    cvvPlaceholder: 'CVV',
+  });
 }
 
-export async function doInitializeTokenExCardOnlyIframe({
-  css,
-  debug,
-  fontFamily,
-  origins,
-  tokenExScriptLoaded,
-  env,
-  setCachedToken,
-  setLoaded,
-}: {
-  css: string;
-  debug?: boolean;
-  fontFamily?: string;
-  origins: string[] | undefined;
-  tokenExScriptLoaded: boolean;
-  env: CoinflowEnvs;
-  setCachedToken: (s: string | undefined) => void;
-  setLoaded: (b: boolean) => void;
-}) {
+export async function doInitializeTokenExCardOnlyIframe(
+  args: DoInitializeTokenExIframeArgs
+) {
+  return await doInitialize(TokenExCardNumberIframeId, args, {cvv: false});
+}
+
+async function doInitialize(
+  id: string,
+  {
+    tokenExScriptLoaded,
+    origins,
+    env,
+    css,
+    debug,
+    font,
+    setCachedToken,
+    setLoaded,
+  }: DoInitializeTokenExIframeArgs,
+  configOverrides: Partial<TokenEx.Config>
+) {
   if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
     console.warn(
       'Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#tokenex-script'
     );
     return;
   }
-  const iframeConfig = await getIframeConfig({origins, env});
-  const {styles} = getStylesAndFont(css);
-  const iframe: ReturnType<typeof TokenEx.Iframe> = TokenEx.Iframe(
-    TokenExCardNumberIframeId,
-    {
-      ...iframeConfig,
-      placeholder: '0000 0000 0000 0000',
-      enablePrettyFormat: true,
-      cvv: false,
-      styles,
-      font: fontFamily,
-      debug: debug ?? false,
-    }
-  );
+  const iframeConfig = await getIframeConfig({
+    token: configOverrides.token,
+    origins,
+    env,
+  });
+  const {styles} = getStyles(css);
+  const config = {
+    ...iframeConfig,
+    placeholder: '0000 0000 0000 0000',
+    enablePrettyFormat: true,
+    styles,
+    font,
+    debug: debug ?? false,
+    ...configOverrides,
+  };
+  const iframe: ReturnType<typeof TokenEx.Iframe> = TokenEx.Iframe(id, config);
 
   return loadIframe({iframe, setCachedToken, setLoaded});
 }
 
-function getStylesAndFont(s: string) {
+function getStyles(s: string) {
   const css = JSON.parse(s);
   const styles = {
     base: CSSPropertiesToComponent(css.base),
