@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CardType = exports.MerchantStyle = exports.SettlementType = void 0;
+exports.CardType = exports.ThreeDsChallengePreference = exports.MerchantStyle = exports.SettlementType = void 0;
 var SettlementType;
 (function (SettlementType) {
     SettlementType["Credits"] = "Credits";
@@ -13,6 +13,12 @@ var MerchantStyle;
     MerchantStyle["Sharp"] = "sharp";
     MerchantStyle["Pill"] = "pill";
 })(MerchantStyle || (exports.MerchantStyle = MerchantStyle = {}));
+var ThreeDsChallengePreference;
+(function (ThreeDsChallengePreference) {
+    ThreeDsChallengePreference["NoPreference"] = "NoPreference";
+    ThreeDsChallengePreference["Frictionless"] = "Frictionless";
+    ThreeDsChallengePreference["Challenge"] = "Challenge";
+})(ThreeDsChallengePreference || (exports.ThreeDsChallengePreference = ThreeDsChallengePreference = {}));
 var CardType;
 (function (CardType) {
     CardType["VISA"] = "VISA";

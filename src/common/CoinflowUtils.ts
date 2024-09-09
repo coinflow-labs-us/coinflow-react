@@ -105,6 +105,7 @@ export class CoinflowUtils {
     deviceId,
     jwtToken,
     origins,
+    threeDsChallengePreference,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -224,6 +225,12 @@ export class CoinflowUtils {
         LZString.compressToEncodedURIComponent(JSON.stringify(origins))
       );
 
+    if (threeDsChallengePreference)
+      url.searchParams.append(
+        'threeDsChallengePreference',
+        threeDsChallengePreference
+      );
+
     return url.toString();
   }
 
@@ -290,6 +297,22 @@ export class CoinflowUtils {
       default:
         throw new Error('blockchain not supported!');
     }
+  }
+
+  static async getWalletFromUserId({
+    userId,
+    merchantId,
+    env,
+  }: {
+    userId: string;
+    merchantId: string;
+    env: CoinflowEnvs;
+  }): Promise<SolanaWallet> {
+    return this.getWalletFromEmail({
+      email: userId,
+      merchantId,
+      env,
+    });
   }
 
   static async getWalletFromEmail({

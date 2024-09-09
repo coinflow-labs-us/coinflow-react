@@ -220,6 +220,12 @@ export interface ChargebackProtectionItem {
   rawProductData?: RawProductData;
 }
 
+export enum ThreeDsChallengePreference {
+  NoPreference = 'NoPreference',
+  Frictionless = 'Frictionless',
+  Challenge = 'Challenge',
+}
+
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   amount?: number | string;
   onSuccess?: OnSuccessMethod;
@@ -243,6 +249,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
    * The origin array would then be: [https://foo.com,https://bar.com]
    */
   origins?: string[];
+  threeDsChallengePreference?: ThreeDsChallengePreference;
 }
 
 export interface CoinflowSolanaPurchaseProps
@@ -416,6 +423,7 @@ export interface CoinflowIFrameProps
       | 'deviceId'
       | 'jwtToken'
       | 'origins'
+      | 'threeDsChallengePreference'
     >,
     Pick<
       CoinflowCommonWithdrawProps,

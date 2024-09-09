@@ -10,6 +10,12 @@ export var MerchantStyle;
     MerchantStyle["Sharp"] = "sharp";
     MerchantStyle["Pill"] = "pill";
 })(MerchantStyle || (MerchantStyle = {}));
+export var ThreeDsChallengePreference;
+(function (ThreeDsChallengePreference) {
+    ThreeDsChallengePreference["NoPreference"] = "NoPreference";
+    ThreeDsChallengePreference["Frictionless"] = "Frictionless";
+    ThreeDsChallengePreference["Challenge"] = "Challenge";
+})(ThreeDsChallengePreference || (ThreeDsChallengePreference = {}));
 export var CardType;
 (function (CardType) {
     CardType["VISA"] = "VISA";

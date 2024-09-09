@@ -147,6 +147,11 @@ export interface ChargebackProtectionItem {
      */
     rawProductData?: RawProductData;
 }
+export declare enum ThreeDsChallengePreference {
+    NoPreference = "NoPreference",
+    Frictionless = "Frictionless",
+    Challenge = "Challenge"
+}
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     amount?: number | string;
     onSuccess?: OnSuccessMethod;
@@ -170,6 +175,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
      * The origin array would then be: [https://foo.com,https://bar.com]
      */
     origins?: string[];
+    threeDsChallengePreference?: ThreeDsChallengePreference;
 }
 export interface CoinflowSolanaPurchaseProps extends CoinflowCommonPurchaseProps {
     wallet: SolanaWallet;
@@ -292,7 +298,7 @@ export interface TokenRedeem extends CommonEvmRedeem {
     destination: string;
 }
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | ReservoirRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'amount' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'token'> {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'amount' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'token'> {
     walletPubkey: string | null | undefined;
     route: string;
     routePrefix?: string;

@@ -64,7 +64,7 @@ var CoinflowUtils = /** @class */ (function () {
     };
     CoinflowUtils.getCoinflowUrl = function (_a) {
         var _b;
-        var walletPubkey = _a.walletPubkey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, amount = _a.amount, transaction = _a.transaction, blockchain = _a.blockchain, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChange = _a.handleHeightChange, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, nearDeposit = _a.nearDeposit, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, token = _a.token, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins;
+        var walletPubkey = _a.walletPubkey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, amount = _a.amount, transaction = _a.transaction, blockchain = _a.blockchain, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChange = _a.handleHeightChange, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, nearDeposit = _a.nearDeposit, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, token = _a.token, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference;
         var prefix = routePrefix
             ? "/".concat(routePrefix, "/").concat(blockchain)
             : "/".concat(blockchain);
@@ -151,6 +151,8 @@ var CoinflowUtils = /** @class */ (function () {
             url.searchParams.append('jwtToken', jwtToken);
         if (origins)
             url.searchParams.append('origins', LZString.compressToEncodedURIComponent(JSON.stringify(origins)));
+        if (threeDsChallengePreference)
+            url.searchParams.append('threeDsChallengePreference', threeDsChallengePreference);
         return url.toString();
     };
     CoinflowUtils.getTransaction = function (props) {
@@ -211,6 +213,18 @@ var CoinflowUtils = /** @class */ (function () {
             default:
                 throw new Error('blockchain not supported!');
         }
+    };
+    CoinflowUtils.getWalletFromUserId = function (_a) {
+        return __awaiter(this, arguments, void 0, function (_b) {
+            var userId = _b.userId, merchantId = _b.merchantId, env = _b.env;
+            return __generator(this, function (_c) {
+                return [2 /*return*/, this.getWalletFromEmail({
+                        email: userId,
+                        merchantId: merchantId,
+                        env: env,
+                    })];
+            });
+        });
     };
     CoinflowUtils.getWalletFromEmail = function (_a) {
         return __awaiter(this, arguments, void 0, function (_b) {
