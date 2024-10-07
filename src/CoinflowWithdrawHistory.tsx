@@ -9,7 +9,8 @@ import {
   CoinflowBaseHistoryProps,
   getWalletPubkey,
   IFrameMessageHandlers,
-  getHandlers
+  getHandlers,
+  CoinflowArbitrumHistoryProps
 } from "./common";
 
 export function CoinflowWithdrawHistory(
@@ -19,6 +20,7 @@ export function CoinflowWithdrawHistory(
     | CoinflowEthHistoryProps
     | CoinflowPolygonHistoryProps
     | CoinflowBaseHistoryProps
+    | CoinflowArbitrumHistoryProps
 ) {
   const iframeProps = useMemo<CoinflowIFrameProps>(() => {
     const walletPubkey = getWalletPubkey(props);

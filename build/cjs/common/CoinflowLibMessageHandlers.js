@@ -13,6 +13,7 @@ var IFrameMessageMethods;
     IFrameMessageMethods["SendTransaction"] = "sendTransaction";
     IFrameMessageMethods["HeightChange"] = "heightChange";
     IFrameMessageMethods["Success"] = "success";
+    IFrameMessageMethods["Load"] = "load";
 })(IFrameMessageMethods || (IFrameMessageMethods = {}));
 function getWalletPubkey(_a) {
     var wallet = _a.wallet;
@@ -69,6 +70,7 @@ function getHandlers(props) {
         eth: function () { return getEvmWalletHandlers(props); },
         polygon: function () { return getEvmWalletHandlers(props); },
         base: function () { return getEvmWalletHandlers(props); },
+        arbitrum: function () { return getEvmWalletHandlers(props); },
     })();
 }
 function getSolanaWalletHandlers(_a) {

@@ -106,6 +106,7 @@ export class CoinflowUtils {
     jwtToken,
     origins,
     threeDsChallengePreference,
+    supportEmail,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -144,6 +145,7 @@ export class CoinflowUtils {
     if (email) {
       url.searchParams.append('email', email);
     }
+    if (supportEmail) url.searchParams.append('supportEmail', supportEmail);
 
     if (token) {
       url.searchParams.append('token', token.toString());
@@ -271,6 +273,13 @@ export class CoinflowUtils {
           JSON.stringify(transaction)
         );
       },
+      arbitrum: () => {
+        if (!('transaction' in props)) return undefined;
+        const {transaction} = props;
+        return LZString.compressToEncodedURIComponent(
+          JSON.stringify(transaction)
+        );
+      },
       near: () => {
         if (!('action' in props)) return undefined;
         const {action} = props;
@@ -281,7 +290,7 @@ export class CoinflowUtils {
 
   static byBlockchain<T>(
     blockchain: CoinflowBlockchain,
-    args: {solana: T; near: T; eth: T; polygon: T; base: T}
+    args: {solana: T; near: T; eth: T; polygon: T; base: T; arbitrum: T}
   ): T {
     switch (blockchain) {
       case 'solana':
@@ -294,6 +303,8 @@ export class CoinflowUtils {
         return args.eth;
       case 'base':
         return args.base;
+      case 'arbitrum':
+        return args.arbitrum;
       default:
         throw new Error('blockchain not supported!');
     }

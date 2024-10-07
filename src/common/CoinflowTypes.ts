@@ -45,7 +45,13 @@ export interface CustomerInfo {
 }
 
 /** Coinflow Types **/
-export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon' | 'base';
+export type CoinflowBlockchain =
+  | 'solana'
+  | 'near'
+  | 'eth'
+  | 'polygon'
+  | 'base'
+  | 'arbitrum';
 export type CoinflowEnvs =
   | 'prod'
   | 'staging'
@@ -152,12 +158,17 @@ export interface CoinflowBaseHistoryProps extends CoinflowEvmHistoryProps {
   blockchain: 'base';
 }
 
+export interface CoinflowArbitrumHistoryProps extends CoinflowEvmHistoryProps {
+  blockchain: 'arbitrum';
+}
+
 export type CoinflowHistoryProps =
   | CoinflowSolanaHistoryProps
   | CoinflowNearHistoryProps
   | CoinflowPolygonHistoryProps
   | CoinflowEthHistoryProps
-  | CoinflowBaseHistoryProps;
+  | CoinflowBaseHistoryProps
+  | CoinflowArbitrumHistoryProps;
 
 /** Transactions **/
 
@@ -241,6 +252,10 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   deviceId?: string;
   jwtToken?: string;
   /**
+   * Your company email address that the customer can contact.
+   */
+  supportEmail?: string;
+  /**
    * If rendering the Coinflow component within multiple nested iframes, all ancestors in the chain must be provided as a comma-separated list.
    *
    * Example:
@@ -290,12 +305,18 @@ export interface CoinflowBasePurchaseProps extends CoinflowEvmPurchaseProps {
   blockchain: 'base';
 }
 
+export interface CoinflowArbitrumPurchaseProps
+  extends CoinflowEvmPurchaseProps {
+  blockchain: 'arbitrum';
+}
+
 export type CoinflowPurchaseProps =
   | CoinflowSolanaPurchaseProps
   | CoinflowNearPurchaseProps
   | CoinflowPolygonPurchaseProps
   | CoinflowEthPurchaseProps
-  | CoinflowBasePurchaseProps;
+  | CoinflowBasePurchaseProps
+  | CoinflowArbitrumPurchaseProps;
 
 /** Withdraw **/
 
@@ -308,7 +329,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
   bankAccountLinkRedirect?: string;
   additionalWallets?: {
     wallet: string;
-    blockchain: 'solana' | 'eth' | 'near' | 'polygon';
+    blockchain: 'solana' | 'eth' | 'near' | 'polygon' | 'base' | 'arbitrum';
   }[];
   lockAmount?: boolean;
   transactionSigner?: string;
@@ -353,12 +374,18 @@ export interface CoinflowBaseWithdrawProps extends CoinflowEvmWithdrawProps {
   blockchain: 'base';
 }
 
+export interface CoinflowArbitrumWithdrawProps
+  extends CoinflowEvmWithdrawProps {
+  blockchain: 'arbitrum';
+}
+
 export type CoinflowWithdrawProps =
   | CoinflowSolanaWithdrawProps
   | CoinflowNearWithdrawProps
   | CoinflowEthWithdrawProps
   | CoinflowPolygonWithdrawProps
-  | CoinflowBaseWithdrawProps;
+  | CoinflowBaseWithdrawProps
+  | CoinflowArbitrumWithdrawProps;
 
 export interface CommonEvmRedeem {
   waitForHash?: boolean;
@@ -424,6 +451,7 @@ export interface CoinflowIFrameProps
       | 'jwtToken'
       | 'origins'
       | 'threeDsChallengePreference'
+      | 'supportEmail'
     >,
     Pick<
       CoinflowCommonWithdrawProps,

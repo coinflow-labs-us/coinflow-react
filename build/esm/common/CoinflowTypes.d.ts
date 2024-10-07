@@ -34,7 +34,7 @@ export interface CustomerInfo {
     lng?: string;
 }
 /** Coinflow Types **/
-export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon' | 'base';
+export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon' | 'base' | 'arbitrum';
 export type CoinflowEnvs = 'prod' | 'staging' | 'staging-live' | 'sandbox' | 'local';
 export interface CoinflowTypes {
     merchantId: string;
@@ -113,7 +113,10 @@ export interface CoinflowPolygonHistoryProps extends CoinflowEvmHistoryProps {
 export interface CoinflowBaseHistoryProps extends CoinflowEvmHistoryProps {
     blockchain: 'base';
 }
-export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowNearHistoryProps | CoinflowPolygonHistoryProps | CoinflowEthHistoryProps | CoinflowBaseHistoryProps;
+export interface CoinflowArbitrumHistoryProps extends CoinflowEvmHistoryProps {
+    blockchain: 'arbitrum';
+}
+export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowNearHistoryProps | CoinflowPolygonHistoryProps | CoinflowEthHistoryProps | CoinflowBaseHistoryProps | CoinflowArbitrumHistoryProps;
 /** Transactions **/
 export type NearFtTransferCallAction = {
     methodName: 'ft_transfer_call';
@@ -167,6 +170,10 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     deviceId?: string;
     jwtToken?: string;
     /**
+     * Your company email address that the customer can contact.
+     */
+    supportEmail?: string;
+    /**
      * If rendering the Coinflow component within multiple nested iframes, all ancestors in the chain must be provided as a comma-separated list.
      *
      * Example:
@@ -212,7 +219,10 @@ export interface CoinflowEthPurchaseProps extends CoinflowEvmPurchaseProps {
 export interface CoinflowBasePurchaseProps extends CoinflowEvmPurchaseProps {
     blockchain: 'base';
 }
-export type CoinflowPurchaseProps = CoinflowSolanaPurchaseProps | CoinflowNearPurchaseProps | CoinflowPolygonPurchaseProps | CoinflowEthPurchaseProps | CoinflowBasePurchaseProps;
+export interface CoinflowArbitrumPurchaseProps extends CoinflowEvmPurchaseProps {
+    blockchain: 'arbitrum';
+}
+export type CoinflowPurchaseProps = CoinflowSolanaPurchaseProps | CoinflowNearPurchaseProps | CoinflowPolygonPurchaseProps | CoinflowEthPurchaseProps | CoinflowBasePurchaseProps | CoinflowArbitrumPurchaseProps;
 /** Withdraw **/
 export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     onSuccess?: OnSuccessMethod;
@@ -223,7 +233,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     bankAccountLinkRedirect?: string;
     additionalWallets?: {
         wallet: string;
-        blockchain: 'solana' | 'eth' | 'near' | 'polygon';
+        blockchain: 'solana' | 'eth' | 'near' | 'polygon' | 'base' | 'arbitrum';
     }[];
     lockAmount?: boolean;
     transactionSigner?: string;
@@ -260,7 +270,10 @@ export interface CoinflowPolygonWithdrawProps extends CoinflowEvmWithdrawProps {
 export interface CoinflowBaseWithdrawProps extends CoinflowEvmWithdrawProps {
     blockchain: 'base';
 }
-export type CoinflowWithdrawProps = CoinflowSolanaWithdrawProps | CoinflowNearWithdrawProps | CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps | CoinflowBaseWithdrawProps;
+export interface CoinflowArbitrumWithdrawProps extends CoinflowEvmWithdrawProps {
+    blockchain: 'arbitrum';
+}
+export type CoinflowWithdrawProps = CoinflowSolanaWithdrawProps | CoinflowNearWithdrawProps | CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps | CoinflowBaseWithdrawProps | CoinflowArbitrumWithdrawProps;
 export interface CommonEvmRedeem {
     waitForHash?: boolean;
 }
@@ -298,7 +311,7 @@ export interface TokenRedeem extends CommonEvmRedeem {
     destination: string;
 }
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | ReservoirRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'amount' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'token'> {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'amount' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'token'> {
     walletPubkey: string | null | undefined;
     route: string;
     routePrefix?: string;

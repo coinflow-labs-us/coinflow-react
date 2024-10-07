@@ -33,6 +33,7 @@ enum IFrameMessageMethods {
   SendTransaction = 'sendTransaction',
   HeightChange = 'heightChange',
   Success = 'success',
+  Load = 'load',
 }
 
 export function getWalletPubkey({
@@ -99,6 +100,7 @@ export function getHandlers(
     eth: () => getEvmWalletHandlers(props),
     polygon: () => getEvmWalletHandlers(props),
     base: () => getEvmWalletHandlers(props),
+    arbitrum: () => getEvmWalletHandlers(props),
   })();
 }
 
