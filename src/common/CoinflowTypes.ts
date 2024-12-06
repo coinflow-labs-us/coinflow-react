@@ -51,7 +51,8 @@ export type CoinflowBlockchain =
   | 'eth'
   | 'polygon'
   | 'base'
-  | 'arbitrum';
+  | 'arbitrum'
+  | 'user';
 export type CoinflowEnvs =
   | 'prod'
   | 'staging'
@@ -63,7 +64,7 @@ export interface CoinflowTypes {
   merchantId: string;
   env?: CoinflowEnvs;
   loaderBackground?: string;
-  blockchain: CoinflowBlockchain;
+  blockchain?: CoinflowBlockchain | undefined;
   handleHeightChange?: (height: string) => void;
   theme?: MerchantTheme;
 }
@@ -137,6 +138,11 @@ export interface CoinflowSolanaHistoryProps extends CoinflowTypes {
   blockchain: 'solana';
 }
 
+export interface CoinflowSessionKeyHistoryProps extends CoinflowTypes {
+  sessionKey: string;
+  blockchain?: undefined;
+}
+
 export interface CoinflowNearHistoryProps extends CoinflowTypes {
   wallet: NearWallet;
   blockchain: 'near';
@@ -144,6 +150,7 @@ export interface CoinflowNearHistoryProps extends CoinflowTypes {
 
 export interface CoinflowEvmHistoryProps extends CoinflowTypes {
   wallet: EthWallet;
+  blockchain: 'eth' | 'polygon' | 'base' | 'arbitrum';
 }
 
 export interface CoinflowEthHistoryProps extends CoinflowEvmHistoryProps {
@@ -168,7 +175,8 @@ export type CoinflowHistoryProps =
   | CoinflowPolygonHistoryProps
   | CoinflowEthHistoryProps
   | CoinflowBaseHistoryProps
-  | CoinflowArbitrumHistoryProps;
+  | CoinflowArbitrumHistoryProps
+  | CoinflowSessionKeyHistoryProps;
 
 /** Transactions **/
 
@@ -182,7 +190,7 @@ export type NearFtTransferCallAction = {
 type Bytes = ArrayLike<number>;
 type BytesLike = Bytes | string;
 
-type RawProductData = Record<string, string | number | boolean | object>;
+type RawProductData = any;
 
 /** Purchase **/
 
@@ -240,7 +248,9 @@ export enum ThreeDsChallengePreference {
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   amount?: number | string;
   onSuccess?: OnSuccessMethod;
-  webhookInfo?: object;
+  webhookInfo?: {
+    [key: string]: any;
+  };
   email?: string;
   chargebackProtectionData?: ChargebackProtectionData;
   planCode?: string;
@@ -249,6 +259,12 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   customerInfo?: CustomerInfo;
   settlementType?: SettlementType;
   authOnly?: boolean;
+  /**
+   * The DeviceID gotten from the Coinflow SDK:
+   *  https://docs.coinflow.cash/docs/implement-chargeback-protection#how-to-add-chargeback-protection
+   *
+   * window?.nSureSDK?.getDeviceId()
+   */
   deviceId?: string;
   jwtToken?: string;
   /**
@@ -265,6 +281,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
    */
   origins?: string[];
   threeDsChallengePreference?: ThreeDsChallengePreference;
+  destinationAuthKey?: string;
 }
 
 export interface CoinflowSolanaPurchaseProps
@@ -278,6 +295,13 @@ export interface CoinflowSolanaPurchaseProps
   token?: PublicKey | string;
   rent?: {lamports: string | number};
   nativeSolToConvert?: {lamports: string | number};
+}
+
+export interface CoinflowSessionKeyPurchaseProps
+  extends CoinflowCommonPurchaseProps {
+  sessionKey: string;
+  wallet?: undefined;
+  blockchain?: CoinflowBlockchain | undefined;
 }
 
 export interface CoinflowNearPurchaseProps extends CoinflowCommonPurchaseProps {
@@ -312,6 +336,7 @@ export interface CoinflowArbitrumPurchaseProps
 
 export type CoinflowPurchaseProps =
   | CoinflowSolanaPurchaseProps
+  | CoinflowSessionKeyPurchaseProps
   | CoinflowNearPurchaseProps
   | CoinflowPolygonPurchaseProps
   | CoinflowEthPurchaseProps
@@ -344,39 +369,71 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
   origins?: string[];
 }
 
-export interface CoinflowSolanaWithdrawProps
-  extends CoinflowCommonWithdrawProps {
+export type WalletTypes = SolanaWallet | NearWallet | EthWallet;
+
+export interface SolanaWalletProps {
   wallet: SolanaWallet;
   connection: Connection;
   blockchain: 'solana';
 }
 
-export interface CoinflowNearWithdrawProps extends CoinflowCommonWithdrawProps {
+export type CoinflowSolanaWithdrawProps = CoinflowCommonWithdrawProps &
+  SolanaWalletProps;
+
+export interface NearWalletProps {
   wallet: NearWallet;
   blockchain: 'near';
 }
 
-export interface CoinflowEvmWithdrawProps extends CoinflowCommonWithdrawProps {
+export type CoinflowNearWithdrawProps = CoinflowCommonWithdrawProps &
+  NearWalletProps;
+
+interface EvmWalletProps {
   wallet: EthWallet;
   usePermit?: boolean;
 }
 
-export interface CoinflowEthWithdrawProps extends CoinflowEvmWithdrawProps {
+type CoinflowEvmWithdrawProps = CoinflowCommonWithdrawProps & EvmWalletProps;
+
+export interface EthWalletProps {
   blockchain: 'eth';
-  usePermit?: boolean;
 }
 
-export interface CoinflowPolygonWithdrawProps extends CoinflowEvmWithdrawProps {
+export type CoinflowEthWithdrawProps = CoinflowEvmWithdrawProps &
+  EthWalletProps;
+
+export interface PolygonWalletProps {
   blockchain: 'polygon';
 }
 
-export interface CoinflowBaseWithdrawProps extends CoinflowEvmWithdrawProps {
+export type CoinflowPolygonWithdrawProps = CoinflowEvmWithdrawProps &
+  PolygonWalletProps;
+
+export interface BaseWalletProps {
   blockchain: 'base';
 }
 
-export interface CoinflowArbitrumWithdrawProps
-  extends CoinflowEvmWithdrawProps {
+export type CoinflowBaseWithdrawProps = CoinflowEvmWithdrawProps &
+  BaseWalletProps;
+
+export interface ArbitrumWalletProps {
   blockchain: 'arbitrum';
+}
+
+export type CoinflowArbitrumWithdrawProps = CoinflowEvmWithdrawProps &
+  ArbitrumWalletProps;
+
+export interface CoinflowSessionKeyWithdrawProps
+  extends CoinflowCommonWithdrawProps {
+  sessionKey: string;
+  signer:
+    | SolanaWalletProps
+    | NearWalletProps
+    | EthWalletProps
+    | PolygonWalletProps
+    | BaseWalletProps
+    | ArbitrumWalletProps;
+  blockchain?: undefined;
 }
 
 export type CoinflowWithdrawProps =
@@ -385,7 +442,8 @@ export type CoinflowWithdrawProps =
   | CoinflowEthWithdrawProps
   | CoinflowPolygonWithdrawProps
   | CoinflowBaseWithdrawProps
-  | CoinflowArbitrumWithdrawProps;
+  | CoinflowArbitrumWithdrawProps
+  | CoinflowSessionKeyWithdrawProps;
 
 export interface CommonEvmRedeem {
   waitForHash?: boolean;
@@ -463,8 +521,12 @@ export interface CoinflowIFrameProps
       | 'origins'
     >,
     Pick<CoinflowEvmPurchaseProps, 'authOnly'>,
-    Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'token'> {
+    Pick<
+      CoinflowSolanaPurchaseProps,
+      'rent' | 'nativeSolToConvert' | 'token' | 'destinationAuthKey'
+    > {
   walletPubkey: string | null | undefined;
+  sessionKey?: string;
   route: string;
   routePrefix?: string;
   transaction?: string;

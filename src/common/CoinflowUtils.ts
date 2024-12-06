@@ -3,12 +3,10 @@ import {
   CoinflowEnvs,
   CoinflowIFrameProps,
   CoinflowPurchaseProps,
-  SolanaWallet,
 } from './CoinflowTypes';
 import {web3, base58} from './SolanaPeerDeps';
 import LZString from 'lz-string';
-import {Keypair, Transaction, VersionedTransaction} from '@solana/web3.js';
-import {sign} from 'tweetnacl';
+import type {Transaction, VersionedTransaction} from '@solana/web3.js';
 
 export class CoinflowUtils {
   env: CoinflowEnvs;
@@ -36,25 +34,6 @@ export class CoinflowUtils {
       });
   }
 
-  async getCreditBalance(
-    publicKey: string,
-    merchantId: string,
-    blockchain: 'solana' | 'near'
-  ): Promise<{cents: number}> {
-    const response = await fetch(
-      this.url + `/api/customer/balances/${merchantId}`,
-      {
-        method: 'GET',
-        headers: {
-          'x-coinflow-auth-wallet': publicKey,
-          'x-coinflow-auth-blockchain': blockchain,
-        },
-      }
-    );
-    const {credits} = await response.json();
-    return credits;
-  }
-
   static getCoinflowBaseUrl(env?: CoinflowEnvs): string {
     if (!env || env === 'prod') return 'https://coinflow.cash';
     if (env === 'local') return 'http://localhost:3000';
@@ -71,12 +50,13 @@ export class CoinflowUtils {
 
   static getCoinflowUrl({
     walletPubkey,
+    sessionKey,
     route,
     routePrefix,
     env,
     amount,
     transaction,
-    blockchain,
+    blockchain = 'solana',
     webhookInfo,
     email,
     loaderBackground,
@@ -107,12 +87,15 @@ export class CoinflowUtils {
     origins,
     threeDsChallengePreference,
     supportEmail,
+    destinationAuthKey,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
       : `/${blockchain}`;
     const url = new URL(prefix + route, CoinflowUtils.getCoinflowBaseUrl(env));
-    url.searchParams.append('pubkey', walletPubkey!);
+
+    if (walletPubkey) url.searchParams.append('pubkey', walletPubkey);
+    if (sessionKey) url.searchParams.append('sessionKey', sessionKey);
 
     if (transaction) {
       url.searchParams.append('transaction', transaction);
@@ -233,10 +216,15 @@ export class CoinflowUtils {
         threeDsChallengePreference
       );
 
+    if (destinationAuthKey)
+      url.searchParams.append('destinationAuthKey', destinationAuthKey);
+
     return url.toString();
   }
 
   static getTransaction(props: CoinflowPurchaseProps): string | undefined {
+    if (!props.blockchain) return undefined;
+
     return this.byBlockchain<() => string | undefined>(props.blockchain, {
       solana: () => {
         if (!('transaction' in props)) return undefined;
@@ -285,12 +273,23 @@ export class CoinflowUtils {
         const {action} = props;
         return LZString.compressToEncodedURIComponent(JSON.stringify(action));
       },
+      user: () => {
+        return undefined;
+      },
     })();
   }
 
   static byBlockchain<T>(
     blockchain: CoinflowBlockchain,
-    args: {solana: T; near: T; eth: T; polygon: T; base: T; arbitrum: T}
+    args: {
+      solana: T;
+      near: T;
+      eth: T;
+      polygon: T;
+      base: T;
+      arbitrum: T;
+      user: T;
+    }
   ): T {
     switch (blockchain) {
       case 'solana':
@@ -305,85 +304,10 @@ export class CoinflowUtils {
         return args.base;
       case 'arbitrum':
         return args.arbitrum;
+      case 'user':
+        return args.user;
       default:
         throw new Error('blockchain not supported!');
     }
-  }
-
-  static async getWalletFromUserId({
-    userId,
-    merchantId,
-    env,
-  }: {
-    userId: string;
-    merchantId: string;
-    env: CoinflowEnvs;
-  }): Promise<SolanaWallet> {
-    return this.getWalletFromEmail({
-      email: userId,
-      merchantId,
-      env,
-    });
-  }
-
-  static async getWalletFromEmail({
-    email,
-    merchantId,
-    env,
-  }: {
-    email: string;
-    merchantId: string;
-    env: CoinflowEnvs;
-  }): Promise<SolanaWallet> {
-    const buffer = new TextEncoder().encode(email);
-    const crypto = window.crypto.subtle;
-    const hash = await crypto.digest('SHA-256', buffer);
-    const seed = new Uint8Array(hash);
-    const keypair = Keypair.fromSeed(seed);
-    return {
-      publicKey: keypair.publicKey,
-      signMessage: (message: Uint8Array) =>
-        Promise.resolve(sign.detached(message, keypair.secretKey)),
-      signTransaction: async <T extends Transaction | VersionedTransaction>(
-        transaction: T
-      ): Promise<T> => {
-        if (transaction instanceof Transaction) {
-          transaction.sign(keypair);
-          return transaction;
-        } else {
-          transaction.sign([keypair]);
-          return transaction;
-        }
-      },
-      sendTransaction: async <T extends Transaction | VersionedTransaction>(
-        transaction: T
-      ): Promise<string> => {
-        if (transaction instanceof Transaction) {
-          transaction.sign(keypair);
-        } else {
-          transaction.sign([keypair]);
-        }
-
-        const coinflowBaseUrl = this.getCoinflowApiUrl(env);
-        const options = {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-            'x-coinflow-auth-wallet': keypair.publicKey.toString(),
-            'x-coinflow-auth-blockchain': 'solana',
-          },
-          body: JSON.stringify({
-            merchantId,
-            signedTransaction: base58?.encode(transaction.serialize()),
-          }),
-        };
-
-        const {signature} = await fetch(
-          coinflowBaseUrl + '/api/utils/send-coinflow-tx',
-          options
-        ).then(res => res.json());
-        return signature;
-      },
-    };
   }
 }

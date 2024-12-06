@@ -72,6 +72,22 @@ Props:
 
 # Changelog
 
+## 4.5.2
+
+- Updating optional peer dependencies to play nice with various bundlers
+
+## 4.5.1
+
+- Added sessionKey authentication mechanism to `CoinflowWithdraw`
+
+## 4.5.0
+
+- Added sessionKey authentication mechanism to `CoinflowPurchase`
+
+## 4.4.1
+
+- Added `onError` callback to Apple Pay and Google Pay buttons
+
 ## 4.4.0
 
 - Added overlay to digital wallet buttons to make the loading time 0

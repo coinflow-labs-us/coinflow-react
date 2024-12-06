@@ -1,9 +1,11 @@
 import {
+  CoinflowBlockchain,
   CoinflowPurchaseProps,
   EthWallet,
   NearWallet,
   OnSuccessMethod,
   SolanaWallet,
+  WalletTypes,
 } from './CoinflowTypes';
 import {CoinflowUtils} from './CoinflowUtils';
 import type {Transaction, VersionedTransaction} from '@solana/web3.js';
@@ -33,22 +35,35 @@ enum IFrameMessageMethods {
   SendTransaction = 'sendTransaction',
   HeightChange = 'heightChange',
   Success = 'success',
-  Load = 'load',
+  Loaded = 'loaded',
 }
 
-export function getWalletPubkey({
-  wallet,
-}: Pick<CoinflowPurchaseProps, 'wallet'>): string | null | undefined {
-  if ('publicKey' in wallet) {
-    return wallet.publicKey!.toString();
-  }
+export function getWalletPubkey(
+  input: CoinflowPurchaseProps
+): string | null | undefined {
+  let wallet: WalletTypes | undefined;
+  if (
+    'signer' in input &&
+    typeof input.signer === 'object' &&
+    input.signer &&
+    'wallet' in input.signer
+  )
+    wallet = input.signer.wallet as WalletTypes;
+  else if ('wallet' in input && input.wallet) wallet = input.wallet;
 
-  if ('address' in wallet) {
-    return wallet.address;
-  }
+  if (!wallet) return;
 
-  if ('accountId' in wallet) {
-    return wallet.accountId;
+  if (typeof wallet === 'string') return wallet;
+
+  if (typeof wallet === 'object') {
+    if ('publicKey' in wallet)
+      return wallet.publicKey ? wallet.publicKey.toString() : undefined;
+
+    if ('address' in wallet)
+      return wallet.address ? (wallet.address as string) : undefined;
+
+    if ('accountId' in wallet)
+      return wallet.accountId ? (wallet.accountId as string) : undefined;
   }
 
   return null;
@@ -84,6 +99,8 @@ export function handleIFrameMessage(
       if (!handlers.onSuccess) return;
       handlers.onSuccess((walletCall as SuccessWalletCall).info);
       return;
+    case IFrameMessageMethods.Loaded:
+      return;
   }
 
   console.warn(
@@ -92,32 +109,88 @@ export function handleIFrameMessage(
 }
 
 export function getHandlers(
-  props: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain' | 'onSuccess'>
+  props: CoinflowPurchaseProps
 ): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
-  return CoinflowUtils.byBlockchain(props.blockchain, {
-    solana: () => getSolanaWalletHandlers(props),
-    near: () => getNearWalletHandlers(props),
-    eth: () => getEvmWalletHandlers(props),
-    polygon: () => getEvmWalletHandlers(props),
-    base: () => getEvmWalletHandlers(props),
-    arbitrum: () => getEvmWalletHandlers(props),
+  let chain: CoinflowBlockchain | undefined;
+  let wallet: WalletTypes | undefined;
+  if (
+    'signer' in props &&
+    typeof props.signer === 'object' &&
+    props.signer &&
+    'blockchain' in props.signer &&
+    'wallet' in props.signer
+  ) {
+    chain = props.signer.blockchain as CoinflowBlockchain;
+    wallet = props.signer.wallet as WalletTypes;
+  } else if ('blockchain' in props && props.blockchain) {
+    chain = props.blockchain;
+    wallet = props.wallet;
+  }
+
+  if (!chain) {
+    return {
+      handleSendTransaction: () => {
+        throw new Error('handleSendTransaction Not Implemented');
+      },
+      handleSignMessage: () => {
+        throw new Error('handleSendTransaction Not Implemented');
+      },
+      handleSignTransaction: () => {
+        throw new Error('handleSendTransaction Not Implemented');
+      },
+      onSuccess: props.onSuccess,
+    };
+  }
+
+  return CoinflowUtils.byBlockchain(chain, {
+    solana: () =>
+      getSolanaWalletHandlers({
+        wallet: wallet as SolanaWallet,
+        onSuccess: props.onSuccess,
+      }),
+    near: () =>
+      getNearWalletHandlers({
+        wallet: wallet as NearWallet,
+        onSuccess: props.onSuccess,
+      }),
+    eth: () =>
+      getEvmWalletHandlers({
+        wallet: wallet as EthWallet,
+        onSuccess: props.onSuccess,
+      }),
+    polygon: () =>
+      getEvmWalletHandlers({
+        wallet: wallet as EthWallet,
+        onSuccess: props.onSuccess,
+      }),
+    base: () =>
+      getEvmWalletHandlers({
+        wallet: wallet as EthWallet,
+        onSuccess: props.onSuccess,
+      }),
+    arbitrum: () =>
+      getEvmWalletHandlers({
+        wallet: wallet as EthWallet,
+        onSuccess: props.onSuccess,
+      }),
+    user: () => getSessionKeyHandlers(props),
   })();
 }
 
 function getSolanaWalletHandlers({
   wallet,
   onSuccess,
-}: Pick<CoinflowPurchaseProps, 'wallet' | 'onSuccess'>): Omit<
-  IFrameMessageHandlers,
-  'handleHeightChange'
-> {
+}: {
+  wallet: SolanaWallet;
+  onSuccess?: OnSuccessMethod;
+}): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   return {
     handleSendTransaction: async (transaction: string) => {
       const tx = getSolanaTransaction(transaction);
-      return await (wallet as SolanaWallet).sendTransaction(tx);
+      return await wallet.sendTransaction(tx);
     },
     handleSignMessage: async (message: string) => {
-      const signMessage = (wallet as SolanaWallet).signMessage;
+      const signMessage = wallet.signMessage;
       if (!signMessage) {
         throw new Error('signMessage is not supported by this wallet');
       }
@@ -129,7 +202,7 @@ function getSolanaWalletHandlers({
       return base58.encode(signedMessage);
     },
     handleSignTransaction: async (transaction: string) => {
-      const signTransaction = (wallet as SolanaWallet).signTransaction;
+      const signTransaction = wallet.signTransaction;
       if (!signTransaction) {
         throw new Error('signTransaction is not supported by this wallet');
       }
@@ -169,15 +242,14 @@ function getSolanaTransaction(
 function getNearWalletHandlers({
   wallet,
   onSuccess,
-}: Pick<CoinflowPurchaseProps, 'wallet' | 'onSuccess'>): Omit<
-  IFrameMessageHandlers,
-  'handleHeightChange'
-> {
-  const nearWallet = wallet as NearWallet;
+}: {
+  wallet: NearWallet;
+  onSuccess?: OnSuccessMethod;
+}): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   return {
     handleSendTransaction: async (transaction: string) => {
       const action = JSON.parse(Buffer.from(transaction, 'base64').toString());
-      const executionOutcome = await nearWallet.signAndSendTransaction(action);
+      const executionOutcome = await wallet.signAndSendTransaction(action);
       if (!executionOutcome) throw new Error('Transaction did not send');
       const {transaction: transactionResult} = executionOutcome;
       return transactionResult.hash;
@@ -189,19 +261,32 @@ function getNearWalletHandlers({
 function getEvmWalletHandlers({
   wallet,
   onSuccess,
-}: Pick<CoinflowPurchaseProps, 'wallet' | 'onSuccess'>): Omit<
-  IFrameMessageHandlers,
-  'handleHeightChange'
-> {
-  const evmWallet = wallet as EthWallet;
+}: {
+  wallet: EthWallet;
+  onSuccess?: OnSuccessMethod;
+}): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   return {
     handleSendTransaction: async (transaction: string) => {
       const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
-      const {hash} = await evmWallet.sendTransaction(tx);
+      const {hash} = await wallet.sendTransaction(tx);
       return hash;
     },
     handleSignMessage: async (message: string) => {
-      return evmWallet.signMessage(message);
+      return wallet.signMessage(message);
+    },
+    onSuccess,
+  };
+}
+
+function getSessionKeyHandlers({
+  onSuccess,
+}: Pick<CoinflowPurchaseProps, 'onSuccess'>): Omit<
+  IFrameMessageHandlers,
+  'handleHeightChange'
+> {
+  return {
+    handleSendTransaction: async () => {
+      return Promise.resolve('');
     },
     onSuccess,
   };

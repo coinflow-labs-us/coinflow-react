@@ -1,7 +1,7 @@
 import { __assign } from "tslib";
 import { CoinflowIFrame } from './CoinflowIFrame';
-import React, { useMemo } from "react";
-import { getWalletPubkey, getHandlers } from "./common";
+import React, { useMemo } from 'react';
+import { getWalletPubkey, getHandlers, } from './common';
 export function CoinflowWithdrawHistory(props) {
     var iframeProps = useMemo(function () {
         var walletPubkey = getWalletPubkey(props);

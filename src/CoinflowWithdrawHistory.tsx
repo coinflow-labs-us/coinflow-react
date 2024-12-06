@@ -1,27 +1,14 @@
 import {CoinflowIFrame} from './CoinflowIFrame';
-import React, { useMemo } from "react";
+import React, {useMemo} from 'react';
 import {
-  CoinflowNearHistoryProps,
-  CoinflowSolanaHistoryProps,
-  CoinflowEthHistoryProps,
-  CoinflowPolygonHistoryProps,
   CoinflowIFrameProps,
-  CoinflowBaseHistoryProps,
   getWalletPubkey,
   IFrameMessageHandlers,
   getHandlers,
-  CoinflowArbitrumHistoryProps
-} from "./common";
+  CoinflowHistoryProps,
+} from './common';
 
-export function CoinflowWithdrawHistory(
-  props:
-    | CoinflowSolanaHistoryProps
-    | CoinflowNearHistoryProps
-    | CoinflowEthHistoryProps
-    | CoinflowPolygonHistoryProps
-    | CoinflowBaseHistoryProps
-    | CoinflowArbitrumHistoryProps
-) {
+export function CoinflowWithdrawHistory(props: CoinflowHistoryProps) {
   const iframeProps = useMemo<CoinflowIFrameProps>(() => {
     const walletPubkey = getWalletPubkey(props);
     return {
@@ -35,9 +22,9 @@ export function CoinflowWithdrawHistory(
   const messageHandlers = useMemo<IFrameMessageHandlers>(() => {
     return {
       ...getHandlers(props),
-      handleHeightChange: props.handleHeightChange
+      handleHeightChange: props.handleHeightChange,
     };
-  } , [props]);
+  }, [props]);
 
-  return <CoinflowIFrame {...iframeProps } {...messageHandlers} />;
+  return <CoinflowIFrame {...iframeProps} {...messageHandlers} />;
 }

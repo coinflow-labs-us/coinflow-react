@@ -8,18 +8,28 @@ var IFrameMessageMethods;
     IFrameMessageMethods["SendTransaction"] = "sendTransaction";
     IFrameMessageMethods["HeightChange"] = "heightChange";
     IFrameMessageMethods["Success"] = "success";
-    IFrameMessageMethods["Load"] = "load";
+    IFrameMessageMethods["Loaded"] = "loaded";
 })(IFrameMessageMethods || (IFrameMessageMethods = {}));
-export function getWalletPubkey(_a) {
-    var wallet = _a.wallet;
-    if ('publicKey' in wallet) {
-        return wallet.publicKey.toString();
-    }
-    if ('address' in wallet) {
-        return wallet.address;
-    }
-    if ('accountId' in wallet) {
-        return wallet.accountId;
+export function getWalletPubkey(input) {
+    var wallet;
+    if ('signer' in input &&
+        typeof input.signer === 'object' &&
+        input.signer &&
+        'wallet' in input.signer)
+        wallet = input.signer.wallet;
+    else if ('wallet' in input && input.wallet)
+        wallet = input.wallet;
+    if (!wallet)
+        return;
+    if (typeof wallet === 'string')
+        return wallet;
+    if (typeof wallet === 'object') {
+        if ('publicKey' in wallet)
+            return wallet.publicKey ? wallet.publicKey.toString() : undefined;
+        if ('address' in wallet)
+            return wallet.address ? wallet.address : undefined;
+        if ('accountId' in wallet)
+            return wallet.accountId ? wallet.accountId : undefined;
     }
     return null;
 }
@@ -55,17 +65,78 @@ export function handleIFrameMessage(rawMessage, handlers) {
                 return;
             handlers.onSuccess(walletCall.info);
             return;
+        case IFrameMessageMethods.Loaded:
+            return;
     }
     console.warn("Didn't expect to get here, handleIFrameMessage method:".concat(method, " is not one of ").concat(Object.values(IFrameMessageMethods)));
 }
 export function getHandlers(props) {
-    return CoinflowUtils.byBlockchain(props.blockchain, {
-        solana: function () { return getSolanaWalletHandlers(props); },
-        near: function () { return getNearWalletHandlers(props); },
-        eth: function () { return getEvmWalletHandlers(props); },
-        polygon: function () { return getEvmWalletHandlers(props); },
-        base: function () { return getEvmWalletHandlers(props); },
-        arbitrum: function () { return getEvmWalletHandlers(props); },
+    var chain;
+    var wallet;
+    if ('signer' in props &&
+        typeof props.signer === 'object' &&
+        props.signer &&
+        'blockchain' in props.signer &&
+        'wallet' in props.signer) {
+        chain = props.signer.blockchain;
+        wallet = props.signer.wallet;
+    }
+    else if ('blockchain' in props && props.blockchain) {
+        chain = props.blockchain;
+        wallet = props.wallet;
+    }
+    if (!chain) {
+        return {
+            handleSendTransaction: function () {
+                throw new Error('handleSendTransaction Not Implemented');
+            },
+            handleSignMessage: function () {
+                throw new Error('handleSendTransaction Not Implemented');
+            },
+            handleSignTransaction: function () {
+                throw new Error('handleSendTransaction Not Implemented');
+            },
+            onSuccess: props.onSuccess,
+        };
+    }
+    return CoinflowUtils.byBlockchain(chain, {
+        solana: function () {
+            return getSolanaWalletHandlers({
+                wallet: wallet,
+                onSuccess: props.onSuccess,
+            });
+        },
+        near: function () {
+            return getNearWalletHandlers({
+                wallet: wallet,
+                onSuccess: props.onSuccess,
+            });
+        },
+        eth: function () {
+            return getEvmWalletHandlers({
+                wallet: wallet,
+                onSuccess: props.onSuccess,
+            });
+        },
+        polygon: function () {
+            return getEvmWalletHandlers({
+                wallet: wallet,
+                onSuccess: props.onSuccess,
+            });
+        },
+        base: function () {
+            return getEvmWalletHandlers({
+                wallet: wallet,
+                onSuccess: props.onSuccess,
+            });
+        },
+        arbitrum: function () {
+            return getEvmWalletHandlers({
+                wallet: wallet,
+                onSuccess: props.onSuccess,
+            });
+        },
+        user: function () { return getSessionKeyHandlers(props); },
     })();
 }
 function getSolanaWalletHandlers(_a) {
@@ -140,7 +211,6 @@ function getSolanaTransaction(data) {
 function getNearWalletHandlers(_a) {
     var _this = this;
     var wallet = _a.wallet, onSuccess = _a.onSuccess;
-    var nearWallet = wallet;
     return {
         handleSendTransaction: function (transaction) { return __awaiter(_this, void 0, void 0, function () {
             var action, executionOutcome, transactionResult;
@@ -148,7 +218,7 @@ function getNearWalletHandlers(_a) {
                 switch (_a.label) {
                     case 0:
                         action = JSON.parse(Buffer.from(transaction, 'base64').toString());
-                        return [4 /*yield*/, nearWallet.signAndSendTransaction(action)];
+                        return [4 /*yield*/, wallet.signAndSendTransaction(action)];
                     case 1:
                         executionOutcome = _a.sent();
                         if (!executionOutcome)
@@ -164,7 +234,6 @@ function getNearWalletHandlers(_a) {
 function getEvmWalletHandlers(_a) {
     var _this = this;
     var wallet = _a.wallet, onSuccess = _a.onSuccess;
-    var evmWallet = wallet;
     return {
         handleSendTransaction: function (transaction) { return __awaiter(_this, void 0, void 0, function () {
             var tx, hash;
@@ -172,7 +241,7 @@ function getEvmWalletHandlers(_a) {
                 switch (_a.label) {
                     case 0:
                         tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
-                        return [4 /*yield*/, evmWallet.sendTransaction(tx)];
+                        return [4 /*yield*/, wallet.sendTransaction(tx)];
                     case 1:
                         hash = (_a.sent()).hash;
                         return [2 /*return*/, hash];
@@ -181,7 +250,19 @@ function getEvmWalletHandlers(_a) {
         }); },
         handleSignMessage: function (message) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, evmWallet.signMessage(message)];
+                return [2 /*return*/, wallet.signMessage(message)];
+            });
+        }); },
+        onSuccess: onSuccess,
+    };
+}
+function getSessionKeyHandlers(_a) {
+    var _this = this;
+    var onSuccess = _a.onSuccess;
+    return {
+        handleSendTransaction: function () { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, Promise.resolve('')];
             });
         }); },
         onSuccess: onSuccess,

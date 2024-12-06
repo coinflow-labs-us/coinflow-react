@@ -25,7 +25,7 @@ export function MobileWalletButton({
   const iframeRef = useRef<CoinflowIFrameExposedFunctions>(null);
   const {opacity, display} = useOverlay(iframeRef);
 
-  const {onSuccess} = props;
+  const {onSuccess, onError} = props;
   useEffect(() => {
     if (!onSuccess) return;
     if (!iframeRef?.current) return;
@@ -33,13 +33,19 @@ export function MobileWalletButton({
       .listenForMessage((data: string) => {
         try {
           const res = JSON.parse(data);
+
+          if ('method' in res && res.data.startsWith('ERROR')) {
+            onError?.(res.info);
+            return false;
+          }
+
           return 'method' in res && res.method === 'getToken';
         } catch (e) {
           return false;
         }
       })
       .then(data => onSuccess?.(data));
-  }, [onSuccess]);
+  }, [onError, onSuccess]);
 
   const iframeProps = useMemo<CoinflowIFrameProps>(() => {
     const walletPubkey = getWalletPubkey(props);
@@ -99,4 +105,5 @@ export function MobileWalletButton({
 
 export interface MobileWalletButtonProps {
   color: 'white' | 'black';
+  onError?: (message: string) => void;
 }

@@ -24,9 +24,9 @@ declare enum IFrameMessageMethods {
     SendTransaction = "sendTransaction",
     HeightChange = "heightChange",
     Success = "success",
-    Load = "load"
+    Loaded = "loaded"
 }
-export declare function getWalletPubkey({ wallet, }: Pick<CoinflowPurchaseProps, 'wallet'>): string | null | undefined;
+export declare function getWalletPubkey(input: CoinflowPurchaseProps): string | null | undefined;
 export declare function handleIFrameMessage(rawMessage: string, handlers: IFrameMessageHandlers): Promise<string> | void;
-export declare function getHandlers(props: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain' | 'onSuccess'>): Omit<IFrameMessageHandlers, 'handleHeightChange'>;
+export declare function getHandlers(props: CoinflowPurchaseProps): Omit<IFrameMessageHandlers, 'handleHeightChange'>;
 export {};
