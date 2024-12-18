@@ -4,6 +4,7 @@ exports.CoinflowUtils = void 0;
 var tslib_1 = require("tslib");
 var SolanaPeerDeps_1 = require("./SolanaPeerDeps");
 var lz_string_1 = tslib_1.__importDefault(require("lz-string"));
+var Subtotal_1 = require("./Subtotal");
 var CoinflowUtils = /** @class */ (function () {
     function CoinflowUtils(env) {
         this.env = env !== null && env !== void 0 ? env : 'prod';
@@ -43,7 +44,7 @@ var CoinflowUtils = /** @class */ (function () {
     };
     CoinflowUtils.getCoinflowUrl = function (_a) {
         var _b;
-        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, amount = _a.amount, transaction = _a.transaction, _c = _a.blockchain, blockchain = _c === void 0 ? 'solana' : _c, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChange = _a.handleHeightChange, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, nearDeposit = _a.nearDeposit, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, token = _a.token, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey;
+        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, subtotal = _a.subtotal, transaction = _a.transaction, _c = _a.blockchain, blockchain = _c === void 0 ? 'solana' : _c, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChange = _a.handleHeightChange, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, nearDeposit = _a.nearDeposit, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey;
         var prefix = routePrefix
             ? "/".concat(routePrefix, "/").concat(blockchain)
             : "/".concat(blockchain);
@@ -55,8 +56,20 @@ var CoinflowUtils = /** @class */ (function () {
         if (transaction) {
             url.searchParams.append('transaction', transaction);
         }
-        if (amount) {
-            url.searchParams.append('amount', amount.toString());
+        if (subtotal) {
+            if ('cents' in subtotal) {
+                url.searchParams.append('cents', subtotal.cents.toString());
+                if ('currency' in subtotal) {
+                    url.searchParams.append('currency', subtotal.currency.toString());
+                }
+                else {
+                    url.searchParams.append('currency', Subtotal_1.Currency.USD);
+                }
+            }
+            else {
+                url.searchParams.append('token', subtotal.address.toString());
+                url.searchParams.append('amount', subtotal.amount.toString());
+            }
         }
         if (webhookInfo) {
             url.searchParams.append('webhookInfo', lz_string_1.default.compressToEncodedURIComponent(JSON.stringify(webhookInfo)));
@@ -72,9 +85,6 @@ var CoinflowUtils = /** @class */ (function () {
         }
         if (supportEmail)
             url.searchParams.append('supportEmail', supportEmail);
-        if (token) {
-            url.searchParams.append('token', token.toString());
-        }
         if (tokens) {
             url.searchParams.append('tokens', tokens.toString());
         }

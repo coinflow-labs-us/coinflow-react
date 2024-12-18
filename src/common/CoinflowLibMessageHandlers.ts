@@ -39,7 +39,7 @@ enum IFrameMessageMethods {
 }
 
 export function getWalletPubkey(
-  input: CoinflowPurchaseProps
+  input: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain'>
 ): string | null | undefined {
   let wallet: WalletTypes | undefined;
   if (
@@ -109,7 +109,7 @@ export function handleIFrameMessage(
 }
 
 export function getHandlers(
-  props: CoinflowPurchaseProps
+  props: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain' | 'onSuccess'>
 ): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   let chain: CoinflowBlockchain | undefined;
   let wallet: WalletTypes | undefined;

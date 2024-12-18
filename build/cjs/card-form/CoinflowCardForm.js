@@ -9,7 +9,8 @@ var CoinflowCardNumberInputComponent = (0, react_1.forwardRef)(function (props, 
     var css = (0, react_1.useMemo)(function () {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var _a = (0, useCardFormIframe_1.useCardFormIframe)(props.env), tokenExIframe = _a.tokenExIframe, initializeTokenExIframe = _a.initializeTokenExIframe;
+    var origins = JSON.stringify(props.origins);
+    var _a = (0, useCardFormIframe_1.useCardFormIframe)(props), tokenExIframe = _a.tokenExIframe, initializeTokenExIframe = _a.initializeTokenExIframe;
     (0, react_1.useImperativeHandle)(ref, function () { return ({
         getToken: function () {
             return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -25,10 +26,10 @@ var CoinflowCardNumberInputComponent = (0, react_1.forwardRef)(function (props, 
         initializeTokenExIframe({
             css: css,
             debug: props.debug,
-            origins: props.origins,
+            origins: JSON.parse(origins),
             font: props.font,
         });
-    }, [initializeTokenExIframe, css, props.debug, props.origins, props.font]);
+    }, [css, props.debug, props.font, origins, initializeTokenExIframe]);
     return react_1.default.createElement("div", { id: common_1.TokenExCardNumberIframeId });
 });
 /**
@@ -76,7 +77,8 @@ var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref
     var css = (0, react_1.useMemo)(function () {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var _a = (0, useCardFormIframe_1.useCardFormIframe)(props.env), tokenExIframe = _a.tokenExIframe, initializeCvvOnlyTokenExIframe = _a.initializeCvvOnlyTokenExIframe;
+    var origins = JSON.stringify(props.origins);
+    var _a = (0, useCardFormIframe_1.useCardFormIframe)(props), tokenExIframe = _a.tokenExIframe, initializeCvvOnlyTokenExIframe = _a.initializeCvvOnlyTokenExIframe;
     (0, react_1.useImperativeHandle)(ref, function () { return ({
         getToken: function () {
             return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -94,7 +96,7 @@ var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref
             debug: props.debug,
             token: props.token,
             cardType: props.cardType,
-            origins: props.origins,
+            origins: JSON.parse(origins),
             font: props.font,
         });
     }, [
@@ -103,7 +105,7 @@ var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref
         props.debug,
         props.token,
         props.cardType,
-        props.origins,
+        origins,
         props.font,
     ]);
     return (0, react_1.useMemo)(function () { return react_1.default.createElement("div", { id: common_1.TokenExCvvContainerID }); }, []);
@@ -150,7 +152,8 @@ var CoinflowCardOnlyInputComponent = (0, react_1.forwardRef)(function (props, re
     var css = (0, react_1.useMemo)(function () {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var _a = (0, useCardFormIframe_1.useCardFormIframe)(props.env), tokenExIframe = _a.tokenExIframe, initializeTokenExCardOnlyIframe = _a.initializeTokenExCardOnlyIframe;
+    var origins = JSON.stringify(props.origins);
+    var _a = (0, useCardFormIframe_1.useCardFormIframe)(props), tokenExIframe = _a.tokenExIframe, initializeTokenExCardOnlyIframe = _a.initializeTokenExCardOnlyIframe;
     (0, react_1.useImperativeHandle)(ref, function () { return ({
         getToken: function () {
             return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -166,14 +169,14 @@ var CoinflowCardOnlyInputComponent = (0, react_1.forwardRef)(function (props, re
         initializeTokenExCardOnlyIframe({
             css: css,
             debug: props.debug,
-            origins: props.origins,
+            origins: JSON.parse(origins),
             font: props.font,
         });
     }, [
         initializeTokenExCardOnlyIframe,
         props.debug,
         css,
-        props.origins,
+        origins,
         props.font,
     ]);
     return react_1.default.createElement("div", { id: common_1.TokenExCardNumberIframeId });

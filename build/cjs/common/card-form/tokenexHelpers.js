@@ -8,20 +8,23 @@ exports.doInitializeTokenExCardOnlyIframe = doInitializeTokenExCardOnlyIframe;
 var tslib_1 = require("tslib");
 var TokenEx_1 = require("./TokenEx");
 var CoinflowUtils_1 = require("../CoinflowUtils");
-function getIframeConfig(_a) {
-    return tslib_1.__awaiter(this, arguments, void 0, function (_b) {
+function getIframeConfig(args) {
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
+        var token, origins, env;
         var _this = this;
-        var token = _b.token, origins = _b.origins, env = _b.env;
-        return tslib_1.__generator(this, function (_c) {
+        return tslib_1.__generator(this, function (_a) {
+            token = args.token, origins = args.origins, env = args.env;
             return [2 /*return*/, new Promise(function (resolve, reject) {
-                    fetch(new CoinflowUtils_1.CoinflowUtils(env).url + '/api/checkout/authentication-key', {
+                    fetch(new CoinflowUtils_1.CoinflowUtils(env).url + '/api/checkout/v2/authentication-key', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            origins: tslib_1.__spreadArray(tslib_1.__spreadArray([], (origins !== null && origins !== void 0 ? origins : []), true), [window.location.origin], false),
+                            origins: origins,
                             token: token,
+                            merchantId: 'merchantId' in args ? args.merchantId : undefined,
+                            checkoutJwt: 'checkoutJwt' in args ? args.checkoutJwt : undefined,
                         }),
                     })
                         .then(function (res) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
@@ -45,8 +48,9 @@ function getIframeConfig(_a) {
 function setTokenExScriptTag(_a) {
     var env = _a.env, setTokenExScriptLoaded = _a.setTokenExScriptLoaded;
     var scriptTagId = 'tokenex-script';
-    if (document.head.querySelector("#".concat(scriptTagId)))
-        return;
+    if (document.head.querySelector("#".concat(scriptTagId))) {
+        setTokenExScriptLoaded(true);
+    }
     var sdkScriptTag = document.createElement('script');
     sdkScriptTag.src =
         env === 'prod'
@@ -147,24 +151,20 @@ function doInitializeTokenExCardOnlyIframe(args) {
         });
     });
 }
-function doInitialize(id_1, _a, configOverrides_1) {
-    return tslib_1.__awaiter(this, arguments, void 0, function (id, _b, configOverrides) {
-        var iframeConfig, styles, config, iframe;
-        var tokenExScriptLoaded = _b.tokenExScriptLoaded, origins = _b.origins, env = _b.env, css = _b.css, debug = _b.debug, font = _b.font, setCachedToken = _b.setCachedToken, setLoaded = _b.setLoaded;
-        return tslib_1.__generator(this, function (_c) {
-            switch (_c.label) {
+function doInitialize(id, args, configOverrides) {
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
+        var tokenExScriptLoaded, css, debug, font, setCachedToken, setLoaded, iframeConfig, styles, config, iframe;
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
+                    tokenExScriptLoaded = args.tokenExScriptLoaded, css = args.css, debug = args.debug, font = args.font, setCachedToken = args.setCachedToken, setLoaded = args.setLoaded;
                     if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
                         console.warn('Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#tokenex-script');
                         return [2 /*return*/];
                     }
-                    return [4 /*yield*/, getIframeConfig({
-                            token: configOverrides.token,
-                            origins: origins,
-                            env: env,
-                        })];
+                    return [4 /*yield*/, getIframeConfig(tslib_1.__assign(tslib_1.__assign({}, args), { token: configOverrides.token }))];
                 case 1:
-                    iframeConfig = _c.sent();
+                    iframeConfig = _a.sent();
                     styles = getStyles(css).styles;
                     config = tslib_1.__assign(tslib_1.__assign(tslib_1.__assign({}, iframeConfig), { placeholder: '0000 0000 0000 0000', enablePrettyFormat: true, styles: styles, font: font, debug: debug !== null && debug !== void 0 ? debug : false }), configOverrides);
                     iframe = TokenEx.Iframe(id, config);

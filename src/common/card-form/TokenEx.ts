@@ -24,6 +24,8 @@ export interface TokenExIFrameConfiguration {
   authenticationKey: string;
   pci: true;
   token?: string;
+  use3DS?: boolean;
+  threeDSMethodNotificationUrl?: string;
 }
 
 export interface CardFormInputStyles {
@@ -41,7 +43,7 @@ export interface CoinflowCardNumberInputProps {
   env: CoinflowEnvs;
   css: CardFormInputStyles & {cvv: CardFormInputStyles};
   debug?: boolean;
-  origins?: string[];
+  origins: string[];
   font?: string;
 }
 
@@ -51,8 +53,22 @@ export interface CoinflowCvvOnlyInputProps {
   env: CoinflowEnvs;
   css: CardFormInputStyles & {cvv: CardFormInputStyles};
   debug?: boolean;
-  origins?: string[];
+  origins: string[];
   font?: string;
+}
+
+export interface VersionDetail {
+  threeDSMethodURL: string;
+  acsStartProtocolVersion: string;
+  acsEndProtocolVersion: string;
+  threeDSServerStartVersion: string;
+  threeDSServerEndVersion?: string;
+  acsInfoInd: [string];
+  directoryServerID: string;
+  dsStartProtocolVersion: string;
+  dsEndProtocolVersion: string;
+  dsIdentifier: string;
+  threeDSServerTransID: string;
 }
 
 export interface TokenizationResponse {
@@ -63,6 +79,8 @@ export interface TokenizationResponse {
   referenceNumber: string;
   token: string;
   tokenHMAC: string;
+  recommended3dsVersion?: Record<string, string>;
+  threeDSecureResponse?: VersionDetail[];
 }
 
 declare global {

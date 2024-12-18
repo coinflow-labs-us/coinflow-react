@@ -6,7 +6,8 @@ var CoinflowCardNumberInputComponent = forwardRef(function (props, ref) {
     var css = useMemo(function () {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var _a = useCardFormIframe(props.env), tokenExIframe = _a.tokenExIframe, initializeTokenExIframe = _a.initializeTokenExIframe;
+    var origins = JSON.stringify(props.origins);
+    var _a = useCardFormIframe(props), tokenExIframe = _a.tokenExIframe, initializeTokenExIframe = _a.initializeTokenExIframe;
     useImperativeHandle(ref, function () { return ({
         getToken: function () {
             return __awaiter(this, void 0, void 0, function () {
@@ -22,10 +23,10 @@ var CoinflowCardNumberInputComponent = forwardRef(function (props, ref) {
         initializeTokenExIframe({
             css: css,
             debug: props.debug,
-            origins: props.origins,
+            origins: JSON.parse(origins),
             font: props.font,
         });
-    }, [initializeTokenExIframe, css, props.debug, props.origins, props.font]);
+    }, [css, props.debug, props.font, origins, initializeTokenExIframe]);
     return React.createElement("div", { id: TokenExCardNumberIframeId });
 });
 /**
@@ -73,7 +74,8 @@ var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
     var css = useMemo(function () {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var _a = useCardFormIframe(props.env), tokenExIframe = _a.tokenExIframe, initializeCvvOnlyTokenExIframe = _a.initializeCvvOnlyTokenExIframe;
+    var origins = JSON.stringify(props.origins);
+    var _a = useCardFormIframe(props), tokenExIframe = _a.tokenExIframe, initializeCvvOnlyTokenExIframe = _a.initializeCvvOnlyTokenExIframe;
     useImperativeHandle(ref, function () { return ({
         getToken: function () {
             return __awaiter(this, void 0, void 0, function () {
@@ -91,7 +93,7 @@ var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
             debug: props.debug,
             token: props.token,
             cardType: props.cardType,
-            origins: props.origins,
+            origins: JSON.parse(origins),
             font: props.font,
         });
     }, [
@@ -100,7 +102,7 @@ var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
         props.debug,
         props.token,
         props.cardType,
-        props.origins,
+        origins,
         props.font,
     ]);
     return useMemo(function () { return React.createElement("div", { id: TokenExCvvContainerID }); }, []);
@@ -147,7 +149,8 @@ var CoinflowCardOnlyInputComponent = forwardRef(function (props, ref) {
     var css = useMemo(function () {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var _a = useCardFormIframe(props.env), tokenExIframe = _a.tokenExIframe, initializeTokenExCardOnlyIframe = _a.initializeTokenExCardOnlyIframe;
+    var origins = JSON.stringify(props.origins);
+    var _a = useCardFormIframe(props), tokenExIframe = _a.tokenExIframe, initializeTokenExCardOnlyIframe = _a.initializeTokenExCardOnlyIframe;
     useImperativeHandle(ref, function () { return ({
         getToken: function () {
             return __awaiter(this, void 0, void 0, function () {
@@ -163,14 +166,14 @@ var CoinflowCardOnlyInputComponent = forwardRef(function (props, ref) {
         initializeTokenExCardOnlyIframe({
             css: css,
             debug: props.debug,
-            origins: props.origins,
+            origins: JSON.parse(origins),
             font: props.font,
         });
     }, [
         initializeTokenExCardOnlyIframe,
         props.debug,
         css,
-        props.origins,
+        origins,
         props.font,
     ]);
     return React.createElement("div", { id: TokenExCardNumberIframeId });

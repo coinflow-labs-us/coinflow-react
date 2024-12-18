@@ -1,12 +1,17 @@
 import { __assign, __awaiter, __generator } from "tslib";
 import { useCallback, useEffect, useState } from 'react';
 import { doInitializeCvvOnlyTokenExIframe, doInitializeTokenExCardOnlyIframe, doInitializeTokenExIframe, setTokenExScriptTag, } from '../common';
-export function useCardFormIframe(env) {
+export function useCardFormIframe(_a) {
     var _this = this;
-    var _a = useState(false), loaded = _a[0], setLoaded = _a[1];
-    var _b = useState(false), tokenExScriptLoaded = _b[0], setTokenExScriptLoaded = _b[1];
-    var _c = useState(undefined), tokenExIframe = _c[0], setTokenExIframe = _c[1];
-    var _d = useState(undefined), cachedToken = _d[0], setCachedToken = _d[1];
+    var env = _a.env, 
+    // @ts-ignore
+    merchantId = _a.merchantId, 
+    // @ts-ignore
+    checkoutJwt = _a.checkoutJwt;
+    var _b = useState(false), loaded = _b[0], setLoaded = _b[1];
+    var _c = useState(false), tokenExScriptLoaded = _c[0], setTokenExScriptLoaded = _c[1];
+    var _d = useState(undefined), tokenExIframe = _d[0], setTokenExIframe = _d[1];
+    var _e = useState(undefined), cachedToken = _e[0], setCachedToken = _e[1];
     useEffect(function () {
         setTokenExScriptTag({ env: env, setTokenExScriptLoaded: setTokenExScriptLoaded });
     }, [env, setTokenExScriptLoaded]);
@@ -14,38 +19,38 @@ export function useCardFormIframe(env) {
         var iframe;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, doInitializeCvvOnlyTokenExIframe(__assign(__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, env: env, setCachedToken: setCachedToken, setLoaded: setLoaded }))];
+                case 0: return [4 /*yield*/, doInitializeCvvOnlyTokenExIframe(__assign(__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, setCachedToken: setCachedToken, setLoaded: setLoaded, env: env, merchantId: merchantId, checkoutJwt: checkoutJwt }))];
                 case 1:
                     iframe = _a.sent();
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
         });
-    }); }, [env, tokenExScriptLoaded]);
+    }); }, [checkoutJwt, env, merchantId, tokenExScriptLoaded]);
     var initializeTokenExIframe = useCallback(function (args) { return __awaiter(_this, void 0, void 0, function () {
         var iframe;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, doInitializeTokenExIframe(__assign(__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, env: env, setCachedToken: setCachedToken, setLoaded: setLoaded }))];
+                case 0: return [4 /*yield*/, doInitializeTokenExIframe(__assign(__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, setCachedToken: setCachedToken, setLoaded: setLoaded, env: env, merchantId: merchantId, checkoutJwt: checkoutJwt }))];
                 case 1:
                     iframe = _a.sent();
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
         });
-    }); }, [env, tokenExScriptLoaded]);
+    }); }, [checkoutJwt, env, merchantId, tokenExScriptLoaded]);
     var initializeTokenExCardOnlyIframe = useCallback(function (args) { return __awaiter(_this, void 0, void 0, function () {
         var iframe;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, doInitializeTokenExCardOnlyIframe(__assign(__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, env: env, setCachedToken: setCachedToken, setLoaded: setLoaded }))];
+                case 0: return [4 /*yield*/, doInitializeTokenExCardOnlyIframe(__assign(__assign({}, args), { tokenExScriptLoaded: tokenExScriptLoaded, setCachedToken: setCachedToken, setLoaded: setLoaded, env: env, merchantId: merchantId, checkoutJwt: checkoutJwt }))];
                 case 1:
                     iframe = _a.sent();
                     setTokenExIframe(iframe);
                     return [2 /*return*/, iframe];
             }
         });
-    }); }, [env, tokenExScriptLoaded]);
+    }); }, [checkoutJwt, env, merchantId, tokenExScriptLoaded]);
     useEffect(function () {
         if (!tokenExIframe)
             return;

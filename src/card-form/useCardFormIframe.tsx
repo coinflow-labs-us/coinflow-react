@@ -6,9 +6,16 @@ import {
   doInitializeTokenExIframe,
   setTokenExScriptTag,
   TokenExIframe,
+  MerchantIdOrCheckoutJwt,
 } from '../common';
 
-export function useCardFormIframe(env: CoinflowEnvs) {
+export function useCardFormIframe({
+  env,
+  // @ts-ignore
+  merchantId,
+  // @ts-ignore
+  checkoutJwt,
+}: {env: CoinflowEnvs} & MerchantIdOrCheckoutJwt) {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [tokenExScriptLoaded, setTokenExScriptLoaded] =
     useState<boolean>(false);
@@ -33,15 +40,17 @@ export function useCardFormIframe(env: CoinflowEnvs) {
       const iframe = await doInitializeCvvOnlyTokenExIframe({
         ...args,
         tokenExScriptLoaded,
-        env,
         setCachedToken,
         setLoaded,
+        env,
+        merchantId,
+        checkoutJwt,
       });
 
       setTokenExIframe(iframe);
       return iframe;
     },
-    [env, tokenExScriptLoaded]
+    [checkoutJwt, env, merchantId, tokenExScriptLoaded]
   );
 
   const initializeTokenExIframe = useCallback(
@@ -54,15 +63,17 @@ export function useCardFormIframe(env: CoinflowEnvs) {
       const iframe = await doInitializeTokenExIframe({
         ...args,
         tokenExScriptLoaded,
-        env,
         setCachedToken,
         setLoaded,
+        env,
+        merchantId,
+        checkoutJwt,
       });
 
       setTokenExIframe(iframe);
       return iframe;
     },
-    [env, tokenExScriptLoaded]
+    [checkoutJwt, env, merchantId, tokenExScriptLoaded]
   );
 
   const initializeTokenExCardOnlyIframe = useCallback(
@@ -75,15 +86,17 @@ export function useCardFormIframe(env: CoinflowEnvs) {
       const iframe = await doInitializeTokenExCardOnlyIframe({
         ...args,
         tokenExScriptLoaded,
-        env,
         setCachedToken,
         setLoaded,
+        env,
+        merchantId,
+        checkoutJwt,
       });
 
       setTokenExIframe(iframe);
       return iframe;
     },
-    [env, tokenExScriptLoaded]
+    [checkoutJwt, env, merchantId, tokenExScriptLoaded]
   );
 
   useEffect(() => {

@@ -6,4 +6,5 @@ tslib_1.__exportStar(require("./CoinflowUtils"), exports);
 tslib_1.__exportStar(require("./CoinflowLibMessageHandlers"), exports);
 tslib_1.__exportStar(require("./card-form/TokenEx"), exports);
 tslib_1.__exportStar(require("./card-form/tokenexHelpers"), exports);
+tslib_1.__exportStar(require("./Subtotal"), exports);
 //# sourceMappingURL=index.js.map

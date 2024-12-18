@@ -1,5 +1,5 @@
 import React from 'react';
-import { CoinflowCardNumberInputProps, CoinflowCvvOnlyInputProps } from '../common';
+import { MerchantIdOrCheckoutJwt, CoinflowCardNumberInputProps, CoinflowCvvOnlyInputProps } from '../common';
 /**
  * Allows merchants to collect card information from their customers in a PCI-compliant way and receive the tokenized card number.
  *
@@ -36,7 +36,7 @@ import { CoinflowCardNumberInputProps, CoinflowCvvOnlyInputProps } from '../comm
  *
  * ```
  */
-export declare const CoinflowCardNumberInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<CoinflowCardNumberInputProps & React.RefAttributes<unknown>>>;
+export declare const CoinflowCardNumberInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<(CoinflowCardNumberInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>>;
 /**
  * The CVV number input for creating a new tokenized card
  */
@@ -78,7 +78,7 @@ export declare const CoinflowCvvInput: React.MemoExoticComponent<() => React.JSX
  *
  * ```
  */
-export declare const CoinflowCvvOnlyInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<CoinflowCvvOnlyInputProps & React.RefAttributes<unknown>>>;
+export declare const CoinflowCvvOnlyInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>>;
 /**
  * Allows merchants to collect card information from their customers in a PCI-compliant way and receive the tokenized card number.
  * The `CoinflowCardOnlyInput` is used for collecting a debit card for users to be able to withdraw their funds directly to.
@@ -115,4 +115,4 @@ export declare const CoinflowCvvOnlyInput: React.MemoExoticComponent<React.Forwa
  *
  * ```
  */
-export declare const CoinflowCardOnlyInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<CoinflowCvvOnlyInputProps & React.RefAttributes<unknown>>>;
+export declare const CoinflowCardOnlyInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>>;

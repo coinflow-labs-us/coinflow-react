@@ -1,24 +1,31 @@
 import { TokenExIframe, TokenExIFrameConfiguration } from './TokenEx';
 import { CardType, CoinflowEnvs } from '../CoinflowTypes';
-export interface DoInitializeTokenExIframeArgs {
+export type MerchantIdOrCheckoutJwt = {
+    merchantId: string;
+} | {
+    checkoutJwt: string;
+};
+export interface CommonDoInitializeTokenExIframeArgs {
     css: string;
     debug?: boolean;
     font?: string;
-    origins: string[] | undefined;
+    origins: string[];
     tokenExScriptLoaded: boolean;
     env: CoinflowEnvs;
     setCachedToken: (s: string | undefined) => void;
     setLoaded: (b: boolean) => void;
 }
-export interface DoInitializeCvvOnlyTokenExIframeArgs extends DoInitializeTokenExIframeArgs {
+export type DoInitializeTokenExIframeArgs = CommonDoInitializeTokenExIframeArgs & MerchantIdOrCheckoutJwt;
+export type DoInitializeCvvOnlyTokenExIframeArgs = DoInitializeTokenExIframeArgs & {
     token: string;
     cardType: CardType;
-}
-export declare function getIframeConfig({ token, origins, env, }: {
+};
+export type GetIFrameConfigArgs = {
     token?: string;
-    origins: string[] | undefined;
+    origins: string[];
     env: CoinflowEnvs;
-}): Promise<TokenExIFrameConfiguration>;
+} & MerchantIdOrCheckoutJwt;
+export declare function getIframeConfig(args: GetIFrameConfigArgs): Promise<TokenExIFrameConfiguration>;
 export declare function setTokenExScriptTag({ env, setTokenExScriptLoaded, }: {
     env: CoinflowEnvs;
     setTokenExScriptLoaded: (b: boolean) => void;

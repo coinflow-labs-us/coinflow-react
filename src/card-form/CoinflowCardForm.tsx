@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import {useCardFormIframe} from './useCardFormIframe';
 import {
+  MerchantIdOrCheckoutJwt,
   CoinflowCardNumberInputProps,
   CoinflowCardTokenResponse,
   CoinflowCvvOnlyInputProps,
@@ -15,14 +16,14 @@ import {
 } from '../common';
 
 const CoinflowCardNumberInputComponent = forwardRef(
-  (props: CoinflowCardNumberInputProps, ref) => {
+  (props: CoinflowCardNumberInputProps & MerchantIdOrCheckoutJwt, ref) => {
     const css = useMemo(() => {
       return JSON.stringify(props.css);
     }, [props.css]);
 
-    const {tokenExIframe, initializeTokenExIframe} = useCardFormIframe(
-      props.env
-    );
+    const origins = JSON.stringify(props.origins);
+
+    const {tokenExIframe, initializeTokenExIframe} = useCardFormIframe(props);
 
     useImperativeHandle(ref, () => ({
       async getToken(): Promise<CoinflowCardTokenResponse> {
@@ -35,10 +36,10 @@ const CoinflowCardNumberInputComponent = forwardRef(
       initializeTokenExIframe({
         css,
         debug: props.debug,
-        origins: props.origins,
+        origins: JSON.parse(origins),
         font: props.font,
       });
-    }, [initializeTokenExIframe, css, props.debug, props.origins, props.font]);
+    }, [css, props.debug, props.font, origins, initializeTokenExIframe]);
 
     return <div id={TokenExCardNumberIframeId} />;
   }
@@ -88,14 +89,15 @@ export const CoinflowCardNumberInput = memo(CoinflowCardNumberInputComponent);
 export const CoinflowCvvInput = memo(() => <div id={TokenExCvvContainerID} />);
 
 const CoinflowCvvOnlyInputComponent = forwardRef(
-  (props: CoinflowCvvOnlyInputProps, ref) => {
+  (props: CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt, ref) => {
     const css = useMemo(() => {
       return JSON.stringify(props.css);
     }, [props.css]);
 
-    const {tokenExIframe, initializeCvvOnlyTokenExIframe} = useCardFormIframe(
-      props.env
-    );
+    const origins = JSON.stringify(props.origins);
+
+    const {tokenExIframe, initializeCvvOnlyTokenExIframe} =
+      useCardFormIframe(props);
 
     useImperativeHandle(ref, () => ({
       async getToken(): Promise<CoinflowCardTokenResponse> {
@@ -110,7 +112,7 @@ const CoinflowCvvOnlyInputComponent = forwardRef(
         debug: props.debug,
         token: props.token,
         cardType: props.cardType,
-        origins: props.origins,
+        origins: JSON.parse(origins),
         font: props.font,
       });
     }, [
@@ -119,7 +121,7 @@ const CoinflowCvvOnlyInputComponent = forwardRef(
       props.debug,
       props.token,
       props.cardType,
-      props.origins,
+      origins,
       props.font,
     ]);
 
@@ -167,14 +169,15 @@ const CoinflowCvvOnlyInputComponent = forwardRef(
 export const CoinflowCvvOnlyInput = memo(CoinflowCvvOnlyInputComponent);
 
 const CoinflowCardOnlyInputComponent = forwardRef(
-  (props: CoinflowCvvOnlyInputProps, ref) => {
+  (props: CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt, ref) => {
     const css = useMemo(() => {
       return JSON.stringify(props.css);
     }, [props.css]);
 
-    const {tokenExIframe, initializeTokenExCardOnlyIframe} = useCardFormIframe(
-      props.env
-    );
+    const origins = JSON.stringify(props.origins);
+
+    const {tokenExIframe, initializeTokenExCardOnlyIframe} =
+      useCardFormIframe(props);
 
     useImperativeHandle(ref, () => ({
       async getToken(): Promise<CoinflowCardTokenResponse> {
@@ -187,14 +190,14 @@ const CoinflowCardOnlyInputComponent = forwardRef(
       initializeTokenExCardOnlyIframe({
         css,
         debug: props.debug,
-        origins: props.origins,
+        origins: JSON.parse(origins),
         font: props.font,
       });
     }, [
       initializeTokenExCardOnlyIframe,
       props.debug,
       css,
-      props.origins,
+      origins,
       props.font,
     ]);
 

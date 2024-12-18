@@ -40,6 +40,7 @@ const connection = useConnection();
 
 Props:
 
+- `subtotal` (optional): Fix the amount of purchase
 - `wallet`: The Solana Wallet Adapter Wallet
 - `merchantId`: Your Merchant ID (Contact Coinflow support for this)
 - `connection`: Solana Connection
@@ -47,12 +48,9 @@ Props:
   - For testing set to `staging`
 - `onSuccess` (optional): function to run when the purchase process is successful
 - `transaction` (optional): transaction for the user to run which redeems their credits with your smart contract. Create this transaction just like you would for a normal user who has USDC in their account.
-- `partialSigners` (optional): Keypairs of Partial Signers to sign the transaction with, this is necessary when initializing new accounts as the new account Keypair must sign the transaction.
 - `debugTx` (optional): Setting this to `true` will sign the transaction with the wallet, and send the transaction with no preflight checks allowing for easier debug of any issues.
-- `token` (optional): The token to use for the purchase. Defaults to USDC. Currently only supported for the Solana Blockchain.
 - `planCode` (optional): When a subscription is being purchased, the code of the subscription plan.
 - `settlementType` (optional): The settlement method to use for the proceeds of a purchase. (Credits, USDC, or Bank)
-- `amount` (optional): Fix the amount of purchase
 - `webhookInfo` (optional): Product or transaction based information that you want transmitted when you receive webhooks regarding the purchase
 - `email` (optional): Set the default email to use in email entry fields
 - `chargebackProtectionData` (optional):
@@ -71,6 +69,32 @@ Props:
 - `getFeePayer` - Return the `PublicKey` of the Coinflow Fee Payer
 
 # Changelog
+
+## 5.0.1
+
+- Added `onAuthDeclined` callback to `CoinflowPurchase`
+
+## 5.0.0
+
+- Deprecating `amount` and `token` in favor of subtotal which can be accessed via the following ways:
+- Added multi-currency support for presentment
+- SEPA and UK Faster Payments support
+
+```js
+{
+  cents: number;
+  currency: 'USD' | 'EUR' | 'GBP' | 'BRL';
+}
+```
+
+or
+
+```js
+{
+  address: string;
+  amount: number;
+}
+```
 
 ## 4.5.2
 

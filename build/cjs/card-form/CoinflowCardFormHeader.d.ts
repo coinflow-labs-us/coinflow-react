@@ -1,4 +1,4 @@
-import { CoinflowEnvs } from '../common';
-export declare function CoinflowCardFormHeader({ env }: {
+import { CoinflowEnvs, MerchantIdOrCheckoutJwt } from '../common';
+export declare function CoinflowCardFormHeader(props: {
     env: CoinflowEnvs;
-}): null;
+} & MerchantIdOrCheckoutJwt): null;

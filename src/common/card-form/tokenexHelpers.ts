@@ -1,4 +1,4 @@
-import {CSSProperties} from 'react';
+import type {CSSProperties} from 'react';
 import {
   TokenizationResponse,
   TokenExCvvContainerID,
@@ -10,41 +10,51 @@ import {
 import {CoinflowUtils} from '../CoinflowUtils';
 import {CardType, CoinflowEnvs} from '../CoinflowTypes';
 
-export interface DoInitializeTokenExIframeArgs {
+export type MerchantIdOrCheckoutJwt =
+  | {merchantId: string}
+  | {checkoutJwt: string};
+
+export interface CommonDoInitializeTokenExIframeArgs {
   css: string;
   debug?: boolean;
   font?: string;
-  origins: string[] | undefined;
+  origins: string[];
   tokenExScriptLoaded: boolean;
   env: CoinflowEnvs;
   setCachedToken: (s: string | undefined) => void;
   setLoaded: (b: boolean) => void;
 }
 
-export interface DoInitializeCvvOnlyTokenExIframeArgs
-  extends DoInitializeTokenExIframeArgs {
-  token: string;
-  cardType: CardType;
-}
+export type DoInitializeTokenExIframeArgs =
+  CommonDoInitializeTokenExIframeArgs & MerchantIdOrCheckoutJwt;
 
-export async function getIframeConfig({
-  token,
-  origins,
-  env,
-}: {
+export type DoInitializeCvvOnlyTokenExIframeArgs =
+  DoInitializeTokenExIframeArgs & {
+    token: string;
+    cardType: CardType;
+  };
+
+export type GetIFrameConfigArgs = {
   token?: string;
-  origins: string[] | undefined;
+  origins: string[];
   env: CoinflowEnvs;
-}): Promise<TokenExIFrameConfiguration> {
+} & MerchantIdOrCheckoutJwt;
+
+export async function getIframeConfig(
+  args: GetIFrameConfigArgs
+): Promise<TokenExIFrameConfiguration> {
+  const {token, origins, env} = args;
   return new Promise((resolve, reject) => {
-    fetch(new CoinflowUtils(env).url + '/api/checkout/authentication-key', {
+    fetch(new CoinflowUtils(env).url + '/api/checkout/v2/authentication-key', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        origins: [...(origins ?? []), window.location.origin],
+        origins,
         token,
+        merchantId: 'merchantId' in args ? args.merchantId : undefined,
+        checkoutJwt: 'checkoutJwt' in args ? args.checkoutJwt : undefined,
       }),
     })
       .then(async res => {
@@ -62,7 +72,9 @@ export function setTokenExScriptTag({
   setTokenExScriptLoaded: (b: boolean) => void;
 }) {
   const scriptTagId = 'tokenex-script';
-  if (document.head.querySelector(`#${scriptTagId}`)) return;
+  if (document.head.querySelector(`#${scriptTagId}`)) {
+    setTokenExScriptLoaded(true);
+  }
 
   const sdkScriptTag = document.createElement('script');
   sdkScriptTag.src =
@@ -162,18 +174,11 @@ export async function doInitializeTokenExCardOnlyIframe(
 
 async function doInitialize(
   id: string,
-  {
-    tokenExScriptLoaded,
-    origins,
-    env,
-    css,
-    debug,
-    font,
-    setCachedToken,
-    setLoaded,
-  }: DoInitializeTokenExIframeArgs,
+  args: DoInitializeTokenExIframeArgs,
   configOverrides: Partial<TokenEx.Config>
 ) {
+  const {tokenExScriptLoaded, css, debug, font, setCachedToken, setLoaded} =
+    args;
   if (!tokenExScriptLoaded && typeof TokenEx === 'undefined') {
     console.warn(
       'Warning Unable to load TokenEx on first attempt waiting for load event from document.head.script#tokenex-script'
@@ -181,9 +186,8 @@ async function doInitialize(
     return;
   }
   const iframeConfig = await getIframeConfig({
+    ...args,
     token: configOverrides.token,
-    origins,
-    env,
   });
   const {styles} = getStyles(css);
   const config = {
