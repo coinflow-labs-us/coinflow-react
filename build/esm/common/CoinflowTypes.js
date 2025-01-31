@@ -16,6 +16,18 @@ export var ThreeDsChallengePreference;
     ThreeDsChallengePreference["Frictionless"] = "Frictionless";
     ThreeDsChallengePreference["Challenge"] = "Challenge";
 })(ThreeDsChallengePreference || (ThreeDsChallengePreference = {}));
+export var PaymentMethods;
+(function (PaymentMethods) {
+    PaymentMethods["card"] = "card";
+    PaymentMethods["ach"] = "ach";
+    PaymentMethods["fasterPayments"] = "fasterPayments";
+    PaymentMethods["sepa"] = "sepa";
+    PaymentMethods["pix"] = "pix";
+    PaymentMethods["usdc"] = "usdc";
+    PaymentMethods["googlePay"] = "googlePay";
+    PaymentMethods["applePay"] = "applePay";
+    PaymentMethods["credits"] = "credits";
+})(PaymentMethods || (PaymentMethods = {}));
 export var CardType;
 (function (CardType) {
     CardType["VISA"] = "VISA";

@@ -54,9 +54,8 @@ Props:
 - `webhookInfo` (optional): Product or transaction based information that you want transmitted when you receive webhooks regarding the purchase
 - `email` (optional): Set the default email to use in email entry fields
 - `chargebackProtectionData` (optional):
-- `disableApplePay` (optional): Ability to disable Apple Pay
-- `disableGooglePay` (optional): Ability to disable Google Pay
 - `customerInfo` (optional): Additional information about the customer
+- `allowedPaymentMethods` (optional): The payment methods displayed on the UI. If omitted, all available payment methods will be displayed.
 - `rent` (optional, Solana only): Specify the blockchain rent amount to add to the total
 - `nativeSolToConvert` (optional, Solana only): Specify the amount of native SOL to convert wSOL for the purchase
 - `jwtToken` (optional): A JWT token which encodes verified checkout parameters to prevent spoofing of arguments.
@@ -69,6 +68,26 @@ Props:
 - `getFeePayer` - Return the `PublicKey` of the Coinflow Fee Payer
 
 # Changelog
+
+## 5.0.3
+
+- Added `allowedPaymentMethods` to `CoinflowPurchase`
+- Options are:
+  - 'card' = Credit and debit cards
+  - 'ach' = ACH bank account transfers
+  - 'fasterPayments' = UK Faster Payments (GBP Bank Transfers)
+  - 'sepa' = SEPA bank account transfers (EUR Bank Transfers)
+  - 'pix' = Pix bank account transfers (BRL Bank Transfers)
+  - 'usdc' = USDC
+  - 'googlePay' = Google Pay
+  - 'applePay' = Apple Pay
+  - 'credits' = Credits
+
+## 5.0.2
+
+## 5.0.2
+
+- Allow copy to clipboard for Coinflow Iframe
 
 ## 5.0.1
 

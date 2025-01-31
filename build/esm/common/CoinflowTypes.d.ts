@@ -18,11 +18,11 @@ export type MerchantTheme = {
     textColor?: string;
     textColorAccent?: string;
     textColorAction?: string;
+    ctaColor?: string;
     font?: string;
     style?: MerchantStyle;
 };
-export interface CustomerInfo {
-    name?: string;
+interface BaseCustomerInfo {
     verificationId?: string;
     displayName?: string;
     address?: string;
@@ -34,6 +34,23 @@ export interface CustomerInfo {
     lat?: string;
     lng?: string;
 }
+export interface NameCustomerInfo extends BaseCustomerInfo {
+    /**
+     * @hidden
+     */
+    name?: string;
+}
+export interface SplitNameCustomerInfo extends BaseCustomerInfo {
+    /**
+     * @minLength 1
+     */
+    firstName: string;
+    /**
+     * @minLength 1
+     */
+    lastName: string;
+}
+export type CustomerInfo = SplitNameCustomerInfo | NameCustomerInfo;
 /** Coinflow Types **/
 export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'user';
 export type CoinflowEnvs = 'prod' | 'staging' | 'staging-live' | 'sandbox' | 'local';
@@ -169,6 +186,17 @@ export declare enum ThreeDsChallengePreference {
     Frictionless = "Frictionless",
     Challenge = "Challenge"
 }
+export declare enum PaymentMethods {
+    card = "card",
+    ach = "ach",
+    fasterPayments = "fasterPayments",
+    sepa = "sepa",
+    pix = "pix",
+    usdc = "usdc",
+    googlePay = "googlePay",
+    applePay = "applePay",
+    credits = "credits"
+}
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     subtotal?: Subtotal;
     onSuccess?: OnSuccessMethod;
@@ -179,8 +207,10 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     email?: string;
     chargebackProtectionData?: ChargebackProtectionData;
     planCode?: string;
-    disableApplePay?: boolean;
-    disableGooglePay?: boolean;
+    /**
+     * The payment methods displayed on the UI. If omitted, all available payment methods will be displayed.
+     */
+    allowedPaymentMethods?: PaymentMethods[];
     customerInfo?: CustomerInfo;
     settlementType?: SettlementType;
     authOnly?: boolean;
@@ -350,7 +380,7 @@ export interface TokenRedeem extends CommonEvmRedeem {
     destination: string;
 }
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | ReservoirRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey'> {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey'> {
     walletPubkey: string | null | undefined;
     sessionKey?: string;
     route: string;

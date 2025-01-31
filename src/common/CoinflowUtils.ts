@@ -3,6 +3,7 @@ import {
   CoinflowEnvs,
   CoinflowIFrameProps,
   CoinflowPurchaseProps,
+  CustomerInfo,
 } from './CoinflowTypes';
 import {web3, base58} from './SolanaPeerDeps';
 import LZString from 'lz-string';
@@ -88,6 +89,7 @@ export class CoinflowUtils {
     threeDsChallengePreference,
     supportEmail,
     destinationAuthKey,
+    allowedPaymentMethods,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -217,6 +219,12 @@ export class CoinflowUtils {
         LZString.compressToEncodedURIComponent(JSON.stringify(origins))
       );
 
+    if (allowedPaymentMethods)
+      url.searchParams.append(
+        'allowedPaymentMethods',
+        allowedPaymentMethods.join(',')
+      );
+
     if (threeDsChallengePreference)
       url.searchParams.append(
         'threeDsChallengePreference',
@@ -317,4 +325,32 @@ export class CoinflowUtils {
         throw new Error('blockchain not supported!');
     }
   }
+}
+
+export interface FullName {
+  firstName: string;
+  lastName: string;
+}
+
+export function getCustomerName(
+  info: CustomerInfo | undefined
+): FullName | undefined {
+  if (!info) return undefined;
+
+  let firstName: string | undefined, lastName: string | undefined;
+  if ('name' in info && info.name) {
+    firstName = info.name.split(' ')[0];
+    lastName = info.name.split(' ').slice(1).join(' ');
+  }
+
+  if ('firstName' in info && info.firstName) firstName = info.firstName;
+
+  if ('lastName' in info && info.lastName) lastName = info.lastName;
+
+  if (firstName && lastName)
+    return {
+      firstName,
+      lastName,
+    };
+  return undefined;
 }

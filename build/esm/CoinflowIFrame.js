@@ -69,7 +69,7 @@ export var CoinflowIFrame = forwardRef(function (props, ref) {
     return useMemo(function () { return (React.createElement("iframe", { scrolling: handleHeightChange ? 'no' : 'yes', onLoad: function () {
             if (IFrameRef.current)
                 IFrameRef.current.style.opacity = '1';
-        }, allow: 'payment;camera', ref: IFrameRef, style: {
+        }, allow: 'payment;camera;clipboard-write', ref: IFrameRef, style: {
             width: '100%',
             height: '100%',
             opacity: 0,

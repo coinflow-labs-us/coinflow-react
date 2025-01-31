@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, {useMemo, useRef} from 'react';
 import {
   CoinflowIFrameProps,
   CoinflowPurchaseProps,
@@ -7,8 +7,8 @@ import {
   getWalletPubkey,
   IFrameMessageHandlers,
 } from './common';
-import { CoinflowIFrame, CoinflowIFrameExposedFunctions } from "./CoinflowIFrame";
-import { useOverlay } from "./useOverlay";
+import {CoinflowIFrame, CoinflowIFrameExposedFunctions} from './CoinflowIFrame';
+import {useOverlay} from './useOverlay';
 
 function useCoinflowPurchase(
   purchaseProps: CoinflowPurchaseProps,
@@ -32,11 +32,6 @@ function useCoinflowPurchase(
   }, [purchaseProps]);
 
   return {iframeProps, messageHandlers};
-}
-
-export function CoinflowPurchaseLegacy(purchaseProps: CoinflowPurchaseProps) {
-  const {iframeProps, messageHandlers} = useCoinflowPurchase(purchaseProps, '');
-  return <CoinflowIFrame {...iframeProps} {...messageHandlers} />;
 }
 
 export function CoinflowPurchase(purchaseProps: CoinflowPurchaseProps) {

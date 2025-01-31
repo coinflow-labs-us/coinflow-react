@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CoinflowPurchaseLegacy = CoinflowPurchaseLegacy;
 exports.CoinflowPurchase = CoinflowPurchase;
 var tslib_1 = require("tslib");
 var react_1 = tslib_1.__importStar(require("react"));
@@ -16,10 +15,6 @@ function useCoinflowPurchase(purchaseProps, version) {
         return tslib_1.__assign(tslib_1.__assign({}, (0, common_1.getHandlers)(purchaseProps)), { handleHeightChange: purchaseProps.handleHeightChange });
     }, [purchaseProps]);
     return { iframeProps: iframeProps, messageHandlers: messageHandlers };
-}
-function CoinflowPurchaseLegacy(purchaseProps) {
-    var _a = useCoinflowPurchase(purchaseProps, ''), iframeProps = _a.iframeProps, messageHandlers = _a.messageHandlers;
-    return react_1.default.createElement(CoinflowIFrame_1.CoinflowIFrame, tslib_1.__assign({}, iframeProps, messageHandlers));
 }
 function CoinflowPurchase(purchaseProps) {
     var iframeRef = (0, react_1.useRef)(null);

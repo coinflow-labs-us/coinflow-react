@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoinflowUtils = void 0;
+exports.getCustomerName = getCustomerName;
 var tslib_1 = require("tslib");
 var SolanaPeerDeps_1 = require("./SolanaPeerDeps");
 var lz_string_1 = tslib_1.__importDefault(require("lz-string"));
@@ -44,7 +45,7 @@ var CoinflowUtils = /** @class */ (function () {
     };
     CoinflowUtils.getCoinflowUrl = function (_a) {
         var _b;
-        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, subtotal = _a.subtotal, transaction = _a.transaction, _c = _a.blockchain, blockchain = _c === void 0 ? 'solana' : _c, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChange = _a.handleHeightChange, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, nearDeposit = _a.nearDeposit, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey;
+        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, subtotal = _a.subtotal, transaction = _a.transaction, _c = _a.blockchain, blockchain = _c === void 0 ? 'solana' : _c, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChange = _a.handleHeightChange, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, nearDeposit = _a.nearDeposit, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey, allowedPaymentMethods = _a.allowedPaymentMethods;
         var prefix = routePrefix
             ? "/".concat(routePrefix, "/").concat(blockchain)
             : "/".concat(blockchain);
@@ -145,6 +146,8 @@ var CoinflowUtils = /** @class */ (function () {
             url.searchParams.append('jwtToken', jwtToken);
         if (origins)
             url.searchParams.append('origins', lz_string_1.default.compressToEncodedURIComponent(JSON.stringify(origins)));
+        if (allowedPaymentMethods)
+            url.searchParams.append('allowedPaymentMethods', allowedPaymentMethods.join(','));
         if (threeDsChallengePreference)
             url.searchParams.append('threeDsChallengePreference', threeDsChallengePreference);
         if (destinationAuthKey)
@@ -228,4 +231,23 @@ var CoinflowUtils = /** @class */ (function () {
     return CoinflowUtils;
 }());
 exports.CoinflowUtils = CoinflowUtils;
+function getCustomerName(info) {
+    if (!info)
+        return undefined;
+    var firstName, lastName;
+    if ('name' in info && info.name) {
+        firstName = info.name.split(' ')[0];
+        lastName = info.name.split(' ').slice(1).join(' ');
+    }
+    if ('firstName' in info && info.firstName)
+        firstName = info.firstName;
+    if ('lastName' in info && info.lastName)
+        lastName = info.lastName;
+    if (firstName && lastName)
+        return {
+            firstName: firstName,
+            lastName: lastName,
+        };
+    return undefined;
+}
 //# sourceMappingURL=CoinflowUtils.js.map

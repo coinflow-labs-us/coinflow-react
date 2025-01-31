@@ -1,8 +1,8 @@
 import { __assign, __spreadArray } from "tslib";
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef } from 'react';
 import { CoinflowUtils, getHandlers, getWalletPubkey, } from './common';
-import { CoinflowIFrame } from "./CoinflowIFrame";
-import { useOverlay } from "./useOverlay";
+import { CoinflowIFrame } from './CoinflowIFrame';
+import { useOverlay } from './useOverlay';
 function useCoinflowPurchase(purchaseProps, version) {
     var iframeProps = useMemo(function () {
         var walletPubkey = getWalletPubkey(purchaseProps);
@@ -12,10 +12,6 @@ function useCoinflowPurchase(purchaseProps, version) {
         return __assign(__assign({}, getHandlers(purchaseProps)), { handleHeightChange: purchaseProps.handleHeightChange });
     }, [purchaseProps]);
     return { iframeProps: iframeProps, messageHandlers: messageHandlers };
-}
-export function CoinflowPurchaseLegacy(purchaseProps) {
-    var _a = useCoinflowPurchase(purchaseProps, ''), iframeProps = _a.iframeProps, messageHandlers = _a.messageHandlers;
-    return React.createElement(CoinflowIFrame, __assign({}, iframeProps, messageHandlers));
 }
 export function CoinflowPurchase(purchaseProps) {
     var iframeRef = useRef(null);

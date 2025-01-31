@@ -1,9 +1,9 @@
 import { TokenExIframe, TokenExIFrameConfiguration } from './TokenEx';
 import { CardType, CoinflowEnvs } from '../CoinflowTypes';
 export type MerchantIdOrCheckoutJwt = {
-    merchantId: string;
-} | {
     checkoutJwt: string;
+} | {
+    merchantId: string;
 };
 export interface CommonDoInitializeTokenExIframeArgs {
     css: string;
