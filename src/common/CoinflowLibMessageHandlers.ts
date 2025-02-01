@@ -71,7 +71,8 @@ export function getWalletPubkey(
 
 export function handleIFrameMessage(
   rawMessage: string,
-  handlers: IFrameMessageHandlers
+  handlers: IFrameMessageHandlers,
+  handleHeightChangeId: string | number
 ): Promise<string> | void {
   let walletCall: WalletCall;
   try {
@@ -92,7 +93,7 @@ export function handleIFrameMessage(
       return handlers.handleSignTransaction(data);
     case IFrameMessageMethods.SendTransaction:
       return handlers.handleSendTransaction(data);
-    case IFrameMessageMethods.HeightChange:
+    case IFrameMessageMethods.HeightChange + ':' + handleHeightChangeId:
       if (!handlers.handleHeightChange) return;
       return handlers.handleHeightChange(data);
     case IFrameMessageMethods.Success:

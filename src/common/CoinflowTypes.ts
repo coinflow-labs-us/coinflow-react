@@ -541,7 +541,7 @@ export type EvmTransactionData =
   | TokenRedeem;
 
 export interface CoinflowIFrameProps
-  extends Omit<CoinflowTypes, 'merchantId'>,
+  extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>,
     Pick<
       CoinflowCommonPurchaseProps,
       | 'chargebackProtectionData'
@@ -585,6 +585,7 @@ export interface CoinflowIFrameProps
   disableGooglePay?: boolean;
   theme?: MerchantTheme;
   usePermit?: boolean;
+  handleHeightChangeId: string | number;
 }
 
 export enum CardType {

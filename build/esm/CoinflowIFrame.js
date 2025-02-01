@@ -1,6 +1,9 @@
 import { __awaiter, __generator } from "tslib";
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, } from 'react';
 import { CoinflowUtils, handleIFrameMessage, } from './common';
+export function useRandomHandleHeightChangeId() {
+    return useMemo(function () { return Math.random().toString(16).substring(2); }, []);
+}
 export var CoinflowIFrame = forwardRef(function (props, ref) {
     var IFrameRef = useRef(null);
     var url = useMemo(function () {
@@ -52,7 +55,7 @@ export var CoinflowIFrame = forwardRef(function (props, ref) {
         var data = _a.data, origin = _a.origin;
         if (!origin.includes(CoinflowUtils.getCoinflowBaseUrl(props.env)))
             return;
-        var promise = handleIFrameMessage(data, props);
+        var promise = handleIFrameMessage(data, props, props.handleHeightChangeId);
         if (!promise)
             return;
         promise.then(sendMessage).catch(function (e) { return sendMessage('ERROR ' + e.message); });

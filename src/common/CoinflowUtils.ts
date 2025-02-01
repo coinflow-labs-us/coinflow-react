@@ -38,6 +38,8 @@ export class CoinflowUtils {
 
   static getCoinflowBaseUrl(env?: CoinflowEnvs): string {
     if (!env || env === 'prod') return 'https://coinflow.cash';
+    // @ts-expect-error This is for testing
+    if (env === 'ngrok') return 'https://coinflow.ngrok.app';
     if (env === 'local') return 'http://localhost:3000';
 
     return `https://${env}.coinflow.cash`;
@@ -62,7 +64,7 @@ export class CoinflowUtils {
     webhookInfo,
     email,
     loaderBackground,
-    handleHeightChange,
+    handleHeightChangeId,
     bankAccountLinkRedirect,
     additionalWallets,
     nearDeposit,
@@ -151,8 +153,11 @@ export class CoinflowUtils {
       url.searchParams.append('loaderBackground', loaderBackground);
     }
 
-    if (handleHeightChange) {
-      url.searchParams.append('useHeightChange', 'true');
+    if (handleHeightChangeId) {
+      url.searchParams.append(
+        'useHeightChange',
+        handleHeightChangeId.toString()
+      );
     }
 
     if (bankAccountLinkRedirect) {

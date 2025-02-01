@@ -38,7 +38,7 @@ function getWalletPubkey(input) {
     }
     return null;
 }
-function handleIFrameMessage(rawMessage, handlers) {
+function handleIFrameMessage(rawMessage, handlers, handleHeightChangeId) {
     var walletCall;
     try {
         walletCall = JSON.parse(rawMessage);
@@ -61,7 +61,7 @@ function handleIFrameMessage(rawMessage, handlers) {
             return handlers.handleSignTransaction(data);
         case IFrameMessageMethods.SendTransaction:
             return handlers.handleSendTransaction(data);
-        case IFrameMessageMethods.HeightChange:
+        case IFrameMessageMethods.HeightChange + ':' + handleHeightChangeId:
             if (!handlers.handleHeightChange)
                 return;
             return handlers.handleHeightChange(data);

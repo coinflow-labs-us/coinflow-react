@@ -1,13 +1,14 @@
 import { __assign, __spreadArray } from "tslib";
 import React, { useMemo, useRef } from 'react';
 import { CoinflowUtils, getHandlers, getWalletPubkey, } from './common';
-import { CoinflowIFrame } from './CoinflowIFrame';
+import { CoinflowIFrame, useRandomHandleHeightChangeId, } from './CoinflowIFrame';
 import { useOverlay } from './useOverlay';
 function useCoinflowPurchase(purchaseProps, version) {
+    var handleHeightChangeId = useRandomHandleHeightChangeId();
     var iframeProps = useMemo(function () {
         var walletPubkey = getWalletPubkey(purchaseProps);
-        return __assign(__assign({}, purchaseProps), { walletPubkey: walletPubkey, route: "/purchase".concat(version, "/").concat(purchaseProps.merchantId), transaction: CoinflowUtils.getTransaction(purchaseProps) });
-    }, [purchaseProps, version]);
+        return __assign(__assign({}, purchaseProps), { walletPubkey: walletPubkey, route: "/purchase".concat(version, "/").concat(purchaseProps.merchantId), transaction: CoinflowUtils.getTransaction(purchaseProps), handleHeightChangeId: handleHeightChangeId });
+    }, [handleHeightChangeId, purchaseProps, version]);
     var messageHandlers = useMemo(function () {
         return __assign(__assign({}, getHandlers(purchaseProps)), { handleHeightChange: purchaseProps.handleHeightChange });
     }, [purchaseProps]);

@@ -1,9 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoinflowIFrame = void 0;
+exports.useRandomHandleHeightChangeId = useRandomHandleHeightChangeId;
 var tslib_1 = require("tslib");
 var react_1 = tslib_1.__importStar(require("react"));
 var common_1 = require("./common");
+function useRandomHandleHeightChangeId() {
+    return (0, react_1.useMemo)(function () { return Math.random().toString(16).substring(2); }, []);
+}
 exports.CoinflowIFrame = (0, react_1.forwardRef)(function (props, ref) {
     var IFrameRef = (0, react_1.useRef)(null);
     var url = (0, react_1.useMemo)(function () {
@@ -55,7 +59,7 @@ exports.CoinflowIFrame = (0, react_1.forwardRef)(function (props, ref) {
         var data = _a.data, origin = _a.origin;
         if (!origin.includes(common_1.CoinflowUtils.getCoinflowBaseUrl(props.env)))
             return;
-        var promise = (0, common_1.handleIFrameMessage)(data, props);
+        var promise = (0, common_1.handleIFrameMessage)(data, props, props.handleHeightChangeId);
         if (!promise)
             return;
         promise.then(sendMessage).catch(function (e) { return sendMessage('ERROR ' + e.message); });

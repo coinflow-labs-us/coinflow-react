@@ -7,10 +7,11 @@ var common_1 = require("./common");
 var CoinflowIFrame_1 = require("./CoinflowIFrame");
 var useOverlay_1 = require("./useOverlay");
 function useCoinflowPurchase(purchaseProps, version) {
+    var handleHeightChangeId = (0, CoinflowIFrame_1.useRandomHandleHeightChangeId)();
     var iframeProps = (0, react_1.useMemo)(function () {
         var walletPubkey = (0, common_1.getWalletPubkey)(purchaseProps);
-        return tslib_1.__assign(tslib_1.__assign({}, purchaseProps), { walletPubkey: walletPubkey, route: "/purchase".concat(version, "/").concat(purchaseProps.merchantId), transaction: common_1.CoinflowUtils.getTransaction(purchaseProps) });
-    }, [purchaseProps, version]);
+        return tslib_1.__assign(tslib_1.__assign({}, purchaseProps), { walletPubkey: walletPubkey, route: "/purchase".concat(version, "/").concat(purchaseProps.merchantId), transaction: common_1.CoinflowUtils.getTransaction(purchaseProps), handleHeightChangeId: handleHeightChangeId });
+    }, [handleHeightChangeId, purchaseProps, version]);
     var messageHandlers = (0, react_1.useMemo)(function () {
         return tslib_1.__assign(tslib_1.__assign({}, (0, common_1.getHandlers)(purchaseProps)), { handleHeightChange: purchaseProps.handleHeightChange });
     }, [purchaseProps]);

@@ -7,13 +7,18 @@ import {
   getWalletPubkey,
   IFrameMessageHandlers,
 } from './common';
-import {CoinflowIFrame, CoinflowIFrameExposedFunctions} from './CoinflowIFrame';
+import {
+  CoinflowIFrame,
+  CoinflowIFrameExposedFunctions,
+  useRandomHandleHeightChangeId,
+} from './CoinflowIFrame';
 import {useOverlay} from './useOverlay';
 
 function useCoinflowPurchase(
   purchaseProps: CoinflowPurchaseProps,
   version: string
 ) {
+  const handleHeightChangeId = useRandomHandleHeightChangeId();
   const iframeProps = useMemo<CoinflowIFrameProps>(() => {
     const walletPubkey = getWalletPubkey(purchaseProps);
     return {
@@ -21,8 +26,9 @@ function useCoinflowPurchase(
       walletPubkey,
       route: `/purchase${version}/${purchaseProps.merchantId}`,
       transaction: CoinflowUtils.getTransaction(purchaseProps),
+      handleHeightChangeId,
     };
-  }, [purchaseProps, version]);
+  }, [handleHeightChangeId, purchaseProps, version]);
 
   const messageHandlers = useMemo<IFrameMessageHandlers>(() => {
     return {

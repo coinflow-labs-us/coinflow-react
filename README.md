@@ -69,6 +69,10 @@ Props:
 
 # Changelog
 
+## 5.0.4
+
+- Added 3DS Challenge Handling to the standalone Google Pay button
+
 ## 5.0.3
 
 - Added `allowedPaymentMethods` to `CoinflowPurchase`

@@ -24,6 +24,10 @@ export type CoinflowIFrameExposedFunctions = {
   ) => Promise<string>;
 };
 
+export function useRandomHandleHeightChangeId() {
+  return useMemo(() => Math.random().toString(16).substring(2), []);
+}
+
 export const CoinflowIFrame = forwardRef(
   (props: CoinflowIFrameProps & IFrameMessageHandlers, ref) => {
     const IFrameRef = useRef<HTMLIFrameElement | null>(null);
@@ -78,7 +82,11 @@ export const CoinflowIFrame = forwardRef(
         if (!origin.includes(CoinflowUtils.getCoinflowBaseUrl(props.env)))
           return;
 
-        const promise = handleIFrameMessage(data, props);
+        const promise = handleIFrameMessage(
+          data,
+          props,
+          props.handleHeightChangeId
+        );
         if (!promise) return;
         promise.then(sendMessage).catch(e => sendMessage('ERROR ' + e.message));
       },

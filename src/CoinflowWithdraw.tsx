@@ -1,16 +1,15 @@
-import React, { useMemo } from "react";
-import {CoinflowIFrame} from './CoinflowIFrame';
+import React, {useMemo} from 'react';
+import {CoinflowIFrame, useRandomHandleHeightChangeId} from './CoinflowIFrame';
 import {
   CoinflowIFrameProps,
   CoinflowWithdrawProps,
   getHandlers,
   IFrameMessageHandlers,
-  getWalletPubkey
-} from "./common";
+  getWalletPubkey,
+} from './common';
 
-export function CoinflowWithdraw(
-  withdrawProps: CoinflowWithdrawProps
-) {
+export function CoinflowWithdraw(withdrawProps: CoinflowWithdrawProps) {
+  const handleHeightChangeId = useRandomHandleHeightChangeId();
   const iframeProps = useMemo<CoinflowIFrameProps>(() => {
     const walletPubkey = getWalletPubkey(withdrawProps);
     return {
@@ -18,15 +17,16 @@ export function CoinflowWithdraw(
       walletPubkey,
       route: `/withdraw/${withdrawProps.merchantId}`,
       transaction: undefined,
+      handleHeightChangeId,
     };
-  }, [withdrawProps]);
+  }, [handleHeightChangeId, withdrawProps]);
 
   const messageHandlers = useMemo<IFrameMessageHandlers>(() => {
     return {
       ...getHandlers(withdrawProps),
-      handleHeightChange: withdrawProps.handleHeightChange
+      handleHeightChange: withdrawProps.handleHeightChange,
     };
-  } , [withdrawProps]);
+  }, [withdrawProps]);
 
-  return <CoinflowIFrame {...iframeProps } {...messageHandlers} />;
+  return <CoinflowIFrame {...iframeProps} {...messageHandlers} />;
 }

@@ -6,7 +6,11 @@ import {
   IFrameMessageHandlers,
 } from './common';
 import React, {useEffect, useMemo, useRef} from 'react';
-import {CoinflowIFrame, CoinflowIFrameExposedFunctions} from './CoinflowIFrame';
+import {
+  CoinflowIFrame,
+  CoinflowIFrameExposedFunctions,
+  useRandomHandleHeightChangeId,
+} from './CoinflowIFrame';
 import {useOverlay} from './useOverlay';
 
 export function MobileWalletButton({
@@ -47,6 +51,7 @@ export function MobileWalletButton({
       .then(data => onSuccess?.(data));
   }, [onError, onSuccess]);
 
+  const handleHeightChangeId = useRandomHandleHeightChangeId();
   const iframeProps = useMemo<CoinflowIFrameProps>(() => {
     const walletPubkey = getWalletPubkey(props);
     return {
@@ -55,8 +60,10 @@ export function MobileWalletButton({
       transaction: undefined,
       routePrefix: 'form',
       route: `/${route}/${props.merchantId}`,
+      handleHeightChangeId,
     };
-  }, [props, route]);
+  }, [handleHeightChangeId, props, route]);
+
   const messageHandlers = useMemo<IFrameMessageHandlers>(() => {
     return {
       ...getHandlers(props),

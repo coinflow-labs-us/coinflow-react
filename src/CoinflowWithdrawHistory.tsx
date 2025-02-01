@@ -1,4 +1,4 @@
-import {CoinflowIFrame} from './CoinflowIFrame';
+import {CoinflowIFrame, useRandomHandleHeightChangeId} from './CoinflowIFrame';
 import React, {useMemo} from 'react';
 import {
   CoinflowIFrameProps,
@@ -9,6 +9,7 @@ import {
 } from './common';
 
 export function CoinflowWithdrawHistory(props: CoinflowHistoryProps) {
+  const handleHeightChangeId = useRandomHandleHeightChangeId();
   const iframeProps = useMemo<CoinflowIFrameProps>(() => {
     const walletPubkey = getWalletPubkey(props);
     return {
@@ -16,8 +17,9 @@ export function CoinflowWithdrawHistory(props: CoinflowHistoryProps) {
       walletPubkey,
       route: `/history/withdraw/${props.merchantId}`,
       transaction: undefined,
+      handleHeightChangeId,
     };
-  }, [props]);
+  }, [handleHeightChangeId, props]);
 
   const messageHandlers = useMemo<IFrameMessageHandlers>(() => {
     return {
