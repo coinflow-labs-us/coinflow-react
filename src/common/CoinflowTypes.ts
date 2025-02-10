@@ -270,6 +270,15 @@ export interface ChargebackProtectionItem {
    * Any additional data that the store can provide on the product, e.g. description, link to image, etc.
    */
   rawProductData?: RawProductData;
+
+  seller?: {
+    dob: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    id: string;
+    rawSellerData: RawProductData;
+  };
 }
 
 export enum ThreeDsChallengePreference {
