@@ -110,7 +110,7 @@ export type AuthDeclinedWalletCallInfo = {
 };
 
 export type OnAuthDeclinedMethod = (
-  args: AuthDeclinedWalletCallInfo | string | string
+  args: AuthDeclinedWalletCallInfo
 ) => void | Promise<void>;
 
 /** Wallets **/

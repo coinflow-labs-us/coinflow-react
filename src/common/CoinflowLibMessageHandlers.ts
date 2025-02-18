@@ -1,8 +1,10 @@
 import {
+  AuthDeclinedWalletCallInfo,
   CoinflowBlockchain,
   CoinflowPurchaseProps,
   EthWallet,
   NearWallet,
+  OnAuthDeclinedMethod,
   OnSuccessMethod,
   SolanaWallet,
   WalletTypes,
@@ -21,12 +23,19 @@ type SuccessWalletCall = {
   info: {paymentId: string; hash?: string};
 };
 
+type AuthDeclinedWalletCall = {
+  method: IFrameMessageMethods.AuthDeclined;
+  data: string;
+  info: AuthDeclinedWalletCallInfo;
+};
+
 export interface IFrameMessageHandlers {
   handleSendTransaction: (transaction: string) => Promise<string>;
   handleSignMessage?: (message: string) => Promise<string>;
   handleSignTransaction?: (transaction: string) => Promise<string>;
   handleHeightChange?: (height: string) => void;
   onSuccess: OnSuccessMethod | undefined;
+  onAuthDeclined: OnAuthDeclinedMethod | undefined;
 }
 
 enum IFrameMessageMethods {
@@ -35,6 +44,7 @@ enum IFrameMessageMethods {
   SendTransaction = 'sendTransaction',
   HeightChange = 'heightChange',
   Success = 'success',
+  AuthDeclined = 'authDeclined',
   Loaded = 'loaded',
 }
 
@@ -100,6 +110,10 @@ export function handleIFrameMessage(
       if (!handlers.onSuccess) return;
       handlers.onSuccess((walletCall as SuccessWalletCall).info);
       return;
+    case IFrameMessageMethods.AuthDeclined:
+      if (!handlers.onAuthDeclined) return;
+      handlers.onAuthDeclined((walletCall as AuthDeclinedWalletCall).info);
+      return;
     case IFrameMessageMethods.Loaded:
       return;
   }
@@ -110,7 +124,10 @@ export function handleIFrameMessage(
 }
 
 export function getHandlers(
-  props: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain' | 'onSuccess'>
+  props: Pick<
+    CoinflowPurchaseProps,
+    'wallet' | 'blockchain' | 'onSuccess' | 'onAuthDeclined'
+  >
 ): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   let chain: CoinflowBlockchain | undefined;
   let wallet: WalletTypes | undefined;
@@ -140,6 +157,7 @@ export function getHandlers(
         throw new Error('handleSendTransaction Not Implemented');
       },
       onSuccess: props.onSuccess,
+      onAuthDeclined: props.onAuthDeclined,
     };
   }
 
@@ -148,31 +166,37 @@ export function getHandlers(
       getSolanaWalletHandlers({
         wallet: wallet as SolanaWallet,
         onSuccess: props.onSuccess,
+        onAuthDeclined: props.onAuthDeclined,
       }),
     near: () =>
       getNearWalletHandlers({
         wallet: wallet as NearWallet,
         onSuccess: props.onSuccess,
+        onAuthDeclined: props.onAuthDeclined,
       }),
     eth: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
         onSuccess: props.onSuccess,
+        onAuthDeclined: props.onAuthDeclined,
       }),
     polygon: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
         onSuccess: props.onSuccess,
+        onAuthDeclined: props.onAuthDeclined,
       }),
     base: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
         onSuccess: props.onSuccess,
+        onAuthDeclined: props.onAuthDeclined,
       }),
     arbitrum: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
         onSuccess: props.onSuccess,
+        onAuthDeclined: props.onAuthDeclined,
       }),
     user: () => getSessionKeyHandlers(props),
   })();
@@ -181,9 +205,11 @@ export function getHandlers(
 function getSolanaWalletHandlers({
   wallet,
   onSuccess,
+  onAuthDeclined,
 }: {
   wallet: SolanaWallet;
-  onSuccess?: OnSuccessMethod;
+  onSuccess: OnSuccessMethod | undefined;
+  onAuthDeclined: OnAuthDeclinedMethod | undefined;
 }): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   return {
     handleSendTransaction: async (transaction: string) => {
@@ -218,6 +244,7 @@ function getSolanaWalletHandlers({
       );
     },
     onSuccess,
+    onAuthDeclined,
   };
 }
 
@@ -243,9 +270,11 @@ function getSolanaTransaction(
 function getNearWalletHandlers({
   wallet,
   onSuccess,
+  onAuthDeclined,
 }: {
   wallet: NearWallet;
   onSuccess?: OnSuccessMethod;
+  onAuthDeclined: OnAuthDeclinedMethod | undefined;
 }): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   return {
     handleSendTransaction: async (transaction: string) => {
@@ -256,15 +285,18 @@ function getNearWalletHandlers({
       return transactionResult.hash;
     },
     onSuccess,
+    onAuthDeclined,
   };
 }
 
 function getEvmWalletHandlers({
   wallet,
   onSuccess,
+  onAuthDeclined,
 }: {
   wallet: EthWallet;
   onSuccess?: OnSuccessMethod;
+  onAuthDeclined: OnAuthDeclinedMethod | undefined;
 }): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   return {
     handleSendTransaction: async (transaction: string) => {
@@ -276,12 +308,14 @@ function getEvmWalletHandlers({
       return wallet.signMessage(message);
     },
     onSuccess,
+    onAuthDeclined,
   };
 }
 
 function getSessionKeyHandlers({
   onSuccess,
-}: Pick<CoinflowPurchaseProps, 'onSuccess'>): Omit<
+  onAuthDeclined,
+}: Pick<CoinflowPurchaseProps, 'onSuccess' | 'onAuthDeclined'>): Omit<
   IFrameMessageHandlers,
   'handleHeightChange'
 > {
@@ -290,5 +324,6 @@ function getSessionKeyHandlers({
       return Promise.resolve('');
     },
     onSuccess,
+    onAuthDeclined,
   };
 }

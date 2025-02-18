@@ -13,6 +13,7 @@ var IFrameMessageMethods;
     IFrameMessageMethods["SendTransaction"] = "sendTransaction";
     IFrameMessageMethods["HeightChange"] = "heightChange";
     IFrameMessageMethods["Success"] = "success";
+    IFrameMessageMethods["AuthDeclined"] = "authDeclined";
     IFrameMessageMethods["Loaded"] = "loaded";
 })(IFrameMessageMethods || (IFrameMessageMethods = {}));
 function getWalletPubkey(input) {
@@ -70,6 +71,11 @@ function handleIFrameMessage(rawMessage, handlers, handleHeightChangeId) {
                 return;
             handlers.onSuccess(walletCall.info);
             return;
+        case IFrameMessageMethods.AuthDeclined:
+            if (!handlers.onAuthDeclined)
+                return;
+            handlers.onAuthDeclined(walletCall.info);
+            return;
         case IFrameMessageMethods.Loaded:
             return;
     }
@@ -102,6 +108,7 @@ function getHandlers(props) {
                 throw new Error('handleSendTransaction Not Implemented');
             },
             onSuccess: props.onSuccess,
+            onAuthDeclined: props.onAuthDeclined,
         };
     }
     return CoinflowUtils_1.CoinflowUtils.byBlockchain(chain, {
@@ -109,36 +116,42 @@ function getHandlers(props) {
             return getSolanaWalletHandlers({
                 wallet: wallet,
                 onSuccess: props.onSuccess,
+                onAuthDeclined: props.onAuthDeclined,
             });
         },
         near: function () {
             return getNearWalletHandlers({
                 wallet: wallet,
                 onSuccess: props.onSuccess,
+                onAuthDeclined: props.onAuthDeclined,
             });
         },
         eth: function () {
             return getEvmWalletHandlers({
                 wallet: wallet,
                 onSuccess: props.onSuccess,
+                onAuthDeclined: props.onAuthDeclined,
             });
         },
         polygon: function () {
             return getEvmWalletHandlers({
                 wallet: wallet,
                 onSuccess: props.onSuccess,
+                onAuthDeclined: props.onAuthDeclined,
             });
         },
         base: function () {
             return getEvmWalletHandlers({
                 wallet: wallet,
                 onSuccess: props.onSuccess,
+                onAuthDeclined: props.onAuthDeclined,
             });
         },
         arbitrum: function () {
             return getEvmWalletHandlers({
                 wallet: wallet,
                 onSuccess: props.onSuccess,
+                onAuthDeclined: props.onAuthDeclined,
             });
         },
         user: function () { return getSessionKeyHandlers(props); },
@@ -146,7 +159,7 @@ function getHandlers(props) {
 }
 function getSolanaWalletHandlers(_a) {
     var _this = this;
-    var wallet = _a.wallet, onSuccess = _a.onSuccess;
+    var wallet = _a.wallet, onSuccess = _a.onSuccess, onAuthDeclined = _a.onAuthDeclined;
     return {
         handleSendTransaction: function (transaction) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
             var tx;
@@ -200,6 +213,7 @@ function getSolanaWalletHandlers(_a) {
             });
         }); },
         onSuccess: onSuccess,
+        onAuthDeclined: onAuthDeclined,
     };
 }
 function getSolanaTransaction(data) {
@@ -215,7 +229,7 @@ function getSolanaTransaction(data) {
 }
 function getNearWalletHandlers(_a) {
     var _this = this;
-    var wallet = _a.wallet, onSuccess = _a.onSuccess;
+    var wallet = _a.wallet, onSuccess = _a.onSuccess, onAuthDeclined = _a.onAuthDeclined;
     return {
         handleSendTransaction: function (transaction) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
             var action, executionOutcome, transactionResult;
@@ -234,11 +248,12 @@ function getNearWalletHandlers(_a) {
             });
         }); },
         onSuccess: onSuccess,
+        onAuthDeclined: onAuthDeclined,
     };
 }
 function getEvmWalletHandlers(_a) {
     var _this = this;
-    var wallet = _a.wallet, onSuccess = _a.onSuccess;
+    var wallet = _a.wallet, onSuccess = _a.onSuccess, onAuthDeclined = _a.onAuthDeclined;
     return {
         handleSendTransaction: function (transaction) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
             var tx, hash;
@@ -259,11 +274,12 @@ function getEvmWalletHandlers(_a) {
             });
         }); },
         onSuccess: onSuccess,
+        onAuthDeclined: onAuthDeclined,
     };
 }
 function getSessionKeyHandlers(_a) {
     var _this = this;
-    var onSuccess = _a.onSuccess;
+    var onSuccess = _a.onSuccess, onAuthDeclined = _a.onAuthDeclined;
     return {
         handleSendTransaction: function () { return tslib_1.__awaiter(_this, void 0, void 0, function () {
             return tslib_1.__generator(this, function (_a) {
@@ -271,6 +287,7 @@ function getSessionKeyHandlers(_a) {
             });
         }); },
         onSuccess: onSuccess,
+        onAuthDeclined: onAuthDeclined,
     };
 }
 //# sourceMappingURL=CoinflowLibMessageHandlers.js.map

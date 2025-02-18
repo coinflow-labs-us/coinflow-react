@@ -74,7 +74,7 @@ export type AuthDeclinedWalletCallInfo = {
     message: string;
     total: string;
 };
-export type OnAuthDeclinedMethod = (args: AuthDeclinedWalletCallInfo | string | string) => void | Promise<void>;
+export type OnAuthDeclinedMethod = (args: AuthDeclinedWalletCallInfo) => void | Promise<void>;
 /** Wallets **/
 export interface SolanaWallet {
     publicKey: PublicKey | null;
