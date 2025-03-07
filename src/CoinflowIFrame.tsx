@@ -101,6 +101,13 @@ export const CoinflowIFrame = forwardRef(
       };
     }, [handleIframeMessages]);
 
+    useEffect(() => {
+      if (!IFrameRef.current) return;
+
+      // @ts-expect-error TypeScript doesn't recognize credentialless as a valid attribute in its type definitions yet
+      IFrameRef.current.credentialless = true;
+    }, []);
+
     const {handleHeightChange} = props;
     return useMemo(
       () => (

@@ -30,6 +30,7 @@ var PaymentMethods;
     PaymentMethods["googlePay"] = "googlePay";
     PaymentMethods["applePay"] = "applePay";
     PaymentMethods["credits"] = "credits";
+    PaymentMethods["crypto"] = "crypto";
 })(PaymentMethods || (exports.PaymentMethods = PaymentMethods = {}));
 var CardType;
 (function (CardType) {

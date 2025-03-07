@@ -203,7 +203,8 @@ export declare enum PaymentMethods {
     usdc = "usdc",
     googlePay = "googlePay",
     applePay = "applePay",
-    credits = "credits"
+    credits = "credits",
+    crypto = "crypto"
 }
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     subtotal?: Subtotal;

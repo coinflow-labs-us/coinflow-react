@@ -297,6 +297,7 @@ export enum PaymentMethods {
   googlePay = 'googlePay',
   applePay = 'applePay',
   credits = 'credits',
+  crypto = 'crypto',
 }
 
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {

@@ -69,6 +69,10 @@ Props:
 
 # Changelog
 
+## 5.0.7
+
+- Add credentialless to iframe
+
 ## 5.0.6
 
 - Fixing `onAuthDeclined` callback

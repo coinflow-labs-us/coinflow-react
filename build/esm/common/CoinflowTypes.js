@@ -27,6 +27,7 @@ export var PaymentMethods;
     PaymentMethods["googlePay"] = "googlePay";
     PaymentMethods["applePay"] = "applePay";
     PaymentMethods["credits"] = "credits";
+    PaymentMethods["crypto"] = "crypto";
 })(PaymentMethods || (PaymentMethods = {}));
 export var CardType;
 (function (CardType) {

@@ -72,6 +72,12 @@ exports.CoinflowIFrame = (0, react_1.forwardRef)(function (props, ref) {
             window.removeEventListener('message', handleIframeMessages);
         };
     }, [handleIframeMessages]);
+    (0, react_1.useEffect)(function () {
+        if (!IFrameRef.current)
+            return;
+        // @ts-expect-error TypeScript doesn't recognize credentialless as a valid attribute in its type definitions yet
+        IFrameRef.current.credentialless = true;
+    }, []);
     var handleHeightChange = props.handleHeightChange;
     return (0, react_1.useMemo)(function () { return (react_1.default.createElement("iframe", { scrolling: handleHeightChange ? 'no' : 'yes', onLoad: function () {
             if (IFrameRef.current)
