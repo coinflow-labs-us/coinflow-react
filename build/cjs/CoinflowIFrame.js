@@ -72,7 +72,7 @@ exports.CoinflowIFrame = (0, react_1.forwardRef)(function (props, ref) {
             window.removeEventListener('message', handleIframeMessages);
         };
     }, [handleIframeMessages]);
-    (0, react_1.useEffect)(function () {
+    (0, react_1.useLayoutEffect)(function () {
         if (!IFrameRef.current)
             return;
         // @ts-expect-error TypeScript doesn't recognize credentialless as a valid attribute in its type definitions yet

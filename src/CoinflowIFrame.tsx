@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useLayoutEffect,
   useMemo,
   useRef,
 } from 'react';
@@ -101,7 +102,7 @@ export const CoinflowIFrame = forwardRef(
       };
     }, [handleIframeMessages]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       if (!IFrameRef.current) return;
 
       // @ts-expect-error TypeScript doesn't recognize credentialless as a valid attribute in its type definitions yet

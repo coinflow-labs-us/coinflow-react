@@ -69,6 +69,10 @@ Props:
 
 # Changelog
 
+## 5.0.8
+
+- credentialless added synchronously before render
+
 ## 5.0.7
 
 - Add credentialless to iframe
