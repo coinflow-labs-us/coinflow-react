@@ -423,6 +423,10 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
    * The origin array would then be: [https://foo.com,https://bar.com]
    */
   origins?: string[];
+  /**
+   * If the withdrawer is authenticated with a sessionKey pass it here.
+   */
+  sessionKey?: string;
 }
 
 export type WalletTypes = SolanaWallet | NearWallet | EthWallet;
@@ -479,27 +483,13 @@ export interface ArbitrumWalletProps {
 export type CoinflowArbitrumWithdrawProps = CoinflowEvmWithdrawProps &
   ArbitrumWalletProps;
 
-export interface CoinflowSessionKeyWithdrawProps
-  extends CoinflowCommonWithdrawProps {
-  sessionKey: string;
-  signer:
-    | SolanaWalletProps
-    | NearWalletProps
-    | EthWalletProps
-    | PolygonWalletProps
-    | BaseWalletProps
-    | ArbitrumWalletProps;
-  blockchain?: undefined;
-}
-
 export type CoinflowWithdrawProps =
   | CoinflowSolanaWithdrawProps
   | CoinflowNearWithdrawProps
   | CoinflowEthWithdrawProps
   | CoinflowPolygonWithdrawProps
   | CoinflowBaseWithdrawProps
-  | CoinflowArbitrumWithdrawProps
-  | CoinflowSessionKeyWithdrawProps;
+  | CoinflowArbitrumWithdrawProps;
 
 export interface CommonEvmRedeem {
   waitForHash?: boolean;
