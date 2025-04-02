@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IFrameMessageMethods = void 0;
 exports.getWalletPubkey = getWalletPubkey;
 exports.handleIFrameMessage = handleIFrameMessage;
 exports.getHandlers = getHandlers;
@@ -15,7 +16,8 @@ var IFrameMessageMethods;
     IFrameMessageMethods["Success"] = "success";
     IFrameMessageMethods["AuthDeclined"] = "authDeclined";
     IFrameMessageMethods["Loaded"] = "loaded";
-})(IFrameMessageMethods || (IFrameMessageMethods = {}));
+    IFrameMessageMethods["AccountLinked"] = "accountLinked";
+})(IFrameMessageMethods || (exports.IFrameMessageMethods = IFrameMessageMethods = {}));
 function getWalletPubkey(input) {
     var wallet;
     if ('signer' in input &&
@@ -77,6 +79,8 @@ function handleIFrameMessage(rawMessage, handlers, handleHeightChangeId) {
             handlers.onAuthDeclined(walletCall.info);
             return;
         case IFrameMessageMethods.Loaded:
+            return;
+        case IFrameMessageMethods.AccountLinked:
             return;
     }
     console.warn("Didn't expect to get here, handleIFrameMessage method:".concat(method, " is not one of ").concat(Object.values(IFrameMessageMethods)));

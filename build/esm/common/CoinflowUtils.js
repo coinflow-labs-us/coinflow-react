@@ -44,7 +44,7 @@ var CoinflowUtils = /** @class */ (function () {
     };
     CoinflowUtils.getCoinflowUrl = function (_a) {
         var _b;
-        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, subtotal = _a.subtotal, transaction = _a.transaction, _c = _a.blockchain, blockchain = _c === void 0 ? 'solana' : _c, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChangeId = _a.handleHeightChangeId, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, nearDeposit = _a.nearDeposit, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey, allowedPaymentMethods = _a.allowedPaymentMethods;
+        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, subtotal = _a.subtotal, presentment = _a.presentment, transaction = _a.transaction, _c = _a.blockchain, blockchain = _c === void 0 ? 'solana' : _c, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChangeId = _a.handleHeightChangeId, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, nearDeposit = _a.nearDeposit, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey, allowedPaymentMethods = _a.allowedPaymentMethods;
         var prefix = routePrefix
             ? "/".concat(routePrefix, "/").concat(blockchain)
             : "/".concat(blockchain);
@@ -71,6 +71,8 @@ var CoinflowUtils = /** @class */ (function () {
                 url.searchParams.append('amount', subtotal.amount.toString());
             }
         }
+        if (presentment)
+            url.searchParams.append('presentment', presentment);
         if (webhookInfo) {
             url.searchParams.append('webhookInfo', LZString.compressToEncodedURIComponent(JSON.stringify(webhookInfo)));
         }

@@ -19,14 +19,15 @@ export interface IFrameMessageHandlers {
     onSuccess: OnSuccessMethod | undefined;
     onAuthDeclined: OnAuthDeclinedMethod | undefined;
 }
-declare enum IFrameMessageMethods {
+export declare enum IFrameMessageMethods {
     SignMessage = "signMessage",
     SignTransaction = "signTransaction",
     SendTransaction = "sendTransaction",
     HeightChange = "heightChange",
     Success = "success",
     AuthDeclined = "authDeclined",
-    Loaded = "loaded"
+    Loaded = "loaded",
+    AccountLinked = "accountLinked"
 }
 export declare function getWalletPubkey(input: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain'>): string | null | undefined;
 export declare function handleIFrameMessage(rawMessage: string, handlers: IFrameMessageHandlers, handleHeightChangeId: string | number): Promise<string> | void;

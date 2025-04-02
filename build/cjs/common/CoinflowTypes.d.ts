@@ -1,5 +1,5 @@
 import type { Connection, VersionedTransaction, PublicKey, Signer, Transaction } from '@solana/web3.js';
-import { Subtotal } from './Subtotal';
+import { Currency, Subtotal } from './Subtotal';
 export declare enum SettlementType {
     Credits = "Credits",
     USDC = "USDC",
@@ -208,6 +208,7 @@ export declare enum PaymentMethods {
 }
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     subtotal?: Subtotal;
+    presentment?: Currency;
     onSuccess?: OnSuccessMethod;
     onAuthDeclined?: OnAuthDeclinedMethod;
     webhookInfo?: {
@@ -388,7 +389,7 @@ export interface TokenRedeem extends CommonEvmRedeem {
     destination: string;
 }
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | ReservoirRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey'> {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey'> {
     walletPubkey: string | null | undefined;
     sessionKey?: string;
     route: string;

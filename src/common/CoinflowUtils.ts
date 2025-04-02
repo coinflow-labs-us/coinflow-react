@@ -59,6 +59,7 @@ export class CoinflowUtils {
     routePrefix,
     env,
     subtotal,
+    presentment,
     transaction,
     blockchain = 'solana',
     webhookInfo,
@@ -118,6 +119,8 @@ export class CoinflowUtils {
         url.searchParams.append('amount', subtotal.amount.toString());
       }
     }
+
+    if (presentment) url.searchParams.append('presentment', presentment);
 
     if (webhookInfo) {
       url.searchParams.append(

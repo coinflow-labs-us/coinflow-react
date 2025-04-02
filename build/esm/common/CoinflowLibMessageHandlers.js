@@ -1,7 +1,7 @@
 import { __awaiter, __generator } from "tslib";
 import { CoinflowUtils } from './CoinflowUtils';
 import { web3, base58 } from './SolanaPeerDeps';
-var IFrameMessageMethods;
+export var IFrameMessageMethods;
 (function (IFrameMessageMethods) {
     IFrameMessageMethods["SignMessage"] = "signMessage";
     IFrameMessageMethods["SignTransaction"] = "signTransaction";
@@ -10,6 +10,7 @@ var IFrameMessageMethods;
     IFrameMessageMethods["Success"] = "success";
     IFrameMessageMethods["AuthDeclined"] = "authDeclined";
     IFrameMessageMethods["Loaded"] = "loaded";
+    IFrameMessageMethods["AccountLinked"] = "accountLinked";
 })(IFrameMessageMethods || (IFrameMessageMethods = {}));
 export function getWalletPubkey(input) {
     var wallet;
@@ -72,6 +73,8 @@ export function handleIFrameMessage(rawMessage, handlers, handleHeightChangeId) 
             handlers.onAuthDeclined(walletCall.info);
             return;
         case IFrameMessageMethods.Loaded:
+            return;
+        case IFrameMessageMethods.AccountLinked:
             return;
     }
     console.warn("Didn't expect to get here, handleIFrameMessage method:".concat(method, " is not one of ").concat(Object.values(IFrameMessageMethods)));

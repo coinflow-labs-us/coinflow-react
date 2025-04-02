@@ -5,7 +5,7 @@ import type {
   Signer,
   Transaction,
 } from '@solana/web3.js';
-import {Subtotal} from './Subtotal';
+import {Currency, Subtotal} from './Subtotal';
 
 export enum SettlementType {
   Credits = 'Credits',
@@ -302,6 +302,7 @@ export enum PaymentMethods {
 
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   subtotal?: Subtotal;
+  presentment?: Currency;
   onSuccess?: OnSuccessMethod;
   onAuthDeclined?: OnAuthDeclinedMethod;
   webhookInfo?: {
@@ -547,6 +548,7 @@ export interface CoinflowIFrameProps
       | 'chargebackProtectionData'
       | 'webhookInfo'
       | 'subtotal'
+      | 'presentment'
       | 'customerInfo'
       | 'settlementType'
       | 'email'

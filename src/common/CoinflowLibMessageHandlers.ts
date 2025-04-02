@@ -38,7 +38,7 @@ export interface IFrameMessageHandlers {
   onAuthDeclined: OnAuthDeclinedMethod | undefined;
 }
 
-enum IFrameMessageMethods {
+export enum IFrameMessageMethods {
   SignMessage = 'signMessage',
   SignTransaction = 'signTransaction',
   SendTransaction = 'sendTransaction',
@@ -46,6 +46,7 @@ enum IFrameMessageMethods {
   Success = 'success',
   AuthDeclined = 'authDeclined',
   Loaded = 'loaded',
+  AccountLinked = 'accountLinked',
 }
 
 export function getWalletPubkey(
@@ -115,6 +116,8 @@ export function handleIFrameMessage(
       handlers.onAuthDeclined((walletCall as AuthDeclinedWalletCall).info);
       return;
     case IFrameMessageMethods.Loaded:
+      return;
+    case IFrameMessageMethods.AccountLinked:
       return;
   }
 
