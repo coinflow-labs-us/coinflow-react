@@ -5,7 +5,11 @@ import type {
   Signer,
   Transaction,
 } from '@solana/web3.js';
-import {Currency, Subtotal} from './Subtotal';
+import {Currency, Subtotal} from './types/Subtotal';
+import {GiftCardCartItem} from './types/giftCardCartItem';
+import {nftCartItem} from './types/nftCartItem';
+import {CryptoCartItem} from './types/cryptoCartItem';
+import {MoneyTopUpCartItem} from './types/moneyTopUpCartItem';
 
 export enum SettlementType {
   Credits = 'Credits',
@@ -43,6 +47,10 @@ interface BaseCustomerInfo {
   ip?: string;
   lat?: string;
   lng?: string;
+  /**
+   * Date of birth in YYYY-MM-DD format
+   */
+  dob?: string;
 }
 
 export interface NameCustomerInfo extends BaseCustomerInfo {
@@ -223,63 +231,29 @@ export type NearFtTransferCallAction = {
 type Bytes = ArrayLike<number>;
 type BytesLike = Bytes | string;
 
-type RawProductData = any;
-
 /** Purchase **/
 
-export type ChargebackProtectionData = ChargebackProtectionItem[];
+export type CartClassOmitted = CartItemClassOmitted[];
+export type ChargebackProtectionData = CartClassOmitted;
 
-export interface ChargebackProtectionItem {
-  /**
-   * The name of the product
-   */
-  productName: string;
-  /**
-   * The product type. Possible values include: inGameProduct, gameOfSkill, dataStorage, computingResources, sportsTicket, eSportsTicket, musicTicket, conferenceTicket, virtualSportsTicket, virtualESportsTicket, virtualMusicTicket, virtualConferenceTicket, alcohol, DLC, subscription, fundACause, realEstate, computingContract, digitalArt, topUp
-   */
-  productType:
-    | 'inGameProduct'
-    | 'gameOfSkill'
-    | 'dataStorage'
-    | 'computingResources'
-    | 'sportsTicket'
-    | 'eSportsTicket'
-    | 'musicTicket'
-    | 'conferenceTicket'
-    | 'virtualSportsTicket'
-    | 'virtualESportsTicket'
-    | 'virtualMusicTicket'
-    | 'virtualConferenceTicket'
-    | 'alcohol'
-    | 'DLC'
-    | 'subscription'
-    | 'fundACause'
-    | 'realEstate'
-    | 'computingContract'
-    | 'digitalArt'
-    | 'topUp'
-    | 'ownershipContract';
-  /**
-   * The item's list price
-   */
-  /**
-   * The number of units sold
-   */
-  quantity: number;
-  /**
-   * Any additional data that the store can provide on the product, e.g. description, link to image, etc.
-   */
-  rawProductData?: RawProductData;
+export type CartItemClassOmitted =
+  | NftCartItemClassOmitted
+  | Omit<GiftCardCartItem, 'listPrice'>
+  | CryptoCartItem
+  | MoneyTopUpCartItem;
+export type ChargebackProtectionItem = CartItemClassOmitted;
 
-  seller?: {
-    dob: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    id: string;
-    rawSellerData: RawProductData;
-  };
-}
+export type NftCartItemClassOmitted = Omit<
+  nftCartItem,
+  'listPrice' | 'sellingPrice' | 'itemClass'
+>;
+
+export type Cart = CartItem[];
+export type CartItem =
+  | Omit<nftCartItem, 'listPrice' | 'sellingPrice'>
+  | Omit<GiftCardCartItem, 'listPrice'>
+  | CryptoCartItem
+  | MoneyTopUpCartItem;
 
 export enum ThreeDsChallengePreference {
   NoPreference = 'NoPreference',
@@ -493,6 +467,11 @@ export type CoinflowWithdrawProps =
   | CoinflowArbitrumWithdrawProps;
 
 export interface CommonEvmRedeem {
+  /**
+   * Whether the UI should wait
+   * for the transaction to be sent and
+   * the hash to be returned.
+   */
   waitForHash?: boolean;
 }
 
@@ -501,7 +480,14 @@ export interface NormalRedeem extends CommonEvmRedeem {
 }
 
 export interface KnownTokenIdRedeem extends NormalRedeem {
+  /**
+   * @minLength 42 Please provide a valid EVM Public Key (42 Characters Long)
+   * @maxLength 42 Please provide a valid EVM Public Key (42 Characters Long)
+   */
   nftContract: string;
+  /**
+   * @minLength 1 Please provide a valid Nft Id
+   */
   nftId: string;
 }
 
@@ -515,12 +501,12 @@ export interface ReturnedTokenIdRedeem extends NormalRedeem {
   nftContract?: string;
 }
 
-type ReservoirNftIdItem = Omit<KnownTokenIdRedeem, keyof NormalRedeem>;
-interface ReservoirOrderIdItem {
+export type ReservoirNftIdItem = Omit<KnownTokenIdRedeem, keyof NormalRedeem>;
+export interface ReservoirOrderIdItem {
   orderId: string;
 }
-type ReservoirItem = ReservoirNftIdItem | ReservoirOrderIdItem;
-type ReservoirItems = ReservoirItem | ReservoirItem[];
+export type ReservoirItem = ReservoirNftIdItem | ReservoirOrderIdItem;
+export type ReservoirItems = ReservoirItem | ReservoirItem[];
 
 export interface ReservoirRedeem extends CommonEvmRedeem {
   type: 'reservoir';
@@ -533,13 +519,47 @@ export interface TokenRedeem extends CommonEvmRedeem {
   destination: string;
 }
 
+export interface DecentRedeem extends CommonEvmRedeem {
+  type: 'decent';
+  /**
+   * ID of the destination chain you will be using
+   * Find your chain ID here: https://chainlist.org/
+   */
+  dstChainId: number;
+  /**
+   * Address on that chain of the token you will be receiving
+   */
+  dstToken: string;
+  /**
+   * The contract address which will be called on the destination chain
+   */
+  contractAddress: string;
+  contractData: string;
+  /**
+   * Amount of the token on the destination chain you will be receiving
+   */
+  cost: {
+    /**
+     * This is the raw amount of the token
+     * ex: 50000000000000n
+     */
+    amount: string;
+    /**
+     * Whether or not the token is the native token for the chain (ex: Ethereum - ETH, Polygon - POL).
+     * If native dstToken should be the 0 address (0x00...)
+     */
+    isNative: boolean;
+  };
+}
+
 export type EvmTransactionData =
   | SafeMintRedeem
   | ReturnedTokenIdRedeem
   | ReservoirRedeem
   | KnownTokenIdRedeem
   | NormalRedeem
-  | TokenRedeem;
+  | TokenRedeem
+  | DecentRedeem;
 
 export interface CoinflowIFrameProps
   extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>,

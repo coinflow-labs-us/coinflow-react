@@ -8,7 +8,7 @@ import {
 import {web3, base58} from './SolanaPeerDeps';
 import LZString from 'lz-string';
 import type {Transaction, VersionedTransaction} from '@solana/web3.js';
-import {Currency} from './Subtotal';
+import {Currency} from './types/Subtotal';
 
 export class CoinflowUtils {
   env: CoinflowEnvs;

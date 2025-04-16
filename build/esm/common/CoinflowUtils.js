@@ -1,7 +1,7 @@
 import { __awaiter, __generator } from "tslib";
 import { web3, base58 } from './SolanaPeerDeps';
 import LZString from 'lz-string';
-import { Currency } from './Subtotal';
+import { Currency } from './types/Subtotal';
 var CoinflowUtils = /** @class */ (function () {
     function CoinflowUtils(env) {
         this.env = env !== null && env !== void 0 ? env : 'prod';

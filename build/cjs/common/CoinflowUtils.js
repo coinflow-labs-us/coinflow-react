@@ -5,7 +5,7 @@ exports.getCustomerName = getCustomerName;
 var tslib_1 = require("tslib");
 var SolanaPeerDeps_1 = require("./SolanaPeerDeps");
 var lz_string_1 = tslib_1.__importDefault(require("lz-string"));
-var Subtotal_1 = require("./Subtotal");
+var Subtotal_1 = require("./types/Subtotal");
 var CoinflowUtils = /** @class */ (function () {
     function CoinflowUtils(env) {
         this.env = env !== null && env !== void 0 ? env : 'prod';
