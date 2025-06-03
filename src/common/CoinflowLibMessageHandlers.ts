@@ -3,7 +3,6 @@ import {
   CoinflowBlockchain,
   CoinflowPurchaseProps,
   EthWallet,
-  NearWallet,
   OnAuthDeclinedMethod,
   OnSuccessMethod,
   SolanaWallet,
@@ -72,9 +71,6 @@ export function getWalletPubkey(
 
     if ('address' in wallet)
       return wallet.address ? (wallet.address as string) : undefined;
-
-    if ('accountId' in wallet)
-      return wallet.accountId ? (wallet.accountId as string) : undefined;
   }
 
   return null;
@@ -171,12 +167,6 @@ export function getHandlers(
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
       }),
-    near: () =>
-      getNearWalletHandlers({
-        wallet: wallet as NearWallet,
-        onSuccess: props.onSuccess,
-        onAuthDeclined: props.onAuthDeclined,
-      }),
     eth: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
@@ -268,28 +258,6 @@ function getSolanaTransaction(
   const vtx = web3.VersionedTransaction.deserialize(parsedUInt8Array);
   if (vtx.version === 'legacy') return web3.Transaction.from(parsedUInt8Array);
   return vtx;
-}
-
-function getNearWalletHandlers({
-  wallet,
-  onSuccess,
-  onAuthDeclined,
-}: {
-  wallet: NearWallet;
-  onSuccess?: OnSuccessMethod;
-  onAuthDeclined: OnAuthDeclinedMethod | undefined;
-}): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
-  return {
-    handleSendTransaction: async (transaction: string) => {
-      const action = JSON.parse(Buffer.from(transaction, 'base64').toString());
-      const executionOutcome = await wallet.signAndSendTransaction(action);
-      if (!executionOutcome) throw new Error('Transaction did not send');
-      const {transaction: transactionResult} = executionOutcome;
-      return transactionResult.hash;
-    },
-    onSuccess,
-    onAuthDeclined,
-  };
 }
 
 function getEvmWalletHandlers({

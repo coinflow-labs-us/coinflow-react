@@ -36,8 +36,6 @@ function getWalletPubkey(input) {
             return wallet.publicKey ? wallet.publicKey.toString() : undefined;
         if ('address' in wallet)
             return wallet.address ? wallet.address : undefined;
-        if ('accountId' in wallet)
-            return wallet.accountId ? wallet.accountId : undefined;
     }
     return null;
 }
@@ -118,13 +116,6 @@ function getHandlers(props) {
     return CoinflowUtils_1.CoinflowUtils.byBlockchain(chain, {
         solana: function () {
             return getSolanaWalletHandlers({
-                wallet: wallet,
-                onSuccess: props.onSuccess,
-                onAuthDeclined: props.onAuthDeclined,
-            });
-        },
-        near: function () {
-            return getNearWalletHandlers({
                 wallet: wallet,
                 onSuccess: props.onSuccess,
                 onAuthDeclined: props.onAuthDeclined,
@@ -230,30 +221,6 @@ function getSolanaTransaction(data) {
     if (vtx.version === 'legacy')
         return SolanaPeerDeps_1.web3.Transaction.from(parsedUInt8Array);
     return vtx;
-}
-function getNearWalletHandlers(_a) {
-    var _this = this;
-    var wallet = _a.wallet, onSuccess = _a.onSuccess, onAuthDeclined = _a.onAuthDeclined;
-    return {
-        handleSendTransaction: function (transaction) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-            var action, executionOutcome, transactionResult;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        action = JSON.parse(Buffer.from(transaction, 'base64').toString());
-                        return [4 /*yield*/, wallet.signAndSendTransaction(action)];
-                    case 1:
-                        executionOutcome = _a.sent();
-                        if (!executionOutcome)
-                            throw new Error('Transaction did not send');
-                        transactionResult = executionOutcome.transaction;
-                        return [2 /*return*/, transactionResult.hash];
-                }
-            });
-        }); },
-        onSuccess: onSuccess,
-        onAuthDeclined: onAuthDeclined,
-    };
 }
 function getEvmWalletHandlers(_a) {
     var _this = this;

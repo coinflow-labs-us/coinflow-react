@@ -60,7 +60,7 @@ export interface SplitNameCustomerInfo extends BaseCustomerInfo {
 }
 export type CustomerInfo = SplitNameCustomerInfo | NameCustomerInfo;
 /** Coinflow Types **/
-export type CoinflowBlockchain = 'solana' | 'near' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'user';
+export type CoinflowBlockchain = 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'user';
 export type CoinflowEnvs = 'prod' | 'staging' | 'staging-live' | 'sandbox' | 'local';
 export interface CoinflowTypes {
     merchantId: string;
@@ -89,14 +89,6 @@ export interface SolanaWallet {
     signTransaction?: <T extends Transaction | VersionedTransaction>(transaction: T) => Promise<T>;
     sendTransaction: <T extends Transaction | VersionedTransaction>(transaction: T) => Promise<string>;
     signMessage?: (message: Uint8Array) => Promise<Uint8Array>;
-}
-export interface NearWallet {
-    accountId: string;
-    signAndSendTransaction: (transaction: unknown) => Promise<{
-        transaction: {
-            hash: string;
-        };
-    }>;
 }
 type AccessList = Array<{
     address: string;
@@ -135,10 +127,6 @@ export interface CoinflowSessionKeyHistoryProps extends CoinflowTypes {
     sessionKey: string;
     blockchain?: undefined;
 }
-export interface CoinflowNearHistoryProps extends CoinflowTypes {
-    wallet: NearWallet;
-    blockchain: 'near';
-}
 export interface CoinflowEvmHistoryProps extends CoinflowTypes {
     wallet: EthWallet;
     blockchain: 'eth' | 'polygon' | 'base' | 'arbitrum';
@@ -155,14 +143,7 @@ export interface CoinflowBaseHistoryProps extends CoinflowEvmHistoryProps {
 export interface CoinflowArbitrumHistoryProps extends CoinflowEvmHistoryProps {
     blockchain: 'arbitrum';
 }
-export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowNearHistoryProps | CoinflowPolygonHistoryProps | CoinflowEthHistoryProps | CoinflowBaseHistoryProps | CoinflowArbitrumHistoryProps | CoinflowSessionKeyHistoryProps;
-/** Transactions **/
-export type NearFtTransferCallAction = {
-    methodName: 'ft_transfer_call';
-    args: object;
-    gas: string;
-    deposit: string;
-};
+export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowPolygonHistoryProps | CoinflowEthHistoryProps | CoinflowBaseHistoryProps | CoinflowArbitrumHistoryProps | CoinflowSessionKeyHistoryProps;
 type Bytes = ArrayLike<number>;
 type BytesLike = Bytes | string;
 /** Purchase **/
@@ -251,12 +232,6 @@ export interface CoinflowSessionKeyPurchaseProps extends CoinflowCommonPurchaseP
     wallet?: undefined;
     blockchain?: CoinflowBlockchain | undefined;
 }
-export interface CoinflowNearPurchaseProps extends CoinflowCommonPurchaseProps {
-    wallet: NearWallet;
-    blockchain: 'near';
-    action?: NearFtTransferCallAction;
-    nearDeposit?: string;
-}
 export interface CoinflowEvmPurchaseProps extends CoinflowCommonPurchaseProps {
     transaction?: EvmTransactionData;
     wallet: EthWallet;
@@ -273,7 +248,7 @@ export interface CoinflowBasePurchaseProps extends CoinflowEvmPurchaseProps {
 export interface CoinflowArbitrumPurchaseProps extends CoinflowEvmPurchaseProps {
     blockchain: 'arbitrum';
 }
-export type CoinflowPurchaseProps = CoinflowSolanaPurchaseProps | CoinflowSessionKeyPurchaseProps | CoinflowNearPurchaseProps | CoinflowPolygonPurchaseProps | CoinflowEthPurchaseProps | CoinflowBasePurchaseProps | CoinflowArbitrumPurchaseProps;
+export type CoinflowPurchaseProps = CoinflowSolanaPurchaseProps | CoinflowSessionKeyPurchaseProps | CoinflowPolygonPurchaseProps | CoinflowEthPurchaseProps | CoinflowBasePurchaseProps | CoinflowArbitrumPurchaseProps;
 /** Withdraw **/
 export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     onSuccess?: OnSuccessMethod;
@@ -284,7 +259,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     bankAccountLinkRedirect?: string;
     additionalWallets?: {
         wallet: string;
-        blockchain: 'solana' | 'eth' | 'near' | 'polygon' | 'base' | 'arbitrum';
+        blockchain: 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum';
     }[];
     lockAmount?: boolean;
     transactionSigner?: string;
@@ -302,18 +277,13 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
      */
     sessionKey?: string;
 }
-export type WalletTypes = SolanaWallet | NearWallet | EthWallet;
+export type WalletTypes = SolanaWallet | EthWallet;
 export interface SolanaWalletProps {
     wallet: SolanaWallet;
     connection: Connection;
     blockchain: 'solana';
 }
 export type CoinflowSolanaWithdrawProps = CoinflowCommonWithdrawProps & SolanaWalletProps;
-export interface NearWalletProps {
-    wallet: NearWallet;
-    blockchain: 'near';
-}
-export type CoinflowNearWithdrawProps = CoinflowCommonWithdrawProps & NearWalletProps;
 interface EvmWalletProps {
     wallet: EthWallet;
     usePermit?: boolean;
@@ -335,7 +305,7 @@ export interface ArbitrumWalletProps {
     blockchain: 'arbitrum';
 }
 export type CoinflowArbitrumWithdrawProps = CoinflowEvmWithdrawProps & ArbitrumWalletProps;
-export type CoinflowWithdrawProps = CoinflowSolanaWithdrawProps | CoinflowNearWithdrawProps | CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps | CoinflowBaseWithdrawProps | CoinflowArbitrumWithdrawProps;
+export type CoinflowWithdrawProps = CoinflowSolanaWithdrawProps | CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps | CoinflowBaseWithdrawProps | CoinflowArbitrumWithdrawProps;
 export interface CommonEvmRedeem {
     /**
      * Whether the UI should wait
@@ -369,19 +339,31 @@ export interface ReturnedTokenIdRedeem extends NormalRedeem {
     type: 'returned';
     nftContract?: string;
 }
+/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
 export type ReservoirNftIdItem = Omit<KnownTokenIdRedeem, keyof NormalRedeem>;
+/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
 export interface ReservoirOrderIdItem {
+    /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
     orderId: string;
 }
+/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
 export type ReservoirItem = ReservoirNftIdItem | ReservoirOrderIdItem;
+/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
 export type ReservoirItems = ReservoirItem | ReservoirItem[];
+/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
 export interface ReservoirRedeem extends CommonEvmRedeem {
+    /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
     type: 'reservoir';
+    /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
     items: ReservoirItems;
+    /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
     taker?: string;
 }
+/** @deprecated */
 export interface TokenRedeem extends CommonEvmRedeem {
+    /** @deprecated */
     type: 'token';
+    /** @deprecated */
     destination: string;
 }
 export interface DecentRedeem extends CommonEvmRedeem {
@@ -416,7 +398,7 @@ export interface DecentRedeem extends CommonEvmRedeem {
         isNative: boolean;
     };
 }
-export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | ReservoirRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem | DecentRedeem;
+export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem | DecentRedeem | ReservoirRedeem;
 export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey'> {
     walletPubkey: string | null | undefined;
     sessionKey?: string;
@@ -424,7 +406,6 @@ export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 
     routePrefix?: string;
     transaction?: string;
     tokens?: string[] | PublicKey[];
-    nearDeposit?: string;
     merchantCss?: string;
     color?: 'white' | 'black';
     disableApplePay?: boolean;

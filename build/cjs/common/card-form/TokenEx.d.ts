@@ -1,5 +1,5 @@
 import { CardType, CoinflowEnvs } from '../CoinflowTypes';
-import { CSSProperties } from 'react';
+import type { Properties as CSSProperties } from 'csstype';
 export declare const TokenExCardNumberIframeId = "tokenExCardNumber";
 export declare const TokenExCvvContainerID = "tokenExCardCvv";
 export interface TokenExIframe extends ReturnType<typeof TokenEx.Iframe> {

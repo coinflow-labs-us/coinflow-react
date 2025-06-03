@@ -1,7 +1,7 @@
 // Type definitions for TokenEx iframe integration
 
 import {CardType, CoinflowEnvs} from '../CoinflowTypes';
-import {CSSProperties} from 'react';
+import type {Properties as CSSProperties} from 'csstype';
 
 export const TokenExCardNumberIframeId = 'tokenExCardNumber';
 export const TokenExCvvContainerID = 'tokenExCardCvv';

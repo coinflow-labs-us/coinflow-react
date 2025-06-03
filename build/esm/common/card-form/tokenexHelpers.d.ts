@@ -33,3 +33,11 @@ export declare function setTokenExScriptTag({ env, setTokenExScriptLoaded, }: {
 export declare function doInitializeCvvOnlyTokenExIframe(args: DoInitializeCvvOnlyTokenExIframeArgs): Promise<TokenExIframe | undefined>;
 export declare function doInitializeTokenExIframe(args: DoInitializeTokenExIframeArgs): Promise<TokenExIframe | undefined>;
 export declare function doInitializeTokenExCardOnlyIframe(args: DoInitializeTokenExIframeArgs): Promise<TokenExIframe | undefined>;
+/**
+ * Converts a CSSProperties object to a valid CSS string.
+ *
+ * @param styles - the CSSProperties object to convert (should work with either React.CSSProperties or CSS.Properties<string | number>>)
+ * @returns a string representation of the CSS properties.
+ *
+ */
+export declare function CSSPropertiesToComponent(styles?: any): string;

@@ -6,11 +6,10 @@ export declare class CoinflowUtils {
     getNSurePartnerId(merchantId: string): Promise<string | undefined>;
     static getCoinflowBaseUrl(env?: CoinflowEnvs): string;
     static getCoinflowApiUrl(env?: CoinflowEnvs): string;
-    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, presentment, transaction, blockchain, webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, nearDeposit, chargebackProtectionData, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, }: CoinflowIFrameProps): string;
+    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, presentment, transaction, blockchain, webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, }: CoinflowIFrameProps): string;
     static getTransaction(props: CoinflowPurchaseProps): string | undefined;
     static byBlockchain<T>(blockchain: CoinflowBlockchain, args: {
         solana: T;
-        near: T;
         eth: T;
         polygon: T;
         base: T;

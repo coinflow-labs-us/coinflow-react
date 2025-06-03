@@ -68,7 +68,6 @@ export class CoinflowUtils {
     handleHeightChangeId,
     bankAccountLinkRedirect,
     additionalWallets,
-    nearDeposit,
     chargebackProtectionData,
     merchantCss,
     color,
@@ -177,8 +176,6 @@ export class CoinflowUtils {
           JSON.stringify(additionalWallets)
         )
       );
-
-    if (nearDeposit) url.searchParams.append('nearDeposit', nearDeposit);
 
     if (chargebackProtectionData)
       url.searchParams.append(
@@ -291,11 +288,6 @@ export class CoinflowUtils {
           JSON.stringify(transaction)
         );
       },
-      near: () => {
-        if (!('action' in props)) return undefined;
-        const {action} = props;
-        return LZString.compressToEncodedURIComponent(JSON.stringify(action));
-      },
       user: () => {
         return undefined;
       },
@@ -306,7 +298,6 @@ export class CoinflowUtils {
     blockchain: CoinflowBlockchain,
     args: {
       solana: T;
-      near: T;
       eth: T;
       polygon: T;
       base: T;
@@ -317,8 +308,6 @@ export class CoinflowUtils {
     switch (blockchain) {
       case 'solana':
         return args.solana;
-      case 'near':
-        return args.near;
       case 'polygon':
         return args.polygon;
       case 'eth':

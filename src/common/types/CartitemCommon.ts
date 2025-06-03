@@ -1,7 +1,7 @@
 /**
  * Address structure
  */
-export interface Address {
+export interface CartItemAddress {
   /**
    * Country code specified as a two letter code according to ISO 3166 Alpha-2
    * Between 2 and 2 characters
@@ -125,7 +125,7 @@ export interface RecipientInfo {
   /**
    * Shipping address
    */
-  shippingAddress?: Address;
+  shippingAddress?: CartItemAddress;
 
   /**
    * The crypto wallet that will receive the funds

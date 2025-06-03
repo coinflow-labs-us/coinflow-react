@@ -1,4 +1,4 @@
-import type {CSSProperties} from 'react';
+import type {Properties as CSSProperties} from 'csstype';
 import {
   TokenizationResponse,
   TokenExCvvContainerID,
@@ -222,23 +222,122 @@ function getStyles(s: string) {
   return {styles};
 }
 
-function CSSPropertiesToComponent(
-  dict: CSSProperties | string | undefined
-): string {
-  if (!dict) return '';
-  if (typeof dict === 'string') return dict;
+const unitlessProperties = new Set([
+  'animationIterationCount',
+  'aspectRatio',
+  'borderImageOutset',
+  'borderImageSlice',
+  'borderImageWidth',
+  'boxFlex',
+  'boxFlexGroup',
+  'boxOrdinalGroup',
+  'columnCount',
+  'columns',
+  'flex',
+  'flexGrow',
+  'flexPositive',
+  'flexShrink',
+  'flexNegative',
+  'flexOrder',
+  'gridArea',
+  'gridRow',
+  'gridRowEnd',
+  'gridRowSpan',
+  'gridRowStart',
+  'gridColumn',
+  'gridColumnEnd',
+  'gridColumnSpan',
+  'gridColumnStart',
+  'fontWeight',
+  'lineClamp',
+  'lineHeight',
+  'opacity',
+  'order',
+  'orphans',
+  'scale',
+  'rotate',
+  'rotateX',
+  'rotateY',
+  'rotateZ',
+  'scaleX',
+  'scaleY',
+  'scaleZ',
+  'skew',
+  'skewX',
+  'skewY',
+  'tabSize',
+  'widows',
+  'zIndex',
+  'zoom',
+  // svg props here
+  'fillOpacity',
+  'floodOpacity',
+  'stopOpacity',
+  'strokeDasharray',
+  'strokeDashoffset',
+  'strokeMiterlimit',
+  'strokeOpacity',
+  'strokeWidth',
+]);
 
-  let str = '';
-  for (const [key, value] of Object.entries(dict)) {
-    let clo = '';
-    key.split('').forEach(lt => {
-      if (lt.toUpperCase() === lt) {
-        clo += '-' + lt.toLowerCase();
-      } else {
-        clo += lt;
-      }
-    });
-    str += clo + ':' + value + ';';
+const VENDOR_PREFIX_REGEX = /^(Webkit|Moz|ms|O)/; // ms is lowercase in some jsx keynames
+const KEBAB_CASE_REGEX = /[A-Z]/g;
+
+/**
+ * Converts a CSSProperties object to a valid CSS string.
+ *
+ * @param styles - the CSSProperties object to convert (should work with either React.CSSProperties or CSS.Properties<string | number>>)
+ * @returns a string representation of the CSS properties.
+ *
+ */
+export function CSSPropertiesToComponent(styles?: any): string {
+  if (!styles || Object.keys(styles).length === 0) {
+    return '';
   }
-  return str;
+
+  const cssParts: string[] = [];
+
+  for (const key in styles) {
+    if (Object.prototype.hasOwnProperty.call(styles, key)) {
+      const value = styles[key as keyof CSSProperties];
+
+      if (value === null || value === undefined || value === '') {
+        continue;
+      }
+
+      let cssPropertyKey = key;
+
+      if (cssPropertyKey.startsWith('--')) {
+        // ignore custom props
+      } else {
+        cssPropertyKey = cssPropertyKey.replace(
+          KEBAB_CASE_REGEX,
+          match => `-${match.toLowerCase()}`
+        );
+
+        if (VENDOR_PREFIX_REGEX.test(key)) {
+          cssPropertyKey = `-${cssPropertyKey}`;
+        }
+      }
+
+      let cssValue: string;
+      if (typeof value === 'number') {
+        if (unitlessProperties.has(key)) {
+          cssValue = String(value);
+        } else {
+          cssValue = value === 0 ? '0' : `${value}px`;
+        }
+      } else {
+        cssValue = String(value);
+      }
+
+      cssParts.push(`${cssPropertyKey}: ${cssValue}`);
+    }
+  }
+
+  if (cssParts.length === 0) {
+    return '';
+  }
+
+  return cssParts.join('; ') + ';';
 }
