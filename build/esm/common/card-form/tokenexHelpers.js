@@ -183,111 +183,28 @@ function getStyles(s) {
     };
     return { styles: styles };
 }
-var unitlessProperties = new Set([
-    'animationIterationCount',
-    'aspectRatio',
-    'borderImageOutset',
-    'borderImageSlice',
-    'borderImageWidth',
-    'boxFlex',
-    'boxFlexGroup',
-    'boxOrdinalGroup',
-    'columnCount',
-    'columns',
-    'flex',
-    'flexGrow',
-    'flexPositive',
-    'flexShrink',
-    'flexNegative',
-    'flexOrder',
-    'gridArea',
-    'gridRow',
-    'gridRowEnd',
-    'gridRowSpan',
-    'gridRowStart',
-    'gridColumn',
-    'gridColumnEnd',
-    'gridColumnSpan',
-    'gridColumnStart',
-    'fontWeight',
-    'lineClamp',
-    'lineHeight',
-    'opacity',
-    'order',
-    'orphans',
-    'scale',
-    'rotate',
-    'rotateX',
-    'rotateY',
-    'rotateZ',
-    'scaleX',
-    'scaleY',
-    'scaleZ',
-    'skew',
-    'skewX',
-    'skewY',
-    'tabSize',
-    'widows',
-    'zIndex',
-    'zoom',
-    // svg props here
-    'fillOpacity',
-    'floodOpacity',
-    'stopOpacity',
-    'strokeDasharray',
-    'strokeDashoffset',
-    'strokeMiterlimit',
-    'strokeOpacity',
-    'strokeWidth',
-]);
-var VENDOR_PREFIX_REGEX = /^(Webkit|Moz|ms|O)/; // ms is lowercase in some jsx keynames
-var KEBAB_CASE_REGEX = /[A-Z]/g;
-/**
- * Converts a CSSProperties object to a valid CSS string.
- *
- * @param styles - the CSSProperties object to convert (should work with either React.CSSProperties or CSS.Properties<string | number>>)
- * @returns a string representation of the CSS properties.
- *
- */
-export function CSSPropertiesToComponent(styles) {
-    if (!styles || Object.keys(styles).length === 0) {
+function CSSPropertiesToComponent(dict) {
+    if (!dict)
         return '';
-    }
-    var cssParts = [];
-    for (var key in styles) {
-        if (Object.prototype.hasOwnProperty.call(styles, key)) {
-            var value = styles[key];
-            if (value === null || value === undefined || value === '') {
-                continue;
-            }
-            var cssPropertyKey = key;
-            if (cssPropertyKey.startsWith('--')) {
-                // ignore custom props
+    if (typeof dict === 'string')
+        return dict;
+    var str = '';
+    var _loop_1 = function (key, value) {
+        var clo = '';
+        key.split('').forEach(function (lt) {
+            if (lt.toUpperCase() === lt) {
+                clo += '-' + lt.toLowerCase();
             }
             else {
-                cssPropertyKey = cssPropertyKey.replace(KEBAB_CASE_REGEX, function (match) { return "-".concat(match.toLowerCase()); });
-                if (VENDOR_PREFIX_REGEX.test(key)) {
-                    cssPropertyKey = "-".concat(cssPropertyKey);
-                }
+                clo += lt;
             }
-            var cssValue = void 0;
-            if (typeof value === 'number') {
-                if (unitlessProperties.has(key)) {
-                    cssValue = String(value);
-                }
-                else {
-                    cssValue = value === 0 ? '0' : "".concat(value, "px");
-                }
-            }
-            else {
-                cssValue = String(value);
-            }
-            cssParts.push("".concat(cssPropertyKey, ": ").concat(cssValue));
-        }
+        });
+        str += clo + ':' + value + ';';
+    };
+    for (var _i = 0, _a = Object.entries(dict); _i < _a.length; _i++) {
+        var _b = _a[_i], key = _b[0], value = _b[1];
+        _loop_1(key, value);
     }
-    if (cssParts.length === 0) {
-        return '';
-    }
-    return cssParts.join('; ') + ';';
+    return str;
 }
 //# sourceMappingURL=tokenexHelpers.js.map
