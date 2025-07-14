@@ -1,4 +1,5 @@
 import {RecipientInfo, SellerInfo} from './CartitemCommon';
+import {AnyObject} from './AnyObject';
 
 /**
  * Represents a crypto item in a shopping cart
@@ -21,7 +22,7 @@ export interface CryptoCartItem {
    * Any additional product data which can be provided, e.g. description, link to image, etc
    * Example: {"any":"data","description":"This is the product description"}
    */
-  rawProductData?: Record<string, any>;
+  rawProductData?: AnyObject;
 
   /**
    * The amount in the crypto currency which is specified in the `cryptoCurrency` property

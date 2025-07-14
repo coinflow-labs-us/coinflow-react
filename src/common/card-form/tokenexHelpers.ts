@@ -45,7 +45,7 @@ export async function getIframeConfig(
 ): Promise<TokenExIFrameConfiguration> {
   const {token, origins, env} = args;
   return new Promise((resolve, reject) => {
-    fetch(new CoinflowUtils(env).url + '/api/checkout/v2/authentication-key', {
+    fetch(new CoinflowUtils(env).url + '/api/tokenize/iframe/config', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -7,7 +7,7 @@ import {useWallet} from '@solana/wallet-adapter-react';
 const wallet = useWallet();
 const connection = useConnection();
 
-<CoinflowWithdraw wallet={wallet} merchantId='<YOUR MERCHANT ID>' env='prod|sandbox|staging' connection={connection} />;
+<CoinflowWithdraw wallet={wallet} merchantId='<YOUR MERCHANT ID>' env='prod|sandbox' connection={connection} />;
 ```
 
 Props:
@@ -16,7 +16,7 @@ Props:
 - `merchantId`: Your Merchant ID (Contact Coinflow support for this)
 - `connection`: Solana Connection
 - `env` (optional): This defaults to `prod`
-  - For testing set to `staging`
+  - For testing set to `sandbox`
 - `onSuccess` (optional): function to run when the withdrawal process is successful
 - `lockAmount` (optional): Whether to let the user select the amount to withdraw or to disable the input
 - `amount` (optional): The amount to withdraw - required if `lockAmount=true`

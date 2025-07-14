@@ -314,27 +314,62 @@ export interface CommonEvmRedeem {
      */
     waitForHash?: boolean;
 }
+/**
+ * (EVM only) If your contract sends the item/service being purchased via a custom "receiver" field, then utilize this object.
+ *
+ * The coinflow contract calls the "to" contract, which transfers the NFT/item to the "receiver" address defined in the contract function arguments.
+ */
 export interface NormalRedeem extends CommonEvmRedeem {
+    /**
+     * Transaction to be called.
+     */
     transaction: {
+        /**
+         * The merchant's whitelisted contract
+         */
         to: string;
+        /**
+         * The data to call this contract with, HEX encoded.
+         *
+         * The coinflow contract calls the "to" contract, contract pulls USDC from msg.sender, and transfers the NFT/item to the "receiver" address defined in the contract function arguments.
+         */
         data: string;
     };
 }
+/**
+ * (EVM only) If your know the ID of the NFT being purchased, then utilize this object.
+ *
+ * The contract transfers the NFT to msg.sender (which is the Coinflow contract), the Coinflow contract fwd's the NFT to the end user's wallet.
+ */
 export interface KnownTokenIdRedeem extends NormalRedeem {
     /**
-     * @minLength 42 Please provide a valid EVM Public Key (42 Characters Long)
-     * @maxLength 42 Please provide a valid EVM Public Key (42 Characters Long)
+     * The address of the Nft's Contract
+     *
+     * @minLength 42 Please provide a valid EVM Address (42 Characters Long)
+     * @maxLength 42 Please provide a valid EVM Address (42 Characters Long)
      */
     nftContract: string;
     /**
+     * The ID of the NFT being purchased. Will be forwarded by the Coinflow contract to the customer's wallet.
+     *
      * @minLength 1 Please provide a valid Nft Id
      */
     nftId: string;
 }
+/**
+ * (EVM only) If your contract mints an NFT via a OpenZeppelin Safe Mint Call, then utilize this object.
+ *
+ * The contract mints the NFT to msg.sender (which is the Coinflow contract), the Coinflow contract picks up the SafeMint event, and fwd's the NFT to the end user's wallet.
+ */
 export interface SafeMintRedeem extends NormalRedeem {
     type: 'safeMint';
     nftContract?: string;
 }
+/**
+ * (EVM only) If your contract returns the NFT ID, then utilize this object.
+ *
+ * The contract mints the NFT to msg.sender (which is the Coinflow contract), the Coinflow contract picks up the returned NFT ID, and fwd's the NFT to the end user's wallet.
+ */
 export interface ReturnedTokenIdRedeem extends NormalRedeem {
     type: 'returned';
     nftContract?: string;
@@ -366,6 +401,9 @@ export interface TokenRedeem extends CommonEvmRedeem {
     /** @deprecated */
     destination: string;
 }
+/**
+ * If your contract exists on a chain supported by Decent, pass this object in order to call it.
+ */
 export interface DecentRedeem extends CommonEvmRedeem {
     type: 'decent';
     /**
@@ -398,6 +436,11 @@ export interface DecentRedeem extends CommonEvmRedeem {
         isNative: boolean;
     };
 }
+/**
+ * (EVM only) if you want to execute an EVM transaction on a successful purchase, you can pass a transaction request here.
+ *
+ * Gas fees for the transaction will be automatically calculated and added to the total charged to the customer. Optionally the merchant can opt to pay for these gas fees.
+ */
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem | DecentRedeem | ReservoirRedeem;
 export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey'> {
     walletPubkey: string | null | undefined;

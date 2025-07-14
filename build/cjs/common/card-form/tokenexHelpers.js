@@ -15,7 +15,7 @@ function getIframeConfig(args) {
         return tslib_1.__generator(this, function (_a) {
             token = args.token, origins = args.origins, env = args.env;
             return [2 /*return*/, new Promise(function (resolve, reject) {
-                    fetch(new CoinflowUtils_1.CoinflowUtils(env).url + '/api/checkout/v2/authentication-key', {
+                    fetch(new CoinflowUtils_1.CoinflowUtils(env).url + '/api/tokenize/iframe/config', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
