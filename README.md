@@ -69,6 +69,34 @@ Props:
 
 # Changelog
 
+## 5.4.4
+
+- NSure SDK added as a dependency
+
+## 5.4.3
+
+- Added email as a field for customerInfo
+
+## 5.4.2
+
+- Large performance improvements when loading the Checkout Form
+
+## 5.4.1
+
+- Added `redemptionCheck` to purchase (Solana only)
+
+## 5.4.0
+
+- Added `allowedWithdrawSpeeds` query parameter to allow merchants to specify what withdraw speeds are allowed. The default is all.
+
+## 5.3.1
+
+- Added more `chargebackProtectionData` product types
+
+## 5.3.0
+
+- Added `partialUsdcChecked` property to pre-check partial USDC payment checkbox
+
 ## 5.1.0
 
 - Added Multi-Currency Presentment via the `presentment` property

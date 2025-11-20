@@ -4,6 +4,23 @@ import { GiftCardCartItem } from './types/giftCardCartItem';
 import { nftCartItem } from './types/nftCartItem';
 import { CryptoCartItem } from './types/cryptoCartItem';
 import { MoneyTopUpCartItem } from './types/moneyTopUpCartItem';
+export declare enum WithdrawCategory {
+    USER = "user",
+    BUSINESS = "business"
+}
+export declare enum WithdrawSpeed {
+    ASAP = "asap",
+    SAME_DAY = "same_day",
+    STANDARD = "standard",
+    CARD = "card",
+    IBAN = "iban",
+    PIX = "pix",
+    EFT = "eft",
+    VENMO = "venmo",
+    PAYPAL = "paypal",
+    WIRE = "wire",
+    INTERAC = "interac"
+}
 export declare enum SettlementType {
     Credits = "Credits",
     USDC = "USDC",
@@ -41,6 +58,7 @@ interface BaseCustomerInfo {
      * Date of birth in YYYY-MM-DD format
      */
     dob?: string;
+    email?: string;
 }
 export interface NameCustomerInfo extends BaseCustomerInfo {
     /**
@@ -169,8 +187,11 @@ export declare enum PaymentMethods {
     googlePay = "googlePay",
     applePay = "applePay",
     credits = "credits",
-    crypto = "crypto"
+    crypto = "crypto",
+    instantBankTransfer = "instantBankTransfer",
+    wire = "wire"
 }
+export declare const paymentMethodLabels: Record<PaymentMethods, string>;
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     subtotal?: Subtotal;
     presentment?: Currency;
@@ -190,10 +211,15 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     settlementType?: SettlementType;
     authOnly?: boolean;
     /**
+     * If true, pre-checks the partial USDC payment checkbox when USDC balance is available.
+     * If false or undefined, maintains default behavior (unchecked).
+     */
+    partialUsdcChecked?: boolean;
+    /**
      * The DeviceID gotten from the Coinflow SDK:
      *  https://docs.coinflow.cash/docs/implement-chargeback-protection#how-to-add-chargeback-protection
      *
-     * window?.nSureSDK?.getDeviceId()
+     * nSureSDK.getDeviceId()
      */
     deviceId?: string;
     jwtToken?: string;
@@ -212,6 +238,17 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     origins?: string[];
     threeDsChallengePreference?: ThreeDsChallengePreference;
     destinationAuthKey?: string;
+    accountFundingTransaction?: AccountFundingTransaction;
+}
+/**
+ * Used for Account Funding Transactions
+ */
+export interface AccountFundingTransaction {
+    /**
+     * Recipient information for Account Funding Transactions (AFT).
+     * Required when AFT is enabled and type requires it.
+     */
+    recipientAftInfo?: RecipientAftInfo;
 }
 export interface CoinflowSolanaPurchaseProps extends CoinflowCommonPurchaseProps {
     wallet: SolanaWallet;
@@ -226,6 +263,7 @@ export interface CoinflowSolanaPurchaseProps extends CoinflowCommonPurchaseProps
     nativeSolToConvert?: {
         lamports: string | number;
     };
+    redemptionCheck?: boolean;
 }
 export interface CoinflowSessionKeyPurchaseProps extends CoinflowCommonPurchaseProps {
     sessionKey: string;
@@ -276,6 +314,10 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
      * If the withdrawer is authenticated with a sessionKey pass it here.
      */
     sessionKey?: string;
+    /**
+     * Array of allowed withdrawal speeds. If not provided, all speeds are allowed.
+     */
+    allowedWithdrawSpeeds?: WithdrawSpeed[];
 }
 export type WalletTypes = SolanaWallet | EthWallet;
 export interface SolanaWalletProps {
@@ -394,11 +436,8 @@ export interface ReservoirRedeem extends CommonEvmRedeem {
     /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
     taker?: string;
 }
-/** @deprecated */
 export interface TokenRedeem extends CommonEvmRedeem {
-    /** @deprecated */
     type: 'token';
-    /** @deprecated */
     destination: string;
 }
 /**
@@ -442,7 +481,7 @@ export interface DecentRedeem extends CommonEvmRedeem {
  * Gas fees for the transaction will be automatically calculated and added to the total charged to the customer. Optionally the merchant can opt to pay for these gas fees.
  */
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem | DecentRedeem | ReservoirRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey'> {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'> {
     walletPubkey: string | null | undefined;
     sessionKey?: string;
     route: string;
@@ -462,5 +501,46 @@ export declare enum CardType {
     MASTERCARD = "MSTR",
     AMEX = "AMEX",
     DISCOVER = "DISC"
+}
+export interface RecipientAftInfo {
+    /**
+     * @minLength 2
+     */
+    firstName: string;
+    /**
+     * @minLength 2
+     */
+    lastName: string;
+    /**
+     * @minLength 2
+     */
+    address1: string;
+    /**
+     * @minLength 2
+     */
+    city: string;
+    /**
+     * @minLength 2
+     */
+    postalCode: string;
+    /**
+     * @minLength 2
+     */
+    state?: string;
+    /**
+     * @minLength 2
+     * @maxLength 2
+     */
+    countryCode: string;
+    /**
+     * Recipients Date Of Birth in YYYMMDD format.
+     * @pattern ^\d{8}$
+     */
+    dateOfBirth?: string;
+    /**
+     * @pattern ^\d+$
+     */
+    phoneNumber?: string;
+    documentReference?: string;
 }
 export {};

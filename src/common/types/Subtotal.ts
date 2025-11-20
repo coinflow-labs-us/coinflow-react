@@ -3,6 +3,7 @@ export enum Currency {
   AED = 'AED',
   AFN = 'AFN',
   ALL = 'ALL',
+  AMD = 'AMD',
   ANG = 'ANG',
   AOA = 'AOA',
   ARS = 'ARS',
@@ -136,6 +137,7 @@ export enum Currency {
   UZS = 'UZS',
   VND = 'VND',
   VUV = 'VUV',
+  WST = 'WST',
   XAF = 'XAF',
   XCD = 'XCD',
   XOF = 'XOF',
@@ -144,12 +146,23 @@ export enum Currency {
   ZAR = 'ZAR',
   ZMW = 'ZMW',
   ZWL = 'ZWL',
+
+  CDF = 'CDF',
+  ERN = 'ERN',
+  FKP = 'FKP',
+  KPW = 'KPW',
+  RUB = 'RUB',
+  SBD = 'SBD',
+  SHP = 'SHP',
+  SSP = 'SSP',
+  VES = 'VES',
 }
 
 export const CurrencyToISO4217: Record<Currency, string> = {
   [Currency.AED]: '784',
   [Currency.AFN]: '971',
   [Currency.ALL]: '008',
+  [Currency.AMD]: '051',
   [Currency.ANG]: '532',
   [Currency.AOA]: '973',
   [Currency.AUD]: '036',
@@ -290,8 +303,18 @@ export const CurrencyToISO4217: Record<Currency, string> = {
   [Currency.SRD]: '968',
   [Currency.TOP]: '776',
   [Currency.VUV]: '548',
+  [Currency.WST]: '882',
   [Currency.ZWL]: '932',
   [Currency.CLF]: '990',
+  [Currency.CDF]: '976',
+  [Currency.ERN]: '232',
+  [Currency.FKP]: '238',
+  [Currency.KPW]: '408',
+  [Currency.RUB]: '643',
+  [Currency.SBD]: '090',
+  [Currency.SHP]: '654',
+  [Currency.SSP]: '728',
+  [Currency.VES]: '928',
 };
 
 export type WithdrawCurrency =
@@ -313,6 +336,64 @@ export function isWithdrawCurrency(
   currency: Currency
 ): currency is WithdrawCurrency {
   return currency in WithdrawCurrencies;
+}
+
+export type BankingCurrency =
+  | Currency.USD
+  | Currency.EUR
+  | Currency.GBP
+  | Currency.CAD
+  | Currency.BRL;
+
+export const BankingCurrencies = {
+  [Currency.USD]: Currency.USD,
+  [Currency.EUR]: Currency.EUR,
+  [Currency.GBP]: Currency.GBP,
+  [Currency.CAD]: Currency.CAD,
+  [Currency.BRL]: Currency.BRL,
+} as const;
+
+export function isBankingCurrency(
+  currency: Currency
+): currency is BankingCurrency {
+  return currency in BankingCurrencies;
+}
+
+const FourDecimalCurrencies = new Set<Currency>([Currency.CLF]);
+
+const ThreeDecimalCurrencies = new Set<Currency>([
+  Currency.BHD,
+  Currency.IQD,
+  Currency.JOD,
+  Currency.KWD,
+  Currency.LYD,
+  Currency.OMR,
+  Currency.TND,
+]);
+
+const ZeroDecimalCurrencies = new Set<Currency>([
+  Currency.BIF,
+  Currency.CLP,
+  Currency.DJF,
+  Currency.GNF,
+  Currency.ISK,
+  Currency.JPY,
+  Currency.KMF,
+  Currency.PYG,
+  Currency.RWF,
+  Currency.UGX,
+  Currency.VND,
+  Currency.VUV,
+  Currency.XAF,
+  Currency.XOF,
+  Currency.XPF,
+]);
+
+export function getCurrencyDecimals(currency: Currency): number {
+  if (FourDecimalCurrencies.has(currency)) return 4;
+  if (ThreeDecimalCurrencies.has(currency)) return 3;
+  if (ZeroDecimalCurrencies.has(currency)) return 0;
+  return 2;
 }
 
 export interface Cents {

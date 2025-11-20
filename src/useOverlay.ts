@@ -19,9 +19,7 @@ export function useOverlay(
       })
       .then(() => {
         setMessageReceived(true);
-        setTimeout(() => {
-          setShowOverlay(false);
-        }, 2_000);
+        setShowOverlay(false);
       });
   }, [iframeRef]);
 

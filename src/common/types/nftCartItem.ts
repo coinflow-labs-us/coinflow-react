@@ -4,6 +4,7 @@
 /* eslint-disable */
 
 import {AnyObject} from './AnyObject';
+import {SellerInfo} from './CartitemCommon';
 
 /**
  * An nft cart item
@@ -57,14 +58,22 @@ export type nftCartItem = {
    * Any additional data that the store can provide on the product, e.g. description, link to image, etc.
    */
   rawProductData?: AnyObject;
-  seller?: {
-    id: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    dob: string;
-    rawSellerData: Record<string, any>;
-  };
+  seller?: SellerInfo;
+  transactionHistory?: TransactionHistoryItem[];
+};
+
+type TransactionHistoryItem = {
+  txHash: string;
+  blockNumber: number;
+  txTime: string;
+  assetID: string;
+  registryContract: string;
+  from: string;
+  to: string;
+  paymentToken: string;
+  paymentAmount: string;
+  chain: string;
+  txType: string;
 };
 
 export type productType =
@@ -89,7 +98,21 @@ export type productType =
   | 'digitalArt'
   | 'topUp'
   | 'ownershipContract'
-  | 'inGameCurrency';
+  | 'inGameCurrency'
+  | 'digitalCollectibles'
+  | 'digitalCollectiblesMarketplace'
+  | 'digitalGiftingMarketplace'
+  | 'sweepstakes'
+  | 'virtualSportsEvents'
+  | 'contractInvoicing'
+  | 'onlineCasino'
+  | 'cryptoOnramp'
+  | 'gaming'
+  | 'travelDocuments'
+  | 'musicStreaming'
+  | 'digitalContent'
+  | 'eBooks'
+  | 'digitalSubscriptionContent';
 
 export namespace nftCartItem {
   /**

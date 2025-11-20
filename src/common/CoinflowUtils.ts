@@ -9,6 +9,7 @@ import {web3, base58} from './SolanaPeerDeps';
 import LZString from 'lz-string';
 import type {Transaction, VersionedTransaction} from '@solana/web3.js';
 import {Currency} from './types/Subtotal';
+import nsureSDK from '@nsure-ai/web-client-sdk';
 
 export class CoinflowUtils {
   env: CoinflowEnvs;
@@ -92,6 +93,10 @@ export class CoinflowUtils {
     supportEmail,
     destinationAuthKey,
     allowedPaymentMethods,
+    accountFundingTransaction,
+    partialUsdcChecked,
+    redemptionCheck,
+    allowedWithdrawSpeeds,
   }: CoinflowIFrameProps): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
@@ -188,9 +193,7 @@ export class CoinflowUtils {
       url.searchParams.append('deviceId', deviceId);
     } else {
       if (typeof window !== 'undefined') {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const deviceId = window?.nSureSDK?.getDeviceId();
+        const deviceId = nsureSDK.getDeviceId();
         if (deviceId) url.searchParams.append('deviceId', deviceId);
       }
     }
@@ -198,6 +201,7 @@ export class CoinflowUtils {
     if (merchantCss) url.searchParams.append('merchantCss', merchantCss);
     if (color) url.searchParams.append('color', color);
     if (rent) url.searchParams.append('rent', rent.lamports.toString());
+    if (redemptionCheck) url.searchParams.append('redemptionCheck', 'true');
     if (nativeSolToConvert)
       url.searchParams.append(
         'nativeSolToConvert',
@@ -217,6 +221,8 @@ export class CoinflowUtils {
     if (transactionSigner)
       url.searchParams.append('transactionSigner', transactionSigner);
     if (authOnly === true) url.searchParams.append('authOnly', 'true');
+    if (partialUsdcChecked === true)
+      url.searchParams.append('partialUsdcChecked', 'true');
     if (jwtToken) url.searchParams.append('jwtToken', jwtToken);
     if (origins)
       url.searchParams.append(
@@ -238,6 +244,20 @@ export class CoinflowUtils {
 
     if (destinationAuthKey)
       url.searchParams.append('destinationAuthKey', destinationAuthKey);
+
+    if (accountFundingTransaction)
+      url.searchParams.append(
+        'accountFundingTransaction',
+        LZString.compressToEncodedURIComponent(
+          JSON.stringify(accountFundingTransaction)
+        )
+      );
+
+    if (allowedWithdrawSpeeds)
+      url.searchParams.append(
+        'allowedWithdrawSpeeds',
+        allowedWithdrawSpeeds.join(',')
+      );
 
     return url.toString();
   }

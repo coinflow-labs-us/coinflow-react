@@ -1,6 +1,7 @@
 export * from './CoinflowTypes';
 export * from './CoinflowUtils';
 export * from './CoinflowLibMessageHandlers';
+export * from './EventBus';
 export * from './card-form/TokenEx';
 export * from './card-form/tokenexHelpers';
 export * from './types/Subtotal';

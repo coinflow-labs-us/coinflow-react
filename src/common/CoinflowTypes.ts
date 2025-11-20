@@ -11,6 +11,25 @@ import {nftCartItem} from './types/nftCartItem';
 import {CryptoCartItem} from './types/cryptoCartItem';
 import {MoneyTopUpCartItem} from './types/moneyTopUpCartItem';
 
+export enum WithdrawCategory {
+  USER = 'user',
+  BUSINESS = 'business',
+}
+
+export enum WithdrawSpeed {
+  ASAP = 'asap',
+  SAME_DAY = 'same_day',
+  STANDARD = 'standard',
+  CARD = 'card',
+  IBAN = 'iban',
+  PIX = 'pix',
+  EFT = 'eft',
+  VENMO = 'venmo',
+  PAYPAL = 'paypal',
+  WIRE = 'wire',
+  INTERAC = 'interac',
+}
+
 export enum SettlementType {
   Credits = 'Credits',
   USDC = 'USDC',
@@ -51,6 +70,7 @@ interface BaseCustomerInfo {
    * Date of birth in YYYY-MM-DD format
    */
   dob?: string;
+  email?: string;
 }
 
 export interface NameCustomerInfo extends BaseCustomerInfo {
@@ -249,7 +269,24 @@ export enum PaymentMethods {
   applePay = 'applePay',
   credits = 'credits',
   crypto = 'crypto',
+  instantBankTransfer = 'instantBankTransfer',
+  wire = 'wire',
 }
+
+export const paymentMethodLabels: Record<PaymentMethods, string> = {
+  [PaymentMethods.card]: 'Card',
+  [PaymentMethods.ach]: 'ACH',
+  [PaymentMethods.fasterPayments]: 'Faster Payments',
+  [PaymentMethods.sepa]: 'SEPA',
+  [PaymentMethods.pix]: 'PIX',
+  [PaymentMethods.usdc]: 'USDC',
+  [PaymentMethods.googlePay]: 'Google Pay',
+  [PaymentMethods.applePay]: 'Apple Pay',
+  [PaymentMethods.credits]: 'Credits',
+  [PaymentMethods.crypto]: 'Crypto',
+  [PaymentMethods.instantBankTransfer]: 'Instant Bank Transfer',
+  [PaymentMethods.wire]: 'Wire Transfer',
+};
 
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   subtotal?: Subtotal;
@@ -270,10 +307,15 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   settlementType?: SettlementType;
   authOnly?: boolean;
   /**
+   * If true, pre-checks the partial USDC payment checkbox when USDC balance is available.
+   * If false or undefined, maintains default behavior (unchecked).
+   */
+  partialUsdcChecked?: boolean;
+  /**
    * The DeviceID gotten from the Coinflow SDK:
    *  https://docs.coinflow.cash/docs/implement-chargeback-protection#how-to-add-chargeback-protection
    *
-   * window?.nSureSDK?.getDeviceId()
+   * nSureSDK.getDeviceId()
    */
   deviceId?: string;
   jwtToken?: string;
@@ -292,6 +334,18 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   origins?: string[];
   threeDsChallengePreference?: ThreeDsChallengePreference;
   destinationAuthKey?: string;
+  accountFundingTransaction?: AccountFundingTransaction;
+}
+
+/**
+ * Used for Account Funding Transactions
+ */
+export interface AccountFundingTransaction {
+  /**
+   * Recipient information for Account Funding Transactions (AFT).
+   * Required when AFT is enabled and type requires it.
+   */
+  recipientAftInfo?: RecipientAftInfo;
 }
 
 export interface CoinflowSolanaPurchaseProps
@@ -304,6 +358,7 @@ export interface CoinflowSolanaPurchaseProps
   blockchain: 'solana';
   rent?: {lamports: string | number};
   nativeSolToConvert?: {lamports: string | number};
+  redemptionCheck?: boolean;
 }
 
 export interface CoinflowSessionKeyPurchaseProps
@@ -371,6 +426,10 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
    * If the withdrawer is authenticated with a sessionKey pass it here.
    */
   sessionKey?: string;
+  /**
+   * Array of allowed withdrawal speeds. If not provided, all speeds are allowed.
+   */
+  allowedWithdrawSpeeds?: WithdrawSpeed[];
 }
 
 export type WalletTypes = SolanaWallet | EthWallet;
@@ -523,11 +582,8 @@ export interface ReservoirRedeem extends CommonEvmRedeem {
   taker?: string;
 }
 
-/** @deprecated */
 export interface TokenRedeem extends CommonEvmRedeem {
-  /** @deprecated */
   type: 'token';
-  /** @deprecated */
   destination: string;
 }
 
@@ -599,6 +655,8 @@ export interface CoinflowIFrameProps
       | 'threeDsChallengePreference'
       | 'supportEmail'
       | 'allowedPaymentMethods'
+      | 'accountFundingTransaction'
+      | 'partialUsdcChecked'
     >,
     Pick<
       CoinflowCommonWithdrawProps,
@@ -608,11 +666,12 @@ export interface CoinflowIFrameProps
       | 'lockAmount'
       | 'lockDefaultToken'
       | 'origins'
+      | 'allowedWithdrawSpeeds'
     >,
     Pick<CoinflowEvmPurchaseProps, 'authOnly'>,
     Pick<
       CoinflowSolanaPurchaseProps,
-      'rent' | 'nativeSolToConvert' | 'destinationAuthKey'
+      'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'
     > {
   walletPubkey: string | null | undefined;
   sessionKey?: string;
@@ -634,4 +693,46 @@ export enum CardType {
   MASTERCARD = 'MSTR',
   AMEX = 'AMEX',
   DISCOVER = 'DISC',
+}
+
+export interface RecipientAftInfo {
+  /**
+   * @minLength 2
+   */
+  firstName: string;
+  /**
+   * @minLength 2
+   */
+  lastName: string;
+  /**
+   * @minLength 2
+   */
+  address1: string;
+  /**
+   * @minLength 2
+   */
+  city: string;
+  /**
+   * @minLength 2
+   */
+  postalCode: string;
+  /**
+   * @minLength 2
+   */
+  state?: string;
+  /**
+   * @minLength 2
+   * @maxLength 2
+   */
+  countryCode: string;
+  /**
+   * Recipients Date Of Birth in YYYMMDD format.
+   * @pattern ^\d{8}$
+   */
+  dateOfBirth?: string;
+  /**
+   * @pattern ^\d+$
+   */
+  phoneNumber?: string;
+  documentReference?: string;
 }
