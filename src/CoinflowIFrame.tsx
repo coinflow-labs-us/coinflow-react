@@ -6,6 +6,7 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import {
   CoinflowIFrameProps,
@@ -102,11 +103,14 @@ export const CoinflowIFrame = forwardRef(
       };
     }, [handleIframeMessages]);
 
+    const [isCredentiallessSet, setIsCredentiallessSet] = useState(false);
+
     useLayoutEffect(() => {
       if (!IFrameRef.current) return;
 
       // @ts-expect-error TypeScript doesn't recognize credentialless as a valid attribute in its type definitions yet
       IFrameRef.current.credentialless = true;
+      setIsCredentiallessSet(true);
     }, []);
 
     const {handleHeightChange} = props;
@@ -127,10 +131,10 @@ export const CoinflowIFrame = forwardRef(
           }}
           title="withdraw"
           frameBorder="0"
-          src={url}
+          src={isCredentiallessSet ? url : undefined}
         />
       ),
-      [IFrameRef, handleHeightChange, url]
+      [IFrameRef, handleHeightChange, isCredentiallessSet, url]
     );
   }
 );
