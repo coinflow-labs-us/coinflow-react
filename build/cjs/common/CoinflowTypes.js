@@ -1,7 +1,7 @@
 "use strict";
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CardType = exports.paymentMethodLabels = exports.PaymentMethods = exports.ThreeDsChallengePreference = exports.MerchantStyle = exports.SettlementType = exports.WithdrawSpeed = exports.WithdrawCategory = void 0;
+exports.RN_REDIRECT_MESSAGE_NAME = exports.CardType = exports.paymentMethodLabels = exports.PaymentMethods = exports.ThreeDsChallengePreference = exports.MerchantStyle = exports.SettlementType = exports.WithdrawSpeed = exports.WithdrawCategory = void 0;
 var WithdrawCategory;
 (function (WithdrawCategory) {
     WithdrawCategory["USER"] = "user";
@@ -75,4 +75,5 @@ var CardType;
     CardType["AMEX"] = "AMEX";
     CardType["DISCOVER"] = "DISC";
 })(CardType || (exports.CardType = CardType = {}));
+exports.RN_REDIRECT_MESSAGE_NAME = 'rnredirect'; // DO NOT CHANGE
 //# sourceMappingURL=CoinflowTypes.js.map

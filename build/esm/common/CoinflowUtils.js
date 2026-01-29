@@ -2,7 +2,7 @@ import { __awaiter, __generator } from "tslib";
 import { web3, base58 } from './SolanaPeerDeps';
 import LZString from 'lz-string';
 import { Currency } from './types/Subtotal';
-import nsureSDK from '@nsure-ai/web-client-sdk';
+import getNSureDeviceId from './NSure';
 var CoinflowUtils = /** @class */ (function () {
     function CoinflowUtils(env) {
         this.env = env !== null && env !== void 0 ? env : 'prod';
@@ -36,6 +36,16 @@ var CoinflowUtils = /** @class */ (function () {
             return 'http://localhost:3000';
         return "https://".concat(env, ".coinflow.cash");
     };
+    CoinflowUtils.getCoinflowAppBaseUrl = function (env) {
+        if (!env || env === 'prod')
+            return 'https://app.coinflow.cash';
+        // @ts-expect-error This is for testing
+        if (env === 'ngrok')
+            return 'https://coinflow.ngrok.app';
+        if (env === 'local')
+            return 'http://localhost:3003';
+        return "https://app-".concat(env, ".coinflow.cash");
+    };
     CoinflowUtils.getCoinflowApiUrl = function (env) {
         if (!env || env === 'prod')
             return 'https://api.coinflow.cash';
@@ -44,11 +54,11 @@ var CoinflowUtils = /** @class */ (function () {
         return "https://api-".concat(env, ".coinflow.cash");
     };
     CoinflowUtils.getCoinflowUrl = function (_a) {
-        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, subtotal = _a.subtotal, presentment = _a.presentment, transaction = _a.transaction, _b = _a.blockchain, blockchain = _b === void 0 ? 'solana' : _b, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChangeId = _a.handleHeightChangeId, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey, allowedPaymentMethods = _a.allowedPaymentMethods, accountFundingTransaction = _a.accountFundingTransaction, partialUsdcChecked = _a.partialUsdcChecked, redemptionCheck = _a.redemptionCheck, allowedWithdrawSpeeds = _a.allowedWithdrawSpeeds;
+        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, subtotal = _a.subtotal, presentment = _a.presentment, transaction = _a.transaction, _b = _a.blockchain, blockchain = _b === void 0 ? 'solana' : _b, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChangeId = _a.handleHeightChangeId, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey, allowedPaymentMethods = _a.allowedPaymentMethods, accountFundingTransaction = _a.accountFundingTransaction, partialUsdcChecked = _a.partialUsdcChecked, redemptionCheck = _a.redemptionCheck, allowedWithdrawSpeeds = _a.allowedWithdrawSpeeds, isZeroAuthorization = _a.isZeroAuthorization, baseUrl = _a.baseUrl;
         var prefix = routePrefix
             ? "/".concat(routePrefix, "/").concat(blockchain)
             : "/".concat(blockchain);
-        var url = new URL(prefix + route, CoinflowUtils.getCoinflowBaseUrl(env));
+        var url = new URL(prefix + route, baseUrl !== null && baseUrl !== void 0 ? baseUrl : CoinflowUtils.getCoinflowBaseUrl(env));
         if (walletPubkey)
             url.searchParams.append('pubkey', walletPubkey);
         if (sessionKey)
@@ -107,11 +117,9 @@ var CoinflowUtils = /** @class */ (function () {
             url.searchParams.append('deviceId', deviceId);
         }
         else {
-            if (typeof window !== 'undefined') {
-                var deviceId_1 = nsureSDK.getDeviceId();
-                if (deviceId_1)
-                    url.searchParams.append('deviceId', deviceId_1);
-            }
+            var deviceId_1 = getNSureDeviceId();
+            if (deviceId_1)
+                url.searchParams.append('deviceId', deviceId_1);
         }
         if (merchantCss)
             url.searchParams.append('merchantCss', merchantCss);
@@ -141,6 +149,8 @@ var CoinflowUtils = /** @class */ (function () {
             url.searchParams.append('transactionSigner', transactionSigner);
         if (authOnly === true)
             url.searchParams.append('authOnly', 'true');
+        if (isZeroAuthorization === true)
+            url.searchParams.append('isZeroAuthorization', 'true');
         if (partialUsdcChecked === true)
             url.searchParams.append('partialUsdcChecked', 'true');
         if (jwtToken)
@@ -173,10 +183,10 @@ var CoinflowUtils = /** @class */ (function () {
                     throw new Error('bs58 dependency is required for Solana');
                 if (!transaction)
                     return undefined;
-                return base58.encode(transaction.serialize({
+                return base58.encode(Uint8Array.from(transaction.serialize({
                     requireAllSignatures: false,
                     verifySignatures: false,
-                }));
+                })));
             },
             polygon: function () {
                 if (!('transaction' in props))
@@ -202,6 +212,12 @@ var CoinflowUtils = /** @class */ (function () {
                 var transaction = props.transaction;
                 return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
             },
+            monad: function () {
+                if (!('transaction' in props))
+                    return undefined;
+                var transaction = props.transaction;
+                return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
+            },
             user: function () {
                 return undefined;
             },
@@ -219,6 +235,8 @@ var CoinflowUtils = /** @class */ (function () {
                 return args.base;
             case 'arbitrum':
                 return args.arbitrum;
+            case 'monad':
+                return args.monad;
             case 'user':
                 return args.user;
             default:

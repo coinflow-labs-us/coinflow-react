@@ -78,7 +78,7 @@ export interface SplitNameCustomerInfo extends BaseCustomerInfo {
 }
 export type CustomerInfo = SplitNameCustomerInfo | NameCustomerInfo;
 /** Coinflow Types **/
-export type CoinflowBlockchain = 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'user';
+export type CoinflowBlockchain = 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'monad' | 'user';
 export type CoinflowEnvs = 'prod' | 'staging' | 'staging-live' | 'sandbox' | 'local';
 export interface CoinflowTypes {
     merchantId: string;
@@ -89,6 +89,7 @@ export interface CoinflowTypes {
     theme?: MerchantTheme;
 }
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+export type MergeWithOptionalDiff<A, B> = Pick<A, Extract<keyof A, keyof B>> & Pick<B, Extract<keyof B, keyof A>> & Partial<Omit<A, keyof B>> & Partial<Omit<B, keyof A>>;
 export type OnSuccessMethod = (args: {
     paymentId: string;
     hash?: string | undefined;
@@ -147,7 +148,7 @@ export interface CoinflowSessionKeyHistoryProps extends CoinflowTypes {
 }
 export interface CoinflowEvmHistoryProps extends CoinflowTypes {
     wallet: EthWallet;
-    blockchain: 'eth' | 'polygon' | 'base' | 'arbitrum';
+    blockchain: 'eth' | 'polygon' | 'base' | 'arbitrum' | 'monad';
 }
 export interface CoinflowEthHistoryProps extends CoinflowEvmHistoryProps {
     blockchain: 'eth';
@@ -161,7 +162,10 @@ export interface CoinflowBaseHistoryProps extends CoinflowEvmHistoryProps {
 export interface CoinflowArbitrumHistoryProps extends CoinflowEvmHistoryProps {
     blockchain: 'arbitrum';
 }
-export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowPolygonHistoryProps | CoinflowEthHistoryProps | CoinflowBaseHistoryProps | CoinflowArbitrumHistoryProps | CoinflowSessionKeyHistoryProps;
+export interface CoinflowMonadHistoryProps extends CoinflowEvmHistoryProps {
+    blockchain: 'monad';
+}
+export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowPolygonHistoryProps | CoinflowEthHistoryProps | CoinflowBaseHistoryProps | CoinflowArbitrumHistoryProps | CoinflowMonadHistoryProps | CoinflowSessionKeyHistoryProps;
 type Bytes = ArrayLike<number>;
 type BytesLike = Bytes | string;
 /** Purchase **/
@@ -169,7 +173,7 @@ export type CartClassOmitted = CartItemClassOmitted[];
 export type ChargebackProtectionData = CartClassOmitted;
 export type CartItemClassOmitted = NftCartItemClassOmitted | Omit<GiftCardCartItem, 'listPrice'> | CryptoCartItem | MoneyTopUpCartItem;
 export type ChargebackProtectionItem = CartItemClassOmitted;
-export type NftCartItemClassOmitted = Omit<nftCartItem, 'listPrice' | 'sellingPrice' | 'itemClass'>;
+export type NftCartItemClassOmitted = Omit<nftCartItem, 'sellingPrice' | 'itemClass'>;
 export type Cart = CartItem[];
 export type CartItem = Omit<nftCartItem, 'listPrice' | 'sellingPrice'> | Omit<GiftCardCartItem, 'listPrice'> | CryptoCartItem | MoneyTopUpCartItem;
 export declare enum ThreeDsChallengePreference {
@@ -210,6 +214,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     customerInfo?: CustomerInfo;
     settlementType?: SettlementType;
     authOnly?: boolean;
+    isZeroAuthorization?: boolean;
     /**
      * If true, pre-checks the partial USDC payment checkbox when USDC balance is available.
      * If false or undefined, maintains default behavior (unchecked).
@@ -217,7 +222,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     partialUsdcChecked?: boolean;
     /**
      * The DeviceID gotten from the Coinflow SDK:
-     *  https://docs.coinflow.cash/docs/implement-chargeback-protection#how-to-add-chargeback-protection
+     *  https://docs.coinflow.cash/guides/checkout/fraud-protection/chargeback-protection/implement-chargeback-protection#how-to-add-chargeback-protection
      *
      * nSureSDK.getDeviceId()
      */
@@ -286,7 +291,10 @@ export interface CoinflowBasePurchaseProps extends CoinflowEvmPurchaseProps {
 export interface CoinflowArbitrumPurchaseProps extends CoinflowEvmPurchaseProps {
     blockchain: 'arbitrum';
 }
-export type CoinflowPurchaseProps = CoinflowSolanaPurchaseProps | CoinflowSessionKeyPurchaseProps | CoinflowPolygonPurchaseProps | CoinflowEthPurchaseProps | CoinflowBasePurchaseProps | CoinflowArbitrumPurchaseProps;
+export interface CoinflowMonadPurchaseProps extends CoinflowEvmPurchaseProps {
+    blockchain: 'monad';
+}
+export type CoinflowPurchaseProps = CoinflowSolanaPurchaseProps | CoinflowSessionKeyPurchaseProps | CoinflowPolygonPurchaseProps | CoinflowEthPurchaseProps | CoinflowBasePurchaseProps | CoinflowArbitrumPurchaseProps | CoinflowMonadPurchaseProps;
 /** Withdraw **/
 export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     onSuccess?: OnSuccessMethod;
@@ -297,7 +305,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     bankAccountLinkRedirect?: string;
     additionalWallets?: {
         wallet: string;
-        blockchain: 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum';
+        blockchain: 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'monad';
     }[];
     lockAmount?: boolean;
     transactionSigner?: string;
@@ -347,7 +355,11 @@ export interface ArbitrumWalletProps {
     blockchain: 'arbitrum';
 }
 export type CoinflowArbitrumWithdrawProps = CoinflowEvmWithdrawProps & ArbitrumWalletProps;
-export type CoinflowWithdrawProps = CoinflowSolanaWithdrawProps | CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps | CoinflowBaseWithdrawProps | CoinflowArbitrumWithdrawProps;
+export interface MonadWalletProps {
+    blockchain: 'monad';
+}
+export type CoinflowMonadWithdrawProps = CoinflowEvmWithdrawProps & MonadWalletProps;
+export type CoinflowWithdrawProps = CoinflowSolanaWithdrawProps | CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps | CoinflowBaseWithdrawProps | CoinflowArbitrumWithdrawProps | CoinflowMonadWithdrawProps;
 export interface CommonEvmRedeem {
     /**
      * Whether the UI should wait
@@ -416,26 +428,6 @@ export interface ReturnedTokenIdRedeem extends NormalRedeem {
     type: 'returned';
     nftContract?: string;
 }
-/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-export type ReservoirNftIdItem = Omit<KnownTokenIdRedeem, keyof NormalRedeem>;
-/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-export interface ReservoirOrderIdItem {
-    /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-    orderId: string;
-}
-/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-export type ReservoirItem = ReservoirNftIdItem | ReservoirOrderIdItem;
-/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-export type ReservoirItems = ReservoirItem | ReservoirItem[];
-/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-export interface ReservoirRedeem extends CommonEvmRedeem {
-    /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-    type: 'reservoir';
-    /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-    items: ReservoirItems;
-    /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-    taker?: string;
-}
 export interface TokenRedeem extends CommonEvmRedeem {
     type: 'token';
     destination: string;
@@ -480,8 +472,8 @@ export interface DecentRedeem extends CommonEvmRedeem {
  *
  * Gas fees for the transaction will be automatically calculated and added to the total charged to the customer. Optionally the merchant can opt to pay for these gas fees.
  */
-export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem | DecentRedeem | ReservoirRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'> {
+export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem | DecentRedeem;
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'> {
     walletPubkey: string | null | undefined;
     sessionKey?: string;
     route: string;
@@ -543,4 +535,5 @@ export interface RecipientAftInfo {
     phoneNumber?: string;
     documentReference?: string;
 }
+export declare const RN_REDIRECT_MESSAGE_NAME = "rnredirect";
 export {};

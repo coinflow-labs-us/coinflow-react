@@ -149,6 +149,13 @@ function getHandlers(props) {
                 onAuthDeclined: props.onAuthDeclined,
             });
         },
+        monad: function () {
+            return getEvmWalletHandlers({
+                wallet: wallet,
+                onSuccess: props.onSuccess,
+                onAuthDeclined: props.onAuthDeclined,
+            });
+        },
         user: function () { return getSessionKeyHandlers(props); },
     })();
 }
@@ -200,10 +207,10 @@ function getSolanaWalletHandlers(_a) {
                         signedTransaction = _a.sent();
                         if (!SolanaPeerDeps_1.base58)
                             throw new Error('bs58 dependency is required');
-                        return [2 /*return*/, SolanaPeerDeps_1.base58.encode(signedTransaction.serialize({
+                        return [2 /*return*/, SolanaPeerDeps_1.base58.encode(Uint8Array.from(signedTransaction.serialize({
                                 requireAllSignatures: false,
                                 verifySignatures: false,
-                            }))];
+                            })))];
                 }
             });
         }); },

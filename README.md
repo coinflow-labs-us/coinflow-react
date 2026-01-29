@@ -60,6 +60,7 @@ Props:
 - `nativeSolToConvert` (optional, Solana only): Specify the amount of native SOL to convert wSOL for the purchase
 - `jwtToken` (optional): A JWT token which encodes verified checkout parameters to prevent spoofing of arguments.
 - `supportEmail` (optional): Your business support email address to use for support inquiries
+- `zeroAuthorization` (optional): Pass in true if you wish to perform a zero authorization card transaction
 
 ## Utils
 
@@ -68,6 +69,18 @@ Props:
 - `getFeePayer` - Return the `PublicKey` of the Coinflow Fee Payer
 
 # Changelog
+
+## 5.6.0
+
+- New Blockchain Support: The SDK now supports Monad, a high-performance EVM-compatible blockchain. Pass blockchain='monad' to enable Monad payment processing. 
+
+## 5.5.1
+
+- Internal change to a query parameter name for zero authorization
+
+## 5.5.0
+
+- Added zeroAuthorization parameter to allow zero authorization card transactions
 
 ## 5.4.4
 

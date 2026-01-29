@@ -9,7 +9,7 @@ import {web3, base58} from './SolanaPeerDeps';
 import LZString from 'lz-string';
 import type {Transaction, VersionedTransaction} from '@solana/web3.js';
 import {Currency} from './types/Subtotal';
-import nsureSDK from '@nsure-ai/web-client-sdk';
+import getNSureDeviceId from './NSure';
 
 export class CoinflowUtils {
   env: CoinflowEnvs;
@@ -44,6 +44,15 @@ export class CoinflowUtils {
     if (env === 'local') return 'http://localhost:3000';
 
     return `https://${env}.coinflow.cash`;
+  }
+
+  static getCoinflowAppBaseUrl(env?: CoinflowEnvs): string {
+    if (!env || env === 'prod') return 'https://app.coinflow.cash';
+    // @ts-expect-error This is for testing
+    if (env === 'ngrok') return 'https://coinflow.ngrok.app';
+    if (env === 'local') return 'http://localhost:3003';
+
+    return `https://app-${env}.coinflow.cash`;
   }
 
   static getCoinflowApiUrl(env?: CoinflowEnvs): string {
@@ -97,11 +106,16 @@ export class CoinflowUtils {
     partialUsdcChecked,
     redemptionCheck,
     allowedWithdrawSpeeds,
-  }: CoinflowIFrameProps): string {
+    isZeroAuthorization,
+    baseUrl,
+  }: CoinflowIFrameProps & {baseUrl?: string}): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
       : `/${blockchain}`;
-    const url = new URL(prefix + route, CoinflowUtils.getCoinflowBaseUrl(env));
+    const url = new URL(
+      prefix + route,
+      baseUrl ?? CoinflowUtils.getCoinflowBaseUrl(env)
+    );
 
     if (walletPubkey) url.searchParams.append('pubkey', walletPubkey);
     if (sessionKey) url.searchParams.append('sessionKey', sessionKey);
@@ -192,10 +206,8 @@ export class CoinflowUtils {
     if (deviceId) {
       url.searchParams.append('deviceId', deviceId);
     } else {
-      if (typeof window !== 'undefined') {
-        const deviceId = nsureSDK.getDeviceId();
-        if (deviceId) url.searchParams.append('deviceId', deviceId);
-      }
+      const deviceId = getNSureDeviceId();
+      if (deviceId) url.searchParams.append('deviceId', deviceId);
     }
 
     if (merchantCss) url.searchParams.append('merchantCss', merchantCss);
@@ -221,6 +233,8 @@ export class CoinflowUtils {
     if (transactionSigner)
       url.searchParams.append('transactionSigner', transactionSigner);
     if (authOnly === true) url.searchParams.append('authOnly', 'true');
+    if (isZeroAuthorization === true)
+      url.searchParams.append('isZeroAuthorization', 'true');
     if (partialUsdcChecked === true)
       url.searchParams.append('partialUsdcChecked', 'true');
     if (jwtToken) url.searchParams.append('jwtToken', jwtToken);
@@ -274,10 +288,12 @@ export class CoinflowUtils {
         if (!base58) throw new Error('bs58 dependency is required for Solana');
         if (!transaction) return undefined;
         return base58.encode(
-          (transaction as VersionedTransaction | Transaction).serialize({
-            requireAllSignatures: false,
-            verifySignatures: false,
-          })
+          Uint8Array.from(
+            (transaction as VersionedTransaction | Transaction).serialize({
+              requireAllSignatures: false,
+              verifySignatures: false,
+            })
+          )
         );
       },
       polygon: () => {
@@ -308,6 +324,13 @@ export class CoinflowUtils {
           JSON.stringify(transaction)
         );
       },
+      monad: () => {
+        if (!('transaction' in props)) return undefined;
+        const {transaction} = props;
+        return LZString.compressToEncodedURIComponent(
+          JSON.stringify(transaction)
+        );
+      },
       user: () => {
         return undefined;
       },
@@ -322,6 +345,7 @@ export class CoinflowUtils {
       polygon: T;
       base: T;
       arbitrum: T;
+      monad: T;
       user: T;
     }
   ): T {
@@ -336,6 +360,8 @@ export class CoinflowUtils {
         return args.base;
       case 'arbitrum':
         return args.arbitrum;
+      case 'monad':
+        return args.monad;
       case 'user':
         return args.user;
       default:

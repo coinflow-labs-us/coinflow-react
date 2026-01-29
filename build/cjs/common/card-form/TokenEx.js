@@ -1,5 +1,6 @@
 "use strict";
 // Type definitions for TokenEx iframe integration
+/// <reference path="./TokenEx.global.d.ts" />
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CARD_TYPE_MAPPING = exports.TokenExCvvContainerID = exports.TokenExCardNumberIframeId = void 0;

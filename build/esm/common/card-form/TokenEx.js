@@ -1,4 +1,5 @@
 // Type definitions for TokenEx iframe integration
+/// <reference path="./TokenEx.global.d.ts" />
 var _a;
 import { CardType } from '../CoinflowTypes';
 export var TokenExCardNumberIframeId = 'tokenExCardNumber';

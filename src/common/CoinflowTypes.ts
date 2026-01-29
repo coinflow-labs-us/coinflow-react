@@ -100,6 +100,7 @@ export type CoinflowBlockchain =
   | 'polygon'
   | 'base'
   | 'arbitrum'
+  | 'monad'
   | 'user';
 export type CoinflowEnvs =
   | 'prod'
@@ -118,6 +119,15 @@ export interface CoinflowTypes {
 }
 
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+export type MergeWithOptionalDiff<A, B> =
+  // shared fields (required)
+  Pick<A, Extract<keyof A, keyof B>> &
+    Pick<B, Extract<keyof B, keyof A>> &
+    // A-only fields (optional)
+    Partial<Omit<A, keyof B>> &
+    // B-only fields (optional)
+    Partial<Omit<B, keyof A>>;
 
 export type OnSuccessMethod = (
   args:
@@ -198,7 +208,7 @@ export interface CoinflowSessionKeyHistoryProps extends CoinflowTypes {
 
 export interface CoinflowEvmHistoryProps extends CoinflowTypes {
   wallet: EthWallet;
-  blockchain: 'eth' | 'polygon' | 'base' | 'arbitrum';
+  blockchain: 'eth' | 'polygon' | 'base' | 'arbitrum' | 'monad';
 }
 
 export interface CoinflowEthHistoryProps extends CoinflowEvmHistoryProps {
@@ -217,12 +227,17 @@ export interface CoinflowArbitrumHistoryProps extends CoinflowEvmHistoryProps {
   blockchain: 'arbitrum';
 }
 
+export interface CoinflowMonadHistoryProps extends CoinflowEvmHistoryProps {
+  blockchain: 'monad';
+}
+
 export type CoinflowHistoryProps =
   | CoinflowSolanaHistoryProps
   | CoinflowPolygonHistoryProps
   | CoinflowEthHistoryProps
   | CoinflowBaseHistoryProps
   | CoinflowArbitrumHistoryProps
+  | CoinflowMonadHistoryProps
   | CoinflowSessionKeyHistoryProps;
 
 type Bytes = ArrayLike<number>;
@@ -242,7 +257,7 @@ export type ChargebackProtectionItem = CartItemClassOmitted;
 
 export type NftCartItemClassOmitted = Omit<
   nftCartItem,
-  'listPrice' | 'sellingPrice' | 'itemClass'
+  'sellingPrice' | 'itemClass'
 >;
 
 export type Cart = CartItem[];
@@ -306,6 +321,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   customerInfo?: CustomerInfo;
   settlementType?: SettlementType;
   authOnly?: boolean;
+  isZeroAuthorization?: boolean;
   /**
    * If true, pre-checks the partial USDC payment checkbox when USDC balance is available.
    * If false or undefined, maintains default behavior (unchecked).
@@ -313,7 +329,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   partialUsdcChecked?: boolean;
   /**
    * The DeviceID gotten from the Coinflow SDK:
-   *  https://docs.coinflow.cash/docs/implement-chargeback-protection#how-to-add-chargeback-protection
+   *  https://docs.coinflow.cash/guides/checkout/fraud-protection/chargeback-protection/implement-chargeback-protection#how-to-add-chargeback-protection
    *
    * nSureSDK.getDeviceId()
    */
@@ -348,8 +364,7 @@ export interface AccountFundingTransaction {
   recipientAftInfo?: RecipientAftInfo;
 }
 
-export interface CoinflowSolanaPurchaseProps
-  extends CoinflowCommonPurchaseProps {
+export interface CoinflowSolanaPurchaseProps extends CoinflowCommonPurchaseProps {
   wallet: SolanaWallet;
   transaction?: Transaction | VersionedTransaction;
   partialSigners?: Signer[];
@@ -361,8 +376,7 @@ export interface CoinflowSolanaPurchaseProps
   redemptionCheck?: boolean;
 }
 
-export interface CoinflowSessionKeyPurchaseProps
-  extends CoinflowCommonPurchaseProps {
+export interface CoinflowSessionKeyPurchaseProps extends CoinflowCommonPurchaseProps {
   sessionKey: string;
   wallet?: undefined;
   blockchain?: CoinflowBlockchain | undefined;
@@ -385,9 +399,12 @@ export interface CoinflowBasePurchaseProps extends CoinflowEvmPurchaseProps {
   blockchain: 'base';
 }
 
-export interface CoinflowArbitrumPurchaseProps
-  extends CoinflowEvmPurchaseProps {
+export interface CoinflowArbitrumPurchaseProps extends CoinflowEvmPurchaseProps {
   blockchain: 'arbitrum';
+}
+
+export interface CoinflowMonadPurchaseProps extends CoinflowEvmPurchaseProps {
+  blockchain: 'monad';
 }
 
 export type CoinflowPurchaseProps =
@@ -396,7 +413,8 @@ export type CoinflowPurchaseProps =
   | CoinflowPolygonPurchaseProps
   | CoinflowEthPurchaseProps
   | CoinflowBasePurchaseProps
-  | CoinflowArbitrumPurchaseProps;
+  | CoinflowArbitrumPurchaseProps
+  | CoinflowMonadPurchaseProps;
 
 /** Withdraw **/
 
@@ -409,7 +427,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
   bankAccountLinkRedirect?: string;
   additionalWallets?: {
     wallet: string;
-    blockchain: 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum';
+    blockchain: 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'monad';
   }[];
   lockAmount?: boolean;
   transactionSigner?: string;
@@ -478,12 +496,20 @@ export interface ArbitrumWalletProps {
 export type CoinflowArbitrumWithdrawProps = CoinflowEvmWithdrawProps &
   ArbitrumWalletProps;
 
+export interface MonadWalletProps {
+  blockchain: 'monad';
+}
+
+export type CoinflowMonadWithdrawProps = CoinflowEvmWithdrawProps &
+  MonadWalletProps;
+
 export type CoinflowWithdrawProps =
   | CoinflowSolanaWithdrawProps
   | CoinflowEthWithdrawProps
   | CoinflowPolygonWithdrawProps
   | CoinflowBaseWithdrawProps
-  | CoinflowArbitrumWithdrawProps;
+  | CoinflowArbitrumWithdrawProps
+  | CoinflowMonadWithdrawProps;
 
 export interface CommonEvmRedeem {
   /**
@@ -558,30 +584,6 @@ export interface ReturnedTokenIdRedeem extends NormalRedeem {
   nftContract?: string;
 }
 
-/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-export type ReservoirNftIdItem = Omit<KnownTokenIdRedeem, keyof NormalRedeem>;
-/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-export interface ReservoirOrderIdItem {
-  /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-  orderId: string;
-}
-
-/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-export type ReservoirItem = ReservoirNftIdItem | ReservoirOrderIdItem;
-
-/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-export type ReservoirItems = ReservoirItem | ReservoirItem[];
-
-/** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-export interface ReservoirRedeem extends CommonEvmRedeem {
-  /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-  type: 'reservoir';
-  /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-  items: ReservoirItems;
-  /** @deprecated Reservoir decided to sunset Reservoir NFT, including their API and associated services, effective October 15, 2025. */
-  taker?: string;
-}
-
 export interface TokenRedeem extends CommonEvmRedeem {
   type: 'token';
   destination: string;
@@ -634,11 +636,11 @@ export type EvmTransactionData =
   | KnownTokenIdRedeem
   | NormalRedeem
   | TokenRedeem
-  | DecentRedeem
-  | ReservoirRedeem;
+  | DecentRedeem;
 
 export interface CoinflowIFrameProps
-  extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>,
+  extends
+    Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>,
     Pick<
       CoinflowCommonPurchaseProps,
       | 'chargebackProtectionData'
@@ -657,6 +659,7 @@ export interface CoinflowIFrameProps
       | 'allowedPaymentMethods'
       | 'accountFundingTransaction'
       | 'partialUsdcChecked'
+      | 'isZeroAuthorization'
     >,
     Pick<
       CoinflowCommonWithdrawProps,
@@ -736,3 +739,5 @@ export interface RecipientAftInfo {
   phoneNumber?: string;
   documentReference?: string;
 }
+
+export const RN_REDIRECT_MESSAGE_NAME = 'rnredirect'; // DO NOT CHANGE

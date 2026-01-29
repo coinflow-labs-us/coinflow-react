@@ -1,7 +1,7 @@
 /* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
-/* eslint-disable */
+/* oxlint-disable */
 
 import {AnyObject} from './AnyObject';
 import {SellerInfo} from './CartitemCommon';

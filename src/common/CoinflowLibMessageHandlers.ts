@@ -191,6 +191,12 @@ export function getHandlers(
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
       }),
+    monad: () =>
+      getEvmWalletHandlers({
+        wallet: wallet as EthWallet,
+        onSuccess: props.onSuccess,
+        onAuthDeclined: props.onAuthDeclined,
+      }),
     user: () => getSessionKeyHandlers(props),
   })();
 }
@@ -230,10 +236,12 @@ function getSolanaWalletHandlers({
       const signedTransaction = await signTransaction(tx);
       if (!base58) throw new Error('bs58 dependency is required');
       return base58.encode(
-        signedTransaction.serialize({
-          requireAllSignatures: false,
-          verifySignatures: false,
-        })
+        Uint8Array.from(
+          signedTransaction.serialize({
+            requireAllSignatures: false,
+            verifySignatures: false,
+          })
+        )
       );
     },
     onSuccess,

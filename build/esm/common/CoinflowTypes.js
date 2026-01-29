@@ -72,4 +72,5 @@ export var CardType;
     CardType["AMEX"] = "AMEX";
     CardType["DISCOVER"] = "DISC";
 })(CardType || (CardType = {}));
+export var RN_REDIRECT_MESSAGE_NAME = 'rnredirect'; // DO NOT CHANGE
 //# sourceMappingURL=CoinflowTypes.js.map

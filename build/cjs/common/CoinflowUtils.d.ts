@@ -5,8 +5,11 @@ export declare class CoinflowUtils {
     constructor(env?: CoinflowEnvs);
     getNSurePartnerId(merchantId: string): Promise<string | undefined>;
     static getCoinflowBaseUrl(env?: CoinflowEnvs): string;
+    static getCoinflowAppBaseUrl(env?: CoinflowEnvs): string;
     static getCoinflowApiUrl(env?: CoinflowEnvs): string;
-    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, presentment, transaction, blockchain, webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, }: CoinflowIFrameProps): string;
+    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, presentment, transaction, blockchain, webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, baseUrl, }: CoinflowIFrameProps & {
+        baseUrl?: string;
+    }): string;
     static getTransaction(props: CoinflowPurchaseProps): string | undefined;
     static byBlockchain<T>(blockchain: CoinflowBlockchain, args: {
         solana: T;
@@ -14,6 +17,7 @@ export declare class CoinflowUtils {
         polygon: T;
         base: T;
         arbitrum: T;
+        monad: T;
         user: T;
     }): T;
 }
