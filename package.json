@@ -29,7 +29,7 @@
   ],
   "dependencies": {
     "@nsure-ai/web-client-sdk": "^1.1.90",
-    "bn.js": "^5.2.2",
+    "bn.js": "^5.2.3",
     "bs58": "~5.0.0",
     "lz-string": "^1.5.0"
   },
