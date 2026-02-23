@@ -107,6 +107,7 @@ export class CoinflowUtils {
     redemptionCheck,
     allowedWithdrawSpeeds,
     isZeroAuthorization,
+    zeroAuthorizationConfig,
     baseUrl,
   }: CoinflowIFrameProps & {baseUrl?: string}): string {
     const prefix = routePrefix
@@ -233,8 +234,17 @@ export class CoinflowUtils {
     if (transactionSigner)
       url.searchParams.append('transactionSigner', transactionSigner);
     if (authOnly === true) url.searchParams.append('authOnly', 'true');
-    if (isZeroAuthorization === true)
+
+    // zeroAuthorizationConfig takes precedence over isZeroAuthorization
+    if (zeroAuthorizationConfig) {
+      url.searchParams.append(
+        'zeroAuthorizationConfig',
+        JSON.stringify(zeroAuthorizationConfig)
+      );
+    } else if (isZeroAuthorization === true) {
       url.searchParams.append('isZeroAuthorization', 'true');
+    }
+
     if (partialUsdcChecked === true)
       url.searchParams.append('partialUsdcChecked', 'true');
     if (jwtToken) url.searchParams.append('jwtToken', jwtToken);

@@ -36,6 +36,47 @@ export enum SettlementType {
   Bank = 'Bank', // Deprecated, is the same as USDC
 }
 
+/**
+ * Configuration for zero authorization flow - controls saved payment method visibility.
+ */
+export interface ZeroAuthSavedPaymentMethods {
+  disableSavedPaymentMethods: boolean;
+}
+
+/**
+ * Configuration for zero authorization flow - verify existing card mode.
+ * Shows the "Verify Card" flow for a specific saved card.
+ * The card token will be validated to ensure it belongs to the current user's wallet.
+ * If the card doesn't belong to the user, falls back to "Add New Card" view.
+ */
+export interface ZeroAuthVerifyCard {
+  cardToken: string;
+}
+
+/**
+ * Configuration for zero authorization flow.
+ * The presence of this object indicates the checkout is in zero auth mode.
+ *
+ * Two mutually exclusive modes:
+ * - Saved payment methods: `{ disableSavedPaymentMethods: boolean }` - show or hide saved methods
+ * - Verify card: `{ cardToken: "token" }` - verify a specific saved card
+ */
+export type ZeroAuthorizationConfig =
+  | ZeroAuthSavedPaymentMethods
+  | ZeroAuthVerifyCard;
+
+export function isZeroAuthVerifyCard(
+  config: ZeroAuthorizationConfig
+): config is ZeroAuthVerifyCard {
+  return 'cardToken' in config;
+}
+
+export function isZeroAuthSavedPaymentMethods(
+  config: ZeroAuthorizationConfig
+): config is ZeroAuthSavedPaymentMethods {
+  return 'disableSavedPaymentMethods' in config;
+}
+
 export enum MerchantStyle {
   Rounded = 'rounded',
   Sharp = 'sharp',
@@ -321,7 +362,16 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   customerInfo?: CustomerInfo;
   settlementType?: SettlementType;
   authOnly?: boolean;
+  /**
+   * @deprecated Use zeroAuthorizationConfig instead for more control over zero auth behavior.
+   * Simple boolean flag for zero authorization mode. When true, defaults to showing saved payment methods.
+   */
   isZeroAuthorization?: boolean;
+  /**
+   * Configuration for zero authorization flow. Takes precedence over isZeroAuthorization if both are provided.
+   * Use this to control whether saved payment methods are shown and to pre-select a specific card for verification.
+   */
+  zeroAuthorizationConfig?: ZeroAuthorizationConfig;
   /**
    * If true, pre-checks the partial USDC payment checkbox when USDC balance is available.
    * If false or undefined, maintains default behavior (unchecked).
@@ -660,6 +710,7 @@ export interface CoinflowIFrameProps
       | 'accountFundingTransaction'
       | 'partialUsdcChecked'
       | 'isZeroAuthorization'
+      | 'zeroAuthorizationConfig'
     >,
     Pick<
       CoinflowCommonWithdrawProps,

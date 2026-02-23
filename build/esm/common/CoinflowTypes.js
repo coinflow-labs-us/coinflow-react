@@ -24,6 +24,12 @@ export var SettlementType;
     SettlementType["USDC"] = "USDC";
     SettlementType["Bank"] = "Bank";
 })(SettlementType || (SettlementType = {}));
+export function isZeroAuthVerifyCard(config) {
+    return 'cardToken' in config;
+}
+export function isZeroAuthSavedPaymentMethods(config) {
+    return 'disableSavedPaymentMethods' in config;
+}
 export var MerchantStyle;
 (function (MerchantStyle) {
     MerchantStyle["Rounded"] = "rounded";

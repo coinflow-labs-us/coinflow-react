@@ -2,6 +2,8 @@
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RN_REDIRECT_MESSAGE_NAME = exports.CardType = exports.paymentMethodLabels = exports.PaymentMethods = exports.ThreeDsChallengePreference = exports.MerchantStyle = exports.SettlementType = exports.WithdrawSpeed = exports.WithdrawCategory = void 0;
+exports.isZeroAuthVerifyCard = isZeroAuthVerifyCard;
+exports.isZeroAuthSavedPaymentMethods = isZeroAuthSavedPaymentMethods;
 var WithdrawCategory;
 (function (WithdrawCategory) {
     WithdrawCategory["USER"] = "user";
@@ -27,6 +29,12 @@ var SettlementType;
     SettlementType["USDC"] = "USDC";
     SettlementType["Bank"] = "Bank";
 })(SettlementType || (exports.SettlementType = SettlementType = {}));
+function isZeroAuthVerifyCard(config) {
+    return 'cardToken' in config;
+}
+function isZeroAuthSavedPaymentMethods(config) {
+    return 'disableSavedPaymentMethods' in config;
+}
 var MerchantStyle;
 (function (MerchantStyle) {
     MerchantStyle["Rounded"] = "rounded";

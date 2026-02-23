@@ -54,7 +54,7 @@ var CoinflowUtils = /** @class */ (function () {
         return "https://api-".concat(env, ".coinflow.cash");
     };
     CoinflowUtils.getCoinflowUrl = function (_a) {
-        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, subtotal = _a.subtotal, presentment = _a.presentment, transaction = _a.transaction, _b = _a.blockchain, blockchain = _b === void 0 ? 'solana' : _b, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChangeId = _a.handleHeightChangeId, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey, allowedPaymentMethods = _a.allowedPaymentMethods, accountFundingTransaction = _a.accountFundingTransaction, partialUsdcChecked = _a.partialUsdcChecked, redemptionCheck = _a.redemptionCheck, allowedWithdrawSpeeds = _a.allowedWithdrawSpeeds, isZeroAuthorization = _a.isZeroAuthorization, baseUrl = _a.baseUrl;
+        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, subtotal = _a.subtotal, presentment = _a.presentment, transaction = _a.transaction, _b = _a.blockchain, blockchain = _b === void 0 ? 'solana' : _b, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChangeId = _a.handleHeightChangeId, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, chargebackProtectionData = _a.chargebackProtectionData, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey, allowedPaymentMethods = _a.allowedPaymentMethods, accountFundingTransaction = _a.accountFundingTransaction, partialUsdcChecked = _a.partialUsdcChecked, redemptionCheck = _a.redemptionCheck, allowedWithdrawSpeeds = _a.allowedWithdrawSpeeds, isZeroAuthorization = _a.isZeroAuthorization, zeroAuthorizationConfig = _a.zeroAuthorizationConfig, baseUrl = _a.baseUrl;
         var prefix = routePrefix
             ? "/".concat(routePrefix, "/").concat(blockchain)
             : "/".concat(blockchain);
@@ -149,8 +149,13 @@ var CoinflowUtils = /** @class */ (function () {
             url.searchParams.append('transactionSigner', transactionSigner);
         if (authOnly === true)
             url.searchParams.append('authOnly', 'true');
-        if (isZeroAuthorization === true)
+        // zeroAuthorizationConfig takes precedence over isZeroAuthorization
+        if (zeroAuthorizationConfig) {
+            url.searchParams.append('zeroAuthorizationConfig', JSON.stringify(zeroAuthorizationConfig));
+        }
+        else if (isZeroAuthorization === true) {
             url.searchParams.append('isZeroAuthorization', 'true');
+        }
         if (partialUsdcChecked === true)
             url.searchParams.append('partialUsdcChecked', 'true');
         if (jwtToken)
