@@ -217,6 +217,15 @@ var CoinflowUtils = /** @class */ (function () {
                 var transaction = props.transaction;
                 return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
             },
+            stellar: function () {
+                if (!('transaction' in props))
+                    return undefined;
+                var transaction = props.transaction;
+                if (!transaction)
+                    return undefined;
+                // Transaction is already base64 XDR string, pass through directly
+                return transaction;
+            },
             monad: function () {
                 if (!('transaction' in props))
                     return undefined;
@@ -240,6 +249,8 @@ var CoinflowUtils = /** @class */ (function () {
                 return args.base;
             case 'arbitrum':
                 return args.arbitrum;
+            case 'stellar':
+                return args.stellar;
             case 'monad':
                 return args.monad;
             case 'user':

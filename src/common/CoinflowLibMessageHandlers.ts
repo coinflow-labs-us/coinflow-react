@@ -6,6 +6,7 @@ import {
   OnAuthDeclinedMethod,
   OnSuccessMethod,
   SolanaWallet,
+  StellarWallet,
   WalletTypes,
 } from './CoinflowTypes';
 import {CoinflowUtils} from './CoinflowUtils';
@@ -191,6 +192,12 @@ export function getHandlers(
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
       }),
+    stellar: () =>
+      getStellarWalletHandlers({
+        wallet: wallet as StellarWallet,
+        onSuccess: props.onSuccess,
+        onAuthDeclined: props.onAuthDeclined,
+      }),
     monad: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
@@ -285,6 +292,42 @@ function getEvmWalletHandlers({
     },
     handleSignMessage: async (message: string) => {
       return wallet.signMessage(message);
+    },
+    onSuccess,
+    onAuthDeclined,
+  };
+}
+
+function getStellarWalletHandlers({
+  wallet,
+  onSuccess,
+  onAuthDeclined,
+}: {
+  wallet: StellarWallet;
+  onSuccess: OnSuccessMethod | undefined;
+  onAuthDeclined: OnAuthDeclinedMethod | undefined;
+}): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
+  return {
+    handleSendTransaction: async (transaction: string) => {
+      // transaction is unsigned base64 XDR
+      // dapp needs to handle sending and confirming
+      throw new Error(
+        `sendTransaction is not supported on stellar, error when sending: ${transaction}`
+      );
+    },
+    handleSignMessage: async (message: string) => {
+      if (!wallet.signMessage) {
+        throw new Error('signMessage is not supported by this wallet');
+      }
+      // Returns base64-encoded signature
+      return await wallet.signMessage(message);
+    },
+    handleSignTransaction: async (transaction: string) => {
+      if (!wallet.signTransaction) {
+        throw new Error('signTransaction is not supported by this wallet');
+      }
+      // Returns signed base64 XDR
+      return await wallet.signTransaction(transaction);
     },
     onSuccess,
     onAuthDeclined,

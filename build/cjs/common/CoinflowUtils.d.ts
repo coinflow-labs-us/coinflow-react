@@ -17,6 +17,7 @@ export declare class CoinflowUtils {
         polygon: T;
         base: T;
         arbitrum: T;
+        stellar: T;
         monad: T;
         user: T;
     }): T;

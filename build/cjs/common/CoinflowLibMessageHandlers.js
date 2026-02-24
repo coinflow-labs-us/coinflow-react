@@ -149,6 +149,13 @@ function getHandlers(props) {
                 onAuthDeclined: props.onAuthDeclined,
             });
         },
+        stellar: function () {
+            return getStellarWalletHandlers({
+                wallet: wallet,
+                onSuccess: props.onSuccess,
+                onAuthDeclined: props.onAuthDeclined,
+            });
+        },
         monad: function () {
             return getEvmWalletHandlers({
                 wallet: wallet,
@@ -249,6 +256,49 @@ function getEvmWalletHandlers(_a) {
         handleSignMessage: function (message) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
             return tslib_1.__generator(this, function (_a) {
                 return [2 /*return*/, wallet.signMessage(message)];
+            });
+        }); },
+        onSuccess: onSuccess,
+        onAuthDeclined: onAuthDeclined,
+    };
+}
+function getStellarWalletHandlers(_a) {
+    var _this = this;
+    var wallet = _a.wallet, onSuccess = _a.onSuccess, onAuthDeclined = _a.onAuthDeclined;
+    return {
+        handleSendTransaction: function (transaction) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                // transaction is unsigned base64 XDR
+                // dapp needs to handle sending and confirming
+                throw new Error("sendTransaction is not supported on stellar, error when sending: ".concat(transaction));
+            });
+        }); },
+        handleSignMessage: function (message) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!wallet.signMessage) {
+                            throw new Error('signMessage is not supported by this wallet');
+                        }
+                        return [4 /*yield*/, wallet.signMessage(message)];
+                    case 1: 
+                    // Returns base64-encoded signature
+                    return [2 /*return*/, _a.sent()];
+                }
+            });
+        }); },
+        handleSignTransaction: function (transaction) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!wallet.signTransaction) {
+                            throw new Error('signTransaction is not supported by this wallet');
+                        }
+                        return [4 /*yield*/, wallet.signTransaction(transaction)];
+                    case 1: 
+                    // Returns signed base64 XDR
+                    return [2 /*return*/, _a.sent()];
+                }
             });
         }); },
         onSuccess: onSuccess,

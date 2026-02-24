@@ -104,7 +104,7 @@ export interface SplitNameCustomerInfo extends BaseCustomerInfo {
 }
 export type CustomerInfo = SplitNameCustomerInfo | NameCustomerInfo;
 /** Coinflow Types **/
-export type CoinflowBlockchain = 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'monad' | 'user';
+export type CoinflowBlockchain = 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'stellar' | 'monad' | 'user';
 export type CoinflowEnvs = 'prod' | 'staging' | 'staging-live' | 'sandbox' | 'local';
 export interface CoinflowTypes {
     merchantId: string;
@@ -162,6 +162,12 @@ export type EthWallet = {
     }>;
     signMessage: (message: string) => Promise<string>;
 };
+export interface StellarWallet {
+    address: string | null;
+    sendTransaction: (base64Xdr: string) => Promise<string>;
+    signTransaction: (base64Xdr: string) => Promise<string>;
+    signMessage: (message: string) => Promise<string>;
+}
 /** History **/
 export interface CoinflowSolanaHistoryProps extends CoinflowTypes {
     wallet: SolanaWallet;
@@ -188,10 +194,14 @@ export interface CoinflowBaseHistoryProps extends CoinflowEvmHistoryProps {
 export interface CoinflowArbitrumHistoryProps extends CoinflowEvmHistoryProps {
     blockchain: 'arbitrum';
 }
+export interface CoinflowStellarHistoryProps extends CoinflowTypes {
+    wallet: StellarWallet;
+    blockchain: 'stellar';
+}
 export interface CoinflowMonadHistoryProps extends CoinflowEvmHistoryProps {
     blockchain: 'monad';
 }
-export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowPolygonHistoryProps | CoinflowEthHistoryProps | CoinflowBaseHistoryProps | CoinflowArbitrumHistoryProps | CoinflowMonadHistoryProps | CoinflowSessionKeyHistoryProps;
+export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowPolygonHistoryProps | CoinflowEthHistoryProps | CoinflowBaseHistoryProps | CoinflowArbitrumHistoryProps | CoinflowStellarHistoryProps | CoinflowMonadHistoryProps | CoinflowSessionKeyHistoryProps;
 type Bytes = ArrayLike<number>;
 type BytesLike = Bytes | string;
 /** Purchase **/
@@ -326,10 +336,15 @@ export interface CoinflowBasePurchaseProps extends CoinflowEvmPurchaseProps {
 export interface CoinflowArbitrumPurchaseProps extends CoinflowEvmPurchaseProps {
     blockchain: 'arbitrum';
 }
+export interface CoinflowStellarPurchaseProps extends CoinflowCommonPurchaseProps {
+    wallet: StellarWallet;
+    transaction?: string;
+    blockchain: 'stellar';
+}
 export interface CoinflowMonadPurchaseProps extends CoinflowEvmPurchaseProps {
     blockchain: 'monad';
 }
-export type CoinflowPurchaseProps = CoinflowSolanaPurchaseProps | CoinflowSessionKeyPurchaseProps | CoinflowPolygonPurchaseProps | CoinflowEthPurchaseProps | CoinflowBasePurchaseProps | CoinflowArbitrumPurchaseProps | CoinflowMonadPurchaseProps;
+export type CoinflowPurchaseProps = CoinflowSolanaPurchaseProps | CoinflowSessionKeyPurchaseProps | CoinflowPolygonPurchaseProps | CoinflowEthPurchaseProps | CoinflowBasePurchaseProps | CoinflowArbitrumPurchaseProps | CoinflowStellarPurchaseProps | CoinflowMonadPurchaseProps;
 /** Withdraw **/
 export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     onSuccess?: OnSuccessMethod;
@@ -340,7 +355,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     bankAccountLinkRedirect?: string;
     additionalWallets?: {
         wallet: string;
-        blockchain: 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'monad';
+        blockchain: 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'monad' | 'stellar';
     }[];
     lockAmount?: boolean;
     transactionSigner?: string;
@@ -362,7 +377,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
      */
     allowedWithdrawSpeeds?: WithdrawSpeed[];
 }
-export type WalletTypes = SolanaWallet | EthWallet;
+export type WalletTypes = SolanaWallet | EthWallet | StellarWallet;
 export interface SolanaWalletProps {
     wallet: SolanaWallet;
     connection: Connection;
@@ -390,11 +405,16 @@ export interface ArbitrumWalletProps {
     blockchain: 'arbitrum';
 }
 export type CoinflowArbitrumWithdrawProps = CoinflowEvmWithdrawProps & ArbitrumWalletProps;
+export interface StellarWalletProps {
+    wallet: StellarWallet;
+    blockchain: 'stellar';
+}
+export type CoinflowStellarWithdrawProps = CoinflowCommonWithdrawProps & StellarWalletProps;
 export interface MonadWalletProps {
     blockchain: 'monad';
 }
 export type CoinflowMonadWithdrawProps = CoinflowEvmWithdrawProps & MonadWalletProps;
-export type CoinflowWithdrawProps = CoinflowSolanaWithdrawProps | CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps | CoinflowBaseWithdrawProps | CoinflowArbitrumWithdrawProps | CoinflowMonadWithdrawProps;
+export type CoinflowWithdrawProps = CoinflowSolanaWithdrawProps | CoinflowEthWithdrawProps | CoinflowPolygonWithdrawProps | CoinflowBaseWithdrawProps | CoinflowArbitrumWithdrawProps | CoinflowStellarWithdrawProps | CoinflowMonadWithdrawProps;
 export interface CommonEvmRedeem {
     /**
      * Whether the UI should wait

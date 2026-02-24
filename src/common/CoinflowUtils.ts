@@ -334,6 +334,13 @@ export class CoinflowUtils {
           JSON.stringify(transaction)
         );
       },
+      stellar: () => {
+        if (!('transaction' in props)) return undefined;
+        const {transaction} = props;
+        if (!transaction) return undefined;
+        // Transaction is already base64 XDR string, pass through directly
+        return transaction as string;
+      },
       monad: () => {
         if (!('transaction' in props)) return undefined;
         const {transaction} = props;
@@ -355,6 +362,7 @@ export class CoinflowUtils {
       polygon: T;
       base: T;
       arbitrum: T;
+      stellar: T;
       monad: T;
       user: T;
     }
@@ -370,6 +378,8 @@ export class CoinflowUtils {
         return args.base;
       case 'arbitrum':
         return args.arbitrum;
+      case 'stellar':
+        return args.stellar;
       case 'monad':
         return args.monad;
       case 'user':
