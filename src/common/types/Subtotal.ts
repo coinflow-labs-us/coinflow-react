@@ -408,6 +408,10 @@ export interface CurrencyCents extends Cents {
   currency: Currency;
 }
 
+export interface RemainingLimit extends CurrencyCents {
+  type: 'single transaction' | 'daily' | 'monthly';
+}
+
 export interface TypedCurrencyCents<T extends Currency> extends Cents {
   currency: T;
 }
