@@ -37,6 +37,27 @@ export enum SettlementType {
 }
 
 /**
+ * Configuration for a single custom pay-in fee line item.
+ * Use with customPayInFees prop on purchase flows.
+ */
+export interface PurchaseCustomPayInFee {
+  lineItemLabel: string;
+  fee:
+    | {
+        isFixed: true;
+        percent: null;
+        currency: Currency;
+        cents: number;
+      }
+    | {
+        isFixed: false;
+        percent: number;
+        currency: null;
+        cents: null;
+      };
+}
+
+/**
  * Configuration for zero authorization flow - controls saved payment method visibility.
  */
 export interface ZeroAuthSavedPaymentMethods {
@@ -360,6 +381,11 @@ export const paymentMethodLabels: Record<PaymentMethods, string> = {
 
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   subtotal?: Subtotal;
+  /**
+   * Custom pay-in fees to add to checkout. Each fee appears as a separate line item.
+   * These fees are added to the subtotal and displayed to the customer.
+   */
+  customPayInFees?: PurchaseCustomPayInFee[];
   presentment?: Currency;
   onSuccess?: OnSuccessMethod;
   onAuthDeclined?: OnAuthDeclinedMethod;
@@ -733,6 +759,7 @@ export interface CoinflowIFrameProps
       | 'chargebackProtectionData'
       | 'webhookInfo'
       | 'subtotal'
+      | 'customPayInFees'
       | 'presentment'
       | 'customerInfo'
       | 'settlementType'
