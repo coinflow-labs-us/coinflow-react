@@ -222,7 +222,9 @@ export interface CoinflowMonadHistoryProps extends CoinflowEvmHistoryProps {
 export type CoinflowHistoryProps = CoinflowSolanaHistoryProps | CoinflowPolygonHistoryProps | CoinflowEthHistoryProps | CoinflowBaseHistoryProps | CoinflowArbitrumHistoryProps | CoinflowStellarHistoryProps | CoinflowMonadHistoryProps | CoinflowSessionKeyHistoryProps;
 type Bytes = ArrayLike<number>;
 type BytesLike = Bytes | string;
-/** Purchase **/
+/**
+ * Cart item details required for Coinflow Chargeback Protection. Required if the merchant uses chargeback protection.
+ */
 export type CartClassOmitted = CartItemClassOmitted[];
 export type ChargebackProtectionData = CartClassOmitted;
 export type CartItemClassOmitted = NftCartItemClassOmitted | Omit<GiftCardCartItem, 'listPrice'> | CryptoCartItem | MoneyTopUpCartItem;

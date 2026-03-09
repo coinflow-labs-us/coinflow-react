@@ -319,9 +319,11 @@ export type CoinflowHistoryProps =
 type Bytes = ArrayLike<number>;
 type BytesLike = Bytes | string;
 
-/** Purchase **/
-
+/**
+ * Cart item details required for Coinflow Chargeback Protection. Required if the merchant uses chargeback protection.
+ */
 export type CartClassOmitted = CartItemClassOmitted[];
+
 export type ChargebackProtectionData = CartClassOmitted;
 
 export type CartItemClassOmitted =
