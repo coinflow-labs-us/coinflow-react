@@ -325,6 +325,11 @@ type BytesLike = Bytes | string;
 export type CartClassOmitted = CartItemClassOmitted[];
 
 export type ChargebackProtectionData = CartClassOmitted;
+export enum ChargebackProtectionAccountType {
+  GUEST = 'guest',
+  PRIVATE = 'private',
+  BUSINESS = 'business',
+}
 
 export type CartItemClassOmitted =
   | NftCartItemClassOmitted
@@ -396,6 +401,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   };
   email?: string;
   chargebackProtectionData?: ChargebackProtectionData;
+  chargebackProtectionAccountType?: ChargebackProtectionAccountType;
   planCode?: string;
   /**
    * The payment methods displayed on the UI. If omitted, all available payment methods will be displayed.
@@ -759,6 +765,7 @@ export interface CoinflowIFrameProps
     Pick<
       CoinflowCommonPurchaseProps,
       | 'chargebackProtectionData'
+      | 'chargebackProtectionAccountType'
       | 'webhookInfo'
       | 'subtotal'
       | 'customPayInFees'

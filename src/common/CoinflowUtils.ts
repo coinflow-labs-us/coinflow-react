@@ -80,6 +80,7 @@ export class CoinflowUtils {
     bankAccountLinkRedirect,
     additionalWallets,
     chargebackProtectionData,
+    chargebackProtectionAccountType,
     merchantCss,
     color,
     rent,
@@ -211,6 +212,11 @@ export class CoinflowUtils {
         LZString.compressToEncodedURIComponent(
           JSON.stringify(chargebackProtectionData)
         )
+      );
+    if (chargebackProtectionAccountType)
+      url.searchParams.append(
+        'chargebackProtectionAccountType',
+        chargebackProtectionAccountType
       );
     if (deviceId) {
       url.searchParams.append('deviceId', deviceId);

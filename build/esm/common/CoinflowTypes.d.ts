@@ -227,6 +227,11 @@ type BytesLike = Bytes | string;
  */
 export type CartClassOmitted = CartItemClassOmitted[];
 export type ChargebackProtectionData = CartClassOmitted;
+export declare enum ChargebackProtectionAccountType {
+    GUEST = "guest",
+    PRIVATE = "private",
+    BUSINESS = "business"
+}
 export type CartItemClassOmitted = NftCartItemClassOmitted | Omit<GiftCardCartItem, 'listPrice'> | CryptoCartItem | MoneyTopUpCartItem;
 export type ChargebackProtectionItem = CartItemClassOmitted;
 export type NftCartItemClassOmitted = Omit<nftCartItem, 'sellingPrice' | 'itemClass'>;
@@ -267,6 +272,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     };
     email?: string;
     chargebackProtectionData?: ChargebackProtectionData;
+    chargebackProtectionAccountType?: ChargebackProtectionAccountType;
     planCode?: string;
     /**
      * The payment methods displayed on the UI. If omitted, all available payment methods will be displayed.
@@ -553,7 +559,7 @@ export interface DecentRedeem extends CommonEvmRedeem {
  * Gas fees for the transaction will be automatically calculated and added to the total charged to the customer. Optionally the merchant can opt to pay for these gas fees.
  */
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem | DecentRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'webhookInfo' | 'subtotal' | 'customPayInFees' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'> {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'chargebackProtectionAccountType' | 'webhookInfo' | 'subtotal' | 'customPayInFees' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'> {
     walletPubkey: string | null | undefined;
     sessionKey?: string;
     route: string;

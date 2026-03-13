@@ -36,6 +36,12 @@ export var MerchantStyle;
     MerchantStyle["Sharp"] = "sharp";
     MerchantStyle["Pill"] = "pill";
 })(MerchantStyle || (MerchantStyle = {}));
+export var ChargebackProtectionAccountType;
+(function (ChargebackProtectionAccountType) {
+    ChargebackProtectionAccountType["GUEST"] = "guest";
+    ChargebackProtectionAccountType["PRIVATE"] = "private";
+    ChargebackProtectionAccountType["BUSINESS"] = "business";
+})(ChargebackProtectionAccountType || (ChargebackProtectionAccountType = {}));
 export var ThreeDsChallengePreference;
 (function (ThreeDsChallengePreference) {
     ThreeDsChallengePreference["NoPreference"] = "NoPreference";
