@@ -1,30 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoinflowCardOnlyInput = exports.CoinflowCvvOnlyInput = exports.CoinflowCvvInput = exports.CoinflowCardNumberInput = void 0;
-var tslib_1 = require("tslib");
-var react_1 = tslib_1.__importStar(require("react"));
-var useCardFormIframe_1 = require("./useCardFormIframe");
-var common_1 = require("../common");
-var CoinflowCardNumberInputComponent = (0, react_1.forwardRef)(function (props, ref) {
-    var css = (0, react_1.useMemo)(function () {
+const tslib_1 = require("tslib");
+const react_1 = tslib_1.__importStar(require("react"));
+const useCardFormIframe_1 = require("./useCardFormIframe");
+const common_1 = require("../common");
+const CoinflowCardNumberInputComponent = (0, react_1.forwardRef)((props, ref) => {
+    const css = (0, react_1.useMemo)(() => {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var origins = JSON.stringify(props.origins);
-    var _a = (0, useCardFormIframe_1.useCardFormIframe)(props), tokenExIframe = _a.tokenExIframe, initializeTokenExIframe = _a.initializeTokenExIframe;
-    (0, react_1.useImperativeHandle)(ref, function () { return ({
-        getToken: function () {
-            return tslib_1.__awaiter(this, void 0, void 0, function () {
-                return tslib_1.__generator(this, function (_a) {
-                    if (!tokenExIframe)
-                        throw new Error('Unable to get token');
-                    return [2 /*return*/, tokenExIframe.tokenize()];
-                });
-            });
+    const origins = JSON.stringify(props.origins);
+    const { tokenExIframe, initializeTokenExIframe } = (0, useCardFormIframe_1.useCardFormIframe)(props);
+    (0, react_1.useImperativeHandle)(ref, () => ({
+        async getToken() {
+            if (!tokenExIframe)
+                throw new Error('Unable to get token');
+            return tokenExIframe.tokenize();
         },
-    }); });
-    (0, react_1.useEffect)(function () {
+    }));
+    (0, react_1.useEffect)(() => {
         initializeTokenExIframe({
-            css: css,
+            css,
             debug: props.debug,
             origins: JSON.parse(origins),
             font: props.font,
@@ -72,27 +68,23 @@ exports.CoinflowCardNumberInput = (0, react_1.memo)(CoinflowCardNumberInputCompo
 /**
  * The CVV number input for creating a new tokenized card
  */
-exports.CoinflowCvvInput = (0, react_1.memo)(function () { return react_1.default.createElement("div", { id: common_1.TokenExCvvContainerID }); });
-var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref) {
-    var css = (0, react_1.useMemo)(function () {
+exports.CoinflowCvvInput = (0, react_1.memo)(() => react_1.default.createElement("div", { id: common_1.TokenExCvvContainerID }));
+const CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)((props, ref) => {
+    const css = (0, react_1.useMemo)(() => {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var origins = JSON.stringify(props.origins);
-    var _a = (0, useCardFormIframe_1.useCardFormIframe)(props), tokenExIframe = _a.tokenExIframe, initializeCvvOnlyTokenExIframe = _a.initializeCvvOnlyTokenExIframe;
-    (0, react_1.useImperativeHandle)(ref, function () { return ({
-        getToken: function () {
-            return tslib_1.__awaiter(this, void 0, void 0, function () {
-                return tslib_1.__generator(this, function (_a) {
-                    if (!tokenExIframe)
-                        throw new Error('Unable to get token');
-                    return [2 /*return*/, tokenExIframe.tokenize()];
-                });
-            });
+    const origins = JSON.stringify(props.origins);
+    const { tokenExIframe, initializeCvvOnlyTokenExIframe } = (0, useCardFormIframe_1.useCardFormIframe)(props);
+    (0, react_1.useImperativeHandle)(ref, () => ({
+        async getToken() {
+            if (!tokenExIframe)
+                throw new Error('Unable to get token');
+            return tokenExIframe.tokenize();
         },
-    }); });
-    (0, react_1.useEffect)(function () {
+    }));
+    (0, react_1.useEffect)(() => {
         initializeCvvOnlyTokenExIframe({
-            css: css,
+            css,
             debug: props.debug,
             token: props.token,
             cardType: props.cardType,
@@ -108,7 +100,7 @@ var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref
         origins,
         props.font,
     ]);
-    return (0, react_1.useMemo)(function () { return react_1.default.createElement("div", { id: common_1.TokenExCvvContainerID }); }, []);
+    return (0, react_1.useMemo)(() => react_1.default.createElement("div", { id: common_1.TokenExCvvContainerID }), []);
 });
 /**
  * Allows merchants to collect the CVV for an already tokenized card in a PCI-compliant way and receive the token with the CVV linked.
@@ -148,26 +140,22 @@ var CoinflowCvvOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref
  * ```
  */
 exports.CoinflowCvvOnlyInput = (0, react_1.memo)(CoinflowCvvOnlyInputComponent);
-var CoinflowCardOnlyInputComponent = (0, react_1.forwardRef)(function (props, ref) {
-    var css = (0, react_1.useMemo)(function () {
+const CoinflowCardOnlyInputComponent = (0, react_1.forwardRef)((props, ref) => {
+    const css = (0, react_1.useMemo)(() => {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var origins = JSON.stringify(props.origins);
-    var _a = (0, useCardFormIframe_1.useCardFormIframe)(props), tokenExIframe = _a.tokenExIframe, initializeTokenExCardOnlyIframe = _a.initializeTokenExCardOnlyIframe;
-    (0, react_1.useImperativeHandle)(ref, function () { return ({
-        getToken: function () {
-            return tslib_1.__awaiter(this, void 0, void 0, function () {
-                return tslib_1.__generator(this, function (_a) {
-                    if (!tokenExIframe)
-                        throw new Error('Unable to get token');
-                    return [2 /*return*/, tokenExIframe.tokenize()];
-                });
-            });
+    const origins = JSON.stringify(props.origins);
+    const { tokenExIframe, initializeTokenExCardOnlyIframe } = (0, useCardFormIframe_1.useCardFormIframe)(props);
+    (0, react_1.useImperativeHandle)(ref, () => ({
+        async getToken() {
+            if (!tokenExIframe)
+                throw new Error('Unable to get token');
+            return tokenExIframe.tokenize();
         },
-    }); });
-    (0, react_1.useEffect)(function () {
+    }));
+    (0, react_1.useEffect)(() => {
         initializeTokenExCardOnlyIframe({
-            css: css,
+            css,
             debug: props.debug,
             origins: JSON.parse(origins),
             font: props.font,

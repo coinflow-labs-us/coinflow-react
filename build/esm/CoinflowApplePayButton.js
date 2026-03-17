@@ -4,9 +4,8 @@ export function CoinflowApplePayButton(props) {
     return (React.createElement(MobileWalletButton, { props: props, route: 'apple-pay' },
         React.createElement(AppleButtonOverlayLogo, { color: props.color })));
 }
-export function AppleButtonOverlayLogo(_a) {
-    var color = _a.color;
-    var fill = color === 'white' ? '#000' : '#FFF';
+export function AppleButtonOverlayLogo({ color, }) {
+    const fill = color === 'white' ? '#000' : '#FFF';
     return (React.createElement("svg", { id: "svg-logo", viewBox: "0 0 35 15" },
         React.createElement("svg", { id: "svg-logo", x: "0", y: "3.85", height: "7.3", width: "35", className: "logo", viewBox: "0 0 105 43", version: "1.1", xmlns: "http://www.w3.org/2000/svg", xmlnsXlink: "http://www.w3.org/1999/xlink" },
             React.createElement("title", null, "Apple Logo"),

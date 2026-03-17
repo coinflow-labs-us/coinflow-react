@@ -26,7 +26,7 @@ export type GetIFrameConfigArgs = {
     env: CoinflowEnvs;
 } & MerchantIdOrCheckoutJwt;
 export declare function getIframeConfig(args: GetIFrameConfigArgs): Promise<TokenExIFrameConfiguration>;
-export declare function setTokenExScriptTag({ env, setTokenExScriptLoaded, }: {
+export declare function setTokenExScriptTag({ env, setTokenExScriptLoaded }: {
     env: CoinflowEnvs;
     setTokenExScriptLoaded: (b: boolean) => void;
 }): void;

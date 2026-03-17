@@ -1,27 +1,22 @@
-import { __awaiter, __generator } from "tslib";
 import React, { forwardRef, memo, useEffect, useImperativeHandle, useMemo, } from 'react';
 import { useCardFormIframe } from './useCardFormIframe';
 import { TokenExCardNumberIframeId, TokenExCvvContainerID, } from '../common';
-var CoinflowCardNumberInputComponent = forwardRef(function (props, ref) {
-    var css = useMemo(function () {
+const CoinflowCardNumberInputComponent = forwardRef((props, ref) => {
+    const css = useMemo(() => {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var origins = JSON.stringify(props.origins);
-    var _a = useCardFormIframe(props), tokenExIframe = _a.tokenExIframe, initializeTokenExIframe = _a.initializeTokenExIframe;
-    useImperativeHandle(ref, function () { return ({
-        getToken: function () {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    if (!tokenExIframe)
-                        throw new Error('Unable to get token');
-                    return [2 /*return*/, tokenExIframe.tokenize()];
-                });
-            });
+    const origins = JSON.stringify(props.origins);
+    const { tokenExIframe, initializeTokenExIframe } = useCardFormIframe(props);
+    useImperativeHandle(ref, () => ({
+        async getToken() {
+            if (!tokenExIframe)
+                throw new Error('Unable to get token');
+            return tokenExIframe.tokenize();
         },
-    }); });
-    useEffect(function () {
+    }));
+    useEffect(() => {
         initializeTokenExIframe({
-            css: css,
+            css,
             debug: props.debug,
             origins: JSON.parse(origins),
             font: props.font,
@@ -65,31 +60,27 @@ var CoinflowCardNumberInputComponent = forwardRef(function (props, ref) {
  *
  * ```
  */
-export var CoinflowCardNumberInput = memo(CoinflowCardNumberInputComponent);
+export const CoinflowCardNumberInput = memo(CoinflowCardNumberInputComponent);
 /**
  * The CVV number input for creating a new tokenized card
  */
-export var CoinflowCvvInput = memo(function () { return React.createElement("div", { id: TokenExCvvContainerID }); });
-var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
-    var css = useMemo(function () {
+export const CoinflowCvvInput = memo(() => React.createElement("div", { id: TokenExCvvContainerID }));
+const CoinflowCvvOnlyInputComponent = forwardRef((props, ref) => {
+    const css = useMemo(() => {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var origins = JSON.stringify(props.origins);
-    var _a = useCardFormIframe(props), tokenExIframe = _a.tokenExIframe, initializeCvvOnlyTokenExIframe = _a.initializeCvvOnlyTokenExIframe;
-    useImperativeHandle(ref, function () { return ({
-        getToken: function () {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    if (!tokenExIframe)
-                        throw new Error('Unable to get token');
-                    return [2 /*return*/, tokenExIframe.tokenize()];
-                });
-            });
+    const origins = JSON.stringify(props.origins);
+    const { tokenExIframe, initializeCvvOnlyTokenExIframe } = useCardFormIframe(props);
+    useImperativeHandle(ref, () => ({
+        async getToken() {
+            if (!tokenExIframe)
+                throw new Error('Unable to get token');
+            return tokenExIframe.tokenize();
         },
-    }); });
-    useEffect(function () {
+    }));
+    useEffect(() => {
         initializeCvvOnlyTokenExIframe({
-            css: css,
+            css,
             debug: props.debug,
             token: props.token,
             cardType: props.cardType,
@@ -105,7 +96,7 @@ var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
         origins,
         props.font,
     ]);
-    return useMemo(function () { return React.createElement("div", { id: TokenExCvvContainerID }); }, []);
+    return useMemo(() => React.createElement("div", { id: TokenExCvvContainerID }), []);
 });
 /**
  * Allows merchants to collect the CVV for an already tokenized card in a PCI-compliant way and receive the token with the CVV linked.
@@ -144,27 +135,23 @@ var CoinflowCvvOnlyInputComponent = forwardRef(function (props, ref) {
  *
  * ```
  */
-export var CoinflowCvvOnlyInput = memo(CoinflowCvvOnlyInputComponent);
-var CoinflowCardOnlyInputComponent = forwardRef(function (props, ref) {
-    var css = useMemo(function () {
+export const CoinflowCvvOnlyInput = memo(CoinflowCvvOnlyInputComponent);
+const CoinflowCardOnlyInputComponent = forwardRef((props, ref) => {
+    const css = useMemo(() => {
         return JSON.stringify(props.css);
     }, [props.css]);
-    var origins = JSON.stringify(props.origins);
-    var _a = useCardFormIframe(props), tokenExIframe = _a.tokenExIframe, initializeTokenExCardOnlyIframe = _a.initializeTokenExCardOnlyIframe;
-    useImperativeHandle(ref, function () { return ({
-        getToken: function () {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    if (!tokenExIframe)
-                        throw new Error('Unable to get token');
-                    return [2 /*return*/, tokenExIframe.tokenize()];
-                });
-            });
+    const origins = JSON.stringify(props.origins);
+    const { tokenExIframe, initializeTokenExCardOnlyIframe } = useCardFormIframe(props);
+    useImperativeHandle(ref, () => ({
+        async getToken() {
+            if (!tokenExIframe)
+                throw new Error('Unable to get token');
+            return tokenExIframe.tokenize();
         },
-    }); });
-    useEffect(function () {
+    }));
+    useEffect(() => {
         initializeTokenExCardOnlyIframe({
-            css: css,
+            css,
             debug: props.debug,
             origins: JSON.parse(origins),
             font: props.font,
@@ -214,5 +201,5 @@ var CoinflowCardOnlyInputComponent = forwardRef(function (props, ref) {
  *
  * ```
  */
-export var CoinflowCardOnlyInput = memo(CoinflowCardOnlyInputComponent);
+export const CoinflowCardOnlyInput = memo(CoinflowCardOnlyInputComponent);
 //# sourceMappingURL=CoinflowCardForm.js.map

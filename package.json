@@ -19,8 +19,8 @@
   "scripts": {
     "clean": "rimraf build && rimraf ./src/common",
     "build": "npm run codegen && npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir build/cjs",
+    "build:esm": "tsgo",
+    "build:cjs": "tsgo -p tsconfig.cjs.json",
     "codegen": "cp -r '../../packages/lib-common/src/.' ./src/common/"
   },
   "files": [

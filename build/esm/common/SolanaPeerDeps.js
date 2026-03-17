@@ -11,7 +11,7 @@
 // This works in react, but not angular
 import * as SolanaWeb3Js from '@solana/web3.js';
 import base58Imported from 'bs58';
-var web3 = SolanaWeb3Js;
-var base58 = base58Imported;
+const web3 = SolanaWeb3Js;
+const base58 = base58Imported;
 export { web3, base58 };
 //# sourceMappingURL=SolanaPeerDeps.js.map

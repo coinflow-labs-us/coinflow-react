@@ -1,16 +1,24 @@
-import { __assign } from "tslib";
 import { CoinflowIFrame, useRandomHandleHeightChangeId } from './CoinflowIFrame';
 import React, { useMemo } from 'react';
 import { getHandlers, getWalletPubkey, } from './common';
 export function CoinflowPurchaseHistory(props) {
-    var handleHeightChangeId = useRandomHandleHeightChangeId();
-    var iframeProps = useMemo(function () {
-        var walletPubkey = getWalletPubkey(props);
-        return __assign(__assign({}, props), { walletPubkey: walletPubkey, route: "/history/purchase/".concat(props.merchantId), transaction: undefined, handleHeightChangeId: handleHeightChangeId });
+    const handleHeightChangeId = useRandomHandleHeightChangeId();
+    const iframeProps = useMemo(() => {
+        const walletPubkey = getWalletPubkey(props);
+        return {
+            ...props,
+            walletPubkey,
+            route: `/history/purchase/${props.merchantId}`,
+            transaction: undefined,
+            handleHeightChangeId,
+        };
     }, [handleHeightChangeId, props]);
-    var messageHandlers = useMemo(function () {
-        return __assign(__assign({}, getHandlers(props)), { handleHeightChange: props.handleHeightChange });
+    const messageHandlers = useMemo(() => {
+        return {
+            ...getHandlers(props),
+            handleHeightChange: props.handleHeightChange,
+        };
     }, [props]);
-    return React.createElement(CoinflowIFrame, __assign({}, iframeProps, messageHandlers));
+    return React.createElement(CoinflowIFrame, { ...iframeProps, ...messageHandlers });
 }
 //# sourceMappingURL=CoinflowPurchaseHistory.js.map

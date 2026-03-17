@@ -1,32 +1,29 @@
-import { __awaiter, __generator } from "tslib";
 import { web3, base58 } from './SolanaPeerDeps';
 import LZString from 'lz-string';
 import { Currency } from './types/Subtotal';
 import getNSureDeviceId from './NSure';
-var CoinflowUtils = /** @class */ (function () {
-    function CoinflowUtils(env) {
-        this.env = env !== null && env !== void 0 ? env : 'prod';
+export class CoinflowUtils {
+    env;
+    url;
+    constructor(env) {
+        this.env = env ?? 'prod';
         if (this.env === 'prod')
             this.url = 'https://api.coinflow.cash';
         else if (this.env === 'local')
             this.url = 'http://localhost:5000';
         else
-            this.url = "https://api-".concat(this.env, ".coinflow.cash");
+            this.url = `https://api-${this.env}.coinflow.cash`;
     }
-    CoinflowUtils.prototype.getNSurePartnerId = function (merchantId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, fetch(this.url + "/merchant/view/".concat(merchantId))
-                        .then(function (response) { return response.json(); })
-                        .then(function (json) { var _a; return ((_a = json.nSureSettings) === null || _a === void 0 ? void 0 : _a.nSurePartnerId) || json.nSurePartnerId; })
-                        .catch(function (e) {
-                        console.error(e);
-                        return undefined;
-                    })];
-            });
+    async getNSurePartnerId(merchantId) {
+        return fetch(this.url + `/merchant/view/${merchantId}`)
+            .then(response => response.json())
+            .then((json) => json.nSureSettings?.nSurePartnerId || json.nSurePartnerId)
+            .catch(e => {
+            console.error(e);
+            return undefined;
         });
-    };
-    CoinflowUtils.getCoinflowBaseUrl = function (env) {
+    }
+    static getCoinflowBaseUrl(env) {
         if (!env || env === 'prod')
             return 'https://coinflow.cash';
         // @ts-expect-error This is for testing
@@ -34,9 +31,9 @@ var CoinflowUtils = /** @class */ (function () {
             return 'https://coinflow.ngrok.app';
         if (env === 'local')
             return 'http://localhost:3000';
-        return "https://".concat(env, ".coinflow.cash");
-    };
-    CoinflowUtils.getCoinflowAppBaseUrl = function (env) {
+        return `https://${env}.coinflow.cash`;
+    }
+    static getCoinflowAppBaseUrl(env) {
         if (!env || env === 'prod')
             return 'https://app.coinflow.cash';
         // @ts-expect-error This is for testing
@@ -44,21 +41,20 @@ var CoinflowUtils = /** @class */ (function () {
             return 'https://coinflow.ngrok.app';
         if (env === 'local')
             return 'http://localhost:3003';
-        return "https://app-".concat(env, ".coinflow.cash");
-    };
-    CoinflowUtils.getCoinflowApiUrl = function (env) {
+        return `https://app-${env}.coinflow.cash`;
+    }
+    static getCoinflowApiUrl(env) {
         if (!env || env === 'prod')
             return 'https://api.coinflow.cash';
         if (env === 'local')
             return 'http://localhost:5000';
-        return "https://api-".concat(env, ".coinflow.cash");
-    };
-    CoinflowUtils.getCoinflowUrl = function (_a) {
-        var walletPubkey = _a.walletPubkey, sessionKey = _a.sessionKey, route = _a.route, routePrefix = _a.routePrefix, env = _a.env, subtotal = _a.subtotal, customPayInFees = _a.customPayInFees, presentment = _a.presentment, transaction = _a.transaction, _b = _a.blockchain, blockchain = _b === void 0 ? 'solana' : _b, webhookInfo = _a.webhookInfo, email = _a.email, loaderBackground = _a.loaderBackground, handleHeightChangeId = _a.handleHeightChangeId, bankAccountLinkRedirect = _a.bankAccountLinkRedirect, additionalWallets = _a.additionalWallets, chargebackProtectionData = _a.chargebackProtectionData, chargebackProtectionAccountType = _a.chargebackProtectionAccountType, merchantCss = _a.merchantCss, color = _a.color, rent = _a.rent, lockDefaultToken = _a.lockDefaultToken, tokens = _a.tokens, planCode = _a.planCode, disableApplePay = _a.disableApplePay, disableGooglePay = _a.disableGooglePay, customerInfo = _a.customerInfo, settlementType = _a.settlementType, lockAmount = _a.lockAmount, nativeSolToConvert = _a.nativeSolToConvert, theme = _a.theme, usePermit = _a.usePermit, transactionSigner = _a.transactionSigner, authOnly = _a.authOnly, deviceId = _a.deviceId, jwtToken = _a.jwtToken, origins = _a.origins, threeDsChallengePreference = _a.threeDsChallengePreference, supportEmail = _a.supportEmail, destinationAuthKey = _a.destinationAuthKey, allowedPaymentMethods = _a.allowedPaymentMethods, accountFundingTransaction = _a.accountFundingTransaction, partialUsdcChecked = _a.partialUsdcChecked, redemptionCheck = _a.redemptionCheck, allowedWithdrawSpeeds = _a.allowedWithdrawSpeeds, isZeroAuthorization = _a.isZeroAuthorization, zeroAuthorizationConfig = _a.zeroAuthorizationConfig, baseUrl = _a.baseUrl;
-        var prefix = routePrefix
-            ? "/".concat(routePrefix, "/").concat(blockchain)
-            : "/".concat(blockchain);
-        var url = new URL(prefix + route, baseUrl !== null && baseUrl !== void 0 ? baseUrl : CoinflowUtils.getCoinflowBaseUrl(env));
+        return `https://api-${env}.coinflow.cash`;
+    }
+    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, customPayInFees, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, baseUrl, }) {
+        const prefix = routePrefix
+            ? `/${routePrefix}/${blockchain}`
+            : `/${blockchain}`;
+        const url = new URL(prefix + route, baseUrl ?? CoinflowUtils.getCoinflowBaseUrl(env));
         if (walletPubkey)
             url.searchParams.append('pubkey', walletPubkey);
         if (sessionKey)
@@ -122,9 +118,9 @@ var CoinflowUtils = /** @class */ (function () {
             url.searchParams.append('deviceId', deviceId);
         }
         else {
-            var deviceId_1 = getNSureDeviceId();
-            if (deviceId_1)
-                url.searchParams.append('deviceId', deviceId_1);
+            const deviceId = getNSureDeviceId();
+            if (deviceId)
+                url.searchParams.append('deviceId', deviceId);
         }
         if (merchantCss)
             url.searchParams.append('merchantCss', merchantCss);
@@ -178,15 +174,15 @@ var CoinflowUtils = /** @class */ (function () {
         if (allowedWithdrawSpeeds)
             url.searchParams.append('allowedWithdrawSpeeds', allowedWithdrawSpeeds.join(','));
         return url.toString();
-    };
-    CoinflowUtils.getTransaction = function (props) {
+    }
+    static getTransaction(props) {
         if (!props.blockchain)
             return undefined;
         return this.byBlockchain(props.blockchain, {
-            solana: function () {
+            solana: () => {
                 if (!('transaction' in props))
                     return undefined;
-                var transaction = props.transaction;
+                const { transaction } = props;
                 if (!web3)
                     throw new Error('@solana/web3.js dependency is required for Solana');
                 if (!base58)
@@ -198,51 +194,51 @@ var CoinflowUtils = /** @class */ (function () {
                     verifySignatures: false,
                 })));
             },
-            polygon: function () {
+            polygon: () => {
                 if (!('transaction' in props))
                     return undefined;
-                var transaction = props.transaction;
+                const { transaction } = props;
                 return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
             },
-            eth: function () {
+            eth: () => {
                 if (!('transaction' in props))
                     return undefined;
-                var transaction = props.transaction;
+                const { transaction } = props;
                 return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
             },
-            base: function () {
+            base: () => {
                 if (!('transaction' in props))
                     return undefined;
-                var transaction = props.transaction;
+                const { transaction } = props;
                 return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
             },
-            arbitrum: function () {
+            arbitrum: () => {
                 if (!('transaction' in props))
                     return undefined;
-                var transaction = props.transaction;
+                const { transaction } = props;
                 return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
             },
-            stellar: function () {
+            stellar: () => {
                 if (!('transaction' in props))
                     return undefined;
-                var transaction = props.transaction;
+                const { transaction } = props;
                 if (!transaction)
                     return undefined;
                 // Transaction is already base64 XDR string, pass through directly
                 return transaction;
             },
-            monad: function () {
+            monad: () => {
                 if (!('transaction' in props))
                     return undefined;
-                var transaction = props.transaction;
+                const { transaction } = props;
                 return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
             },
-            user: function () {
+            user: () => {
                 return undefined;
             },
         })();
-    };
-    CoinflowUtils.byBlockchain = function (blockchain, args) {
+    }
+    static byBlockchain(blockchain, args) {
         switch (blockchain) {
             case 'solana':
                 return args.solana;
@@ -263,14 +259,12 @@ var CoinflowUtils = /** @class */ (function () {
             default:
                 throw new Error('blockchain not supported!');
         }
-    };
-    return CoinflowUtils;
-}());
-export { CoinflowUtils };
+    }
+}
 export function getCustomerName(info) {
     if (!info)
         return undefined;
-    var firstName, lastName;
+    let firstName, lastName;
     if ('name' in info && info.name) {
         firstName = info.name.split(' ')[0];
         lastName = info.name.split(' ').slice(1).join(' ');
@@ -281,8 +275,8 @@ export function getCustomerName(info) {
         lastName = info.lastName;
     if (firstName && lastName)
         return {
-            firstName: firstName,
-            lastName: lastName,
+            firstName,
+            lastName,
         };
     return undefined;
 }

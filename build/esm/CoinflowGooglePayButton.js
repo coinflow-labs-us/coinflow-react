@@ -4,8 +4,7 @@ export function CoinflowGooglePayButton(props) {
     return (React.createElement(MobileWalletButton, { props: props, route: 'google-pay', overlayDisplayOverride: 'flex', alignItems: 'center' },
         React.createElement(GooglePayLogo, { color: props.color })));
 }
-function GooglePayLogo(_a) {
-    var color = _a.color;
+function GooglePayLogo({ color }) {
     if (color === 'white') {
         return React.createElement(GooglePayLogoLight, null);
     }

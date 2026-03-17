@@ -1,85 +1,74 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoinflowIFrame = void 0;
+const tslib_1 = require("tslib");
 exports.useRandomHandleHeightChangeId = useRandomHandleHeightChangeId;
-var tslib_1 = require("tslib");
-var react_1 = tslib_1.__importStar(require("react"));
-var common_1 = require("./common");
+const react_1 = tslib_1.__importStar(require("react"));
+const common_1 = require("./common");
 function useRandomHandleHeightChangeId() {
-    return (0, react_1.useMemo)(function () { return Math.random().toString(16).substring(2); }, []);
+    return (0, react_1.useMemo)(() => Math.random().toString(16).substring(2), []);
 }
-exports.CoinflowIFrame = (0, react_1.forwardRef)(function (props, ref) {
-    var IFrameRef = (0, react_1.useRef)(null);
-    var url = (0, react_1.useMemo)(function () {
+exports.CoinflowIFrame = (0, react_1.forwardRef)((props, ref) => {
+    const IFrameRef = (0, react_1.useRef)(null);
+    const url = (0, react_1.useMemo)(() => {
         return common_1.CoinflowUtils.getCoinflowUrl(props);
     }, [props]);
-    var sendMessage = (0, react_1.useCallback)(function (message) {
-        var _a;
-        if (!((_a = IFrameRef === null || IFrameRef === void 0 ? void 0 : IFrameRef.current) === null || _a === void 0 ? void 0 : _a.contentWindow))
+    const sendMessage = (0, react_1.useCallback)((message) => {
+        if (!IFrameRef?.current?.contentWindow)
             throw new Error('Iframe not defined');
         IFrameRef.current.contentWindow.postMessage(message, '*');
     }, []);
-    (0, react_1.useImperativeHandle)(ref, function () { return ({
-        listenForMessage: function (isResponseValid) {
-            return tslib_1.__awaiter(this, void 0, void 0, function () {
-                var handler;
-                return tslib_1.__generator(this, function (_a) {
-                    return [2 /*return*/, new Promise(function (resolve, reject) {
-                            handler = function (_a) {
-                                var data = _a.data, origin = _a.origin;
-                                if (!origin.includes(common_1.CoinflowUtils.getCoinflowBaseUrl(props.env)))
-                                    return;
-                                if (data.startsWith('ERROR')) {
-                                    reject(new Error(data.replace('ERROR', '')));
-                                    return;
-                                }
-                                if (!isResponseValid(data))
-                                    return;
-                                resolve(data);
-                            };
-                            if (!window)
-                                throw new Error('Window not defined');
-                            window.addEventListener('message', handler);
-                        }).finally(function () {
-                            window.removeEventListener('message', handler);
-                        })];
-                });
+    (0, react_1.useImperativeHandle)(ref, () => ({
+        async listenForMessage(isResponseValid) {
+            let handler;
+            return new Promise((resolve, reject) => {
+                handler = ({ data, origin }) => {
+                    if (!origin.includes(common_1.CoinflowUtils.getCoinflowBaseUrl(props.env)))
+                        return;
+                    if (data.startsWith('ERROR')) {
+                        reject(new Error(data.replace('ERROR', '')));
+                        return;
+                    }
+                    if (!isResponseValid(data))
+                        return;
+                    resolve(data);
+                };
+                if (!window)
+                    throw new Error('Window not defined');
+                window.addEventListener('message', handler);
+            }).finally(() => {
+                window.removeEventListener('message', handler);
             });
         },
-        sendAndReceiveMessage: function (message, isResponseValid) {
-            return tslib_1.__awaiter(this, void 0, void 0, function () {
-                return tslib_1.__generator(this, function (_a) {
-                    sendMessage(message);
-                    return [2 /*return*/, this.listenForMessage(isResponseValid)];
-                });
-            });
+        async sendAndReceiveMessage(message, isResponseValid) {
+            sendMessage(message);
+            return this.listenForMessage(isResponseValid);
         },
-    }); });
-    var handleIframeMessages = (0, react_1.useCallback)(function (_a) {
-        var data = _a.data, origin = _a.origin;
+    }));
+    const handleIframeMessages = (0, react_1.useCallback)(({ data, origin }) => {
         if (!origin.includes(common_1.CoinflowUtils.getCoinflowBaseUrl(props.env)))
             return;
-        var promise = (0, common_1.handleIFrameMessage)(data, props, props.handleHeightChangeId);
+        const promise = (0, common_1.handleIFrameMessage)(data, props, props.handleHeightChangeId);
         if (!promise)
             return;
-        promise.then(sendMessage).catch(function (e) { return sendMessage('ERROR ' + e.message); });
+        promise.then(sendMessage).catch(e => sendMessage('ERROR ' + e.message));
     }, [props, sendMessage]);
-    (0, react_1.useEffect)(function () {
+    (0, react_1.useEffect)(() => {
         if (!window)
             throw new Error('Window not defined');
         window.addEventListener('message', handleIframeMessages);
-        return function () {
+        return () => {
             window.removeEventListener('message', handleIframeMessages);
         };
     }, [handleIframeMessages]);
-    (0, react_1.useLayoutEffect)(function () {
+    (0, react_1.useLayoutEffect)(() => {
         if (!IFrameRef.current)
             return;
         // @ts-expect-error TypeScript doesn't recognize credentialless as a valid attribute in its type definitions yet
         IFrameRef.current.credentialless = true;
     }, []);
-    var handleHeightChange = props.handleHeightChange;
-    return (0, react_1.useMemo)(function () { return (react_1.default.createElement("iframe", { scrolling: handleHeightChange ? 'no' : 'yes', onLoad: function () {
+    const { handleHeightChange } = props;
+    return (0, react_1.useMemo)(() => (react_1.default.createElement("iframe", { scrolling: handleHeightChange ? 'no' : 'yes', onLoad: () => {
             if (IFrameRef.current)
                 IFrameRef.current.style.opacity = '1';
         }, allow: 'payment;camera;clipboard-write', ref: IFrameRef, style: {
@@ -87,6 +76,6 @@ exports.CoinflowIFrame = (0, react_1.forwardRef)(function (props, ref) {
             height: '100%',
             opacity: 0,
             transition: 'opacity 300ms linear',
-        }, title: "withdraw", frameBorder: "0", src: url })); }, [IFrameRef, handleHeightChange, url]);
+        }, title: "withdraw", frameBorder: "0", src: url })), [IFrameRef, handleHeightChange, url]);
 });
 //# sourceMappingURL=CoinflowIFrame.js.map

@@ -1,5 +1,4 @@
 "use strict";
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RN_REDIRECT_MESSAGE_NAME = exports.CardType = exports.paymentMethodLabels = exports.PaymentMethods = exports.ThreeDsChallengePreference = exports.ChargebackProtectionAccountType = exports.MerchantStyle = exports.SettlementType = exports.WithdrawSpeed = exports.WithdrawCategory = void 0;
 exports.isZeroAuthVerifyCard = isZeroAuthVerifyCard;
@@ -68,20 +67,20 @@ var PaymentMethods;
     PaymentMethods["instantBankTransfer"] = "instantBankTransfer";
     PaymentMethods["wire"] = "wire";
 })(PaymentMethods || (exports.PaymentMethods = PaymentMethods = {}));
-exports.paymentMethodLabels = (_a = {},
-    _a[PaymentMethods.card] = 'Card',
-    _a[PaymentMethods.ach] = 'ACH',
-    _a[PaymentMethods.fasterPayments] = 'Faster Payments',
-    _a[PaymentMethods.sepa] = 'SEPA',
-    _a[PaymentMethods.pix] = 'PIX',
-    _a[PaymentMethods.usdc] = 'USDC',
-    _a[PaymentMethods.googlePay] = 'Google Pay',
-    _a[PaymentMethods.applePay] = 'Apple Pay',
-    _a[PaymentMethods.credits] = 'Credits',
-    _a[PaymentMethods.crypto] = 'Crypto',
-    _a[PaymentMethods.instantBankTransfer] = 'Instant Bank Transfer',
-    _a[PaymentMethods.wire] = 'Wire Transfer',
-    _a);
+exports.paymentMethodLabels = {
+    [PaymentMethods.card]: 'Card',
+    [PaymentMethods.ach]: 'ACH',
+    [PaymentMethods.fasterPayments]: 'Faster Payments',
+    [PaymentMethods.sepa]: 'SEPA',
+    [PaymentMethods.pix]: 'PIX',
+    [PaymentMethods.usdc]: 'USDC',
+    [PaymentMethods.googlePay]: 'Google Pay',
+    [PaymentMethods.applePay]: 'Apple Pay',
+    [PaymentMethods.credits]: 'Credits',
+    [PaymentMethods.crypto]: 'Crypto',
+    [PaymentMethods.instantBankTransfer]: 'Instant Bank Transfer',
+    [PaymentMethods.wire]: 'Wire Transfer',
+};
 var CardType;
 (function (CardType) {
     CardType["VISA"] = "VISA";

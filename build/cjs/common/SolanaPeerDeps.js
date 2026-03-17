@@ -11,12 +11,12 @@
 // export {web3, base58};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.base58 = exports.web3 = void 0;
-var tslib_1 = require("tslib");
+const tslib_1 = require("tslib");
 // This works in react, but not angular
-var SolanaWeb3Js = tslib_1.__importStar(require("@solana/web3.js"));
-var bs58_1 = tslib_1.__importDefault(require("bs58"));
-var web3 = SolanaWeb3Js;
+const SolanaWeb3Js = tslib_1.__importStar(require("@solana/web3.js"));
+const bs58_1 = tslib_1.__importDefault(require("bs58"));
+const web3 = SolanaWeb3Js;
 exports.web3 = web3;
-var base58 = bs58_1.default;
+const base58 = bs58_1.default;
 exports.base58 = base58;
 //# sourceMappingURL=SolanaPeerDeps.js.map

@@ -1,17 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 exports.CoinflowApplePayButton = CoinflowApplePayButton;
 exports.AppleButtonOverlayLogo = AppleButtonOverlayLogo;
-var tslib_1 = require("tslib");
-var react_1 = tslib_1.__importDefault(require("react"));
-var MobileWalletButton_1 = require("./MobileWalletButton");
+const react_1 = tslib_1.__importDefault(require("react"));
+const MobileWalletButton_1 = require("./MobileWalletButton");
 function CoinflowApplePayButton(props) {
     return (react_1.default.createElement(MobileWalletButton_1.MobileWalletButton, { props: props, route: 'apple-pay' },
         react_1.default.createElement(AppleButtonOverlayLogo, { color: props.color })));
 }
-function AppleButtonOverlayLogo(_a) {
-    var color = _a.color;
-    var fill = color === 'white' ? '#000' : '#FFF';
+function AppleButtonOverlayLogo({ color, }) {
+    const fill = color === 'white' ? '#000' : '#FFF';
     return (react_1.default.createElement("svg", { id: "svg-logo", viewBox: "0 0 35 15" },
         react_1.default.createElement("svg", { id: "svg-logo", x: "0", y: "3.85", height: "7.3", width: "35", className: "logo", viewBox: "0 0 105 43", version: "1.1", xmlns: "http://www.w3.org/2000/svg", xmlnsXlink: "http://www.w3.org/1999/xlink" },
             react_1.default.createElement("title", null, "Apple Logo"),

@@ -1,13 +1,12 @@
 // Type definitions for TokenEx iframe integration
 /// <reference path="./TokenEx.global.d.ts" />
-var _a;
 import { CardType } from '../CoinflowTypes';
-export var TokenExCardNumberIframeId = 'tokenExCardNumber';
-export var TokenExCvvContainerID = 'tokenExCardCvv';
-export var CARD_TYPE_MAPPING = (_a = {},
-    _a[CardType.VISA] = 'visa',
-    _a[CardType.MASTERCARD] = 'masterCard',
-    _a[CardType.AMEX] = 'americanExpress',
-    _a[CardType.DISCOVER] = 'discover',
-    _a);
+export const TokenExCardNumberIframeId = 'tokenExCardNumber';
+export const TokenExCvvContainerID = 'tokenExCardCvv';
+export const CARD_TYPE_MAPPING = {
+    [CardType.VISA]: 'visa',
+    [CardType.MASTERCARD]: 'masterCard',
+    [CardType.AMEX]: 'americanExpress',
+    [CardType.DISCOVER]: 'discover',
+};
 //# sourceMappingURL=TokenEx.js.map

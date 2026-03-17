@@ -1,19 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 exports.CoinflowWithdraw = CoinflowWithdraw;
-var tslib_1 = require("tslib");
-var react_1 = tslib_1.__importStar(require("react"));
-var CoinflowIFrame_1 = require("./CoinflowIFrame");
-var common_1 = require("./common");
+const react_1 = tslib_1.__importStar(require("react"));
+const CoinflowIFrame_1 = require("./CoinflowIFrame");
+const common_1 = require("./common");
 function CoinflowWithdraw(withdrawProps) {
-    var handleHeightChangeId = (0, CoinflowIFrame_1.useRandomHandleHeightChangeId)();
-    var iframeProps = (0, react_1.useMemo)(function () {
-        var walletPubkey = (0, common_1.getWalletPubkey)(withdrawProps);
-        return tslib_1.__assign(tslib_1.__assign({}, withdrawProps), { walletPubkey: walletPubkey, route: "/withdraw/".concat(withdrawProps.merchantId), transaction: undefined, handleHeightChangeId: handleHeightChangeId });
+    const handleHeightChangeId = (0, CoinflowIFrame_1.useRandomHandleHeightChangeId)();
+    const iframeProps = (0, react_1.useMemo)(() => {
+        const walletPubkey = (0, common_1.getWalletPubkey)(withdrawProps);
+        return {
+            ...withdrawProps,
+            walletPubkey,
+            route: `/withdraw/${withdrawProps.merchantId}`,
+            transaction: undefined,
+            handleHeightChangeId,
+        };
     }, [handleHeightChangeId, withdrawProps]);
-    var messageHandlers = (0, react_1.useMemo)(function () {
-        return tslib_1.__assign(tslib_1.__assign({}, (0, common_1.getHandlers)(withdrawProps)), { handleHeightChange: withdrawProps.handleHeightChange });
+    const messageHandlers = (0, react_1.useMemo)(() => {
+        return {
+            ...(0, common_1.getHandlers)(withdrawProps),
+            handleHeightChange: withdrawProps.handleHeightChange,
+        };
     }, [withdrawProps]);
-    return react_1.default.createElement(CoinflowIFrame_1.CoinflowIFrame, tslib_1.__assign({}, iframeProps, messageHandlers));
+    return react_1.default.createElement(CoinflowIFrame_1.CoinflowIFrame, { ...iframeProps, ...messageHandlers });
 }
 //# sourceMappingURL=CoinflowWithdraw.js.map

@@ -1,4 +1,3 @@
-var _a;
 export var WithdrawCategory;
 (function (WithdrawCategory) {
     WithdrawCategory["USER"] = "user";
@@ -63,20 +62,20 @@ export var PaymentMethods;
     PaymentMethods["instantBankTransfer"] = "instantBankTransfer";
     PaymentMethods["wire"] = "wire";
 })(PaymentMethods || (PaymentMethods = {}));
-export var paymentMethodLabels = (_a = {},
-    _a[PaymentMethods.card] = 'Card',
-    _a[PaymentMethods.ach] = 'ACH',
-    _a[PaymentMethods.fasterPayments] = 'Faster Payments',
-    _a[PaymentMethods.sepa] = 'SEPA',
-    _a[PaymentMethods.pix] = 'PIX',
-    _a[PaymentMethods.usdc] = 'USDC',
-    _a[PaymentMethods.googlePay] = 'Google Pay',
-    _a[PaymentMethods.applePay] = 'Apple Pay',
-    _a[PaymentMethods.credits] = 'Credits',
-    _a[PaymentMethods.crypto] = 'Crypto',
-    _a[PaymentMethods.instantBankTransfer] = 'Instant Bank Transfer',
-    _a[PaymentMethods.wire] = 'Wire Transfer',
-    _a);
+export const paymentMethodLabels = {
+    [PaymentMethods.card]: 'Card',
+    [PaymentMethods.ach]: 'ACH',
+    [PaymentMethods.fasterPayments]: 'Faster Payments',
+    [PaymentMethods.sepa]: 'SEPA',
+    [PaymentMethods.pix]: 'PIX',
+    [PaymentMethods.usdc]: 'USDC',
+    [PaymentMethods.googlePay]: 'Google Pay',
+    [PaymentMethods.applePay]: 'Apple Pay',
+    [PaymentMethods.credits]: 'Credits',
+    [PaymentMethods.crypto]: 'Crypto',
+    [PaymentMethods.instantBankTransfer]: 'Instant Bank Transfer',
+    [PaymentMethods.wire]: 'Wire Transfer',
+};
 export var CardType;
 (function (CardType) {
     CardType["VISA"] = "VISA";
@@ -84,5 +83,5 @@ export var CardType;
     CardType["AMEX"] = "AMEX";
     CardType["DISCOVER"] = "DISC";
 })(CardType || (CardType = {}));
-export var RN_REDIRECT_MESSAGE_NAME = 'rnredirect'; // DO NOT CHANGE
+export const RN_REDIRECT_MESSAGE_NAME = 'rnredirect'; // DO NOT CHANGE
 //# sourceMappingURL=CoinflowTypes.js.map

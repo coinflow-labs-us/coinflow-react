@@ -1,15 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 exports.CoinflowGooglePayButton = CoinflowGooglePayButton;
-var tslib_1 = require("tslib");
-var react_1 = tslib_1.__importDefault(require("react"));
-var MobileWalletButton_1 = require("./MobileWalletButton");
+const react_1 = tslib_1.__importDefault(require("react"));
+const MobileWalletButton_1 = require("./MobileWalletButton");
 function CoinflowGooglePayButton(props) {
     return (react_1.default.createElement(MobileWalletButton_1.MobileWalletButton, { props: props, route: 'google-pay', overlayDisplayOverride: 'flex', alignItems: 'center' },
         react_1.default.createElement(GooglePayLogo, { color: props.color })));
 }
-function GooglePayLogo(_a) {
-    var color = _a.color;
+function GooglePayLogo({ color }) {
     if (color === 'white') {
         return react_1.default.createElement(GooglePayLogoLight, null);
     }

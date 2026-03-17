@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useCardFormIframe } from './useCardFormIframe';
 export function CoinflowCardFormHeader(props) {
-    var setTokenExScriptTag = useCardFormIframe(props).setTokenExScriptTag;
-    useEffect(function () {
-        setTokenExScriptTag({ env: props.env, setTokenExScriptLoaded: function () { } });
+    const { setTokenExScriptTag } = useCardFormIframe(props);
+    useEffect(() => {
+        setTokenExScriptTag({ env: props.env, setTokenExScriptLoaded: () => { } });
     }, [props.env, setTokenExScriptTag]);
     return null;
 }
