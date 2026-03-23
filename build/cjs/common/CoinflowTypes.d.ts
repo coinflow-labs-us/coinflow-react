@@ -266,6 +266,7 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     customPayInFees?: PurchaseCustomPayInFee[];
     presentment?: Currency;
     onSuccess?: OnSuccessMethod;
+    sessionKey?: string;
     onAuthDeclined?: OnAuthDeclinedMethod;
     webhookInfo?: {
         [key: string]: any;
