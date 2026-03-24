@@ -142,6 +142,11 @@ export function getHandlers(props) {
             onSuccess: props.onSuccess,
             onAuthDeclined: props.onAuthDeclined,
         }),
+        tempo: () => getEvmWalletHandlers({
+            wallet: wallet,
+            onSuccess: props.onSuccess,
+            onAuthDeclined: props.onAuthDeclined,
+        }),
         user: () => getSessionKeyHandlers(props),
     })();
 }

@@ -233,6 +233,12 @@ export class CoinflowUtils {
                 const { transaction } = props;
                 return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
             },
+            tempo: () => {
+                if (!('transaction' in props))
+                    return undefined;
+                const { transaction } = props;
+                return LZString.compressToEncodedURIComponent(JSON.stringify(transaction));
+            },
             user: () => {
                 return undefined;
             },
@@ -254,6 +260,8 @@ export class CoinflowUtils {
                 return args.stellar;
             case 'monad':
                 return args.monad;
+            case 'tempo':
+                return args.tempo;
             case 'user':
                 return args.user;
             default:

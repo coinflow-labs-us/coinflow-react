@@ -19,6 +19,7 @@ export declare class CoinflowUtils {
         arbitrum: T;
         stellar: T;
         monad: T;
+        tempo: T;
         user: T;
     }): T;
 }

@@ -164,6 +164,7 @@ export type CoinflowBlockchain =
   | 'arbitrum'
   | 'stellar'
   | 'monad'
+  | 'tempo'
   | 'user';
 export type CoinflowEnvs =
   | 'prod'
@@ -278,7 +279,7 @@ export interface CoinflowSessionKeyHistoryProps extends CoinflowTypes {
 
 export interface CoinflowEvmHistoryProps extends CoinflowTypes {
   wallet: EthWallet;
-  blockchain: 'eth' | 'polygon' | 'base' | 'arbitrum' | 'monad';
+  blockchain: 'eth' | 'polygon' | 'base' | 'arbitrum' | 'monad' | 'tempo';
 }
 
 export interface CoinflowEthHistoryProps extends CoinflowEvmHistoryProps {
@@ -306,6 +307,10 @@ export interface CoinflowMonadHistoryProps extends CoinflowEvmHistoryProps {
   blockchain: 'monad';
 }
 
+export interface CoinflowTempoHistoryProps extends CoinflowEvmHistoryProps {
+  blockchain: 'tempo';
+}
+
 export type CoinflowHistoryProps =
   | CoinflowSolanaHistoryProps
   | CoinflowPolygonHistoryProps
@@ -314,6 +319,7 @@ export type CoinflowHistoryProps =
   | CoinflowArbitrumHistoryProps
   | CoinflowStellarHistoryProps
   | CoinflowMonadHistoryProps
+  | CoinflowTempoHistoryProps
   | CoinflowSessionKeyHistoryProps;
 
 type Bytes = ArrayLike<number>;
@@ -510,6 +516,10 @@ export interface CoinflowMonadPurchaseProps extends CoinflowEvmPurchaseProps {
   blockchain: 'monad';
 }
 
+export interface CoinflowTempoPurchaseProps extends CoinflowEvmPurchaseProps {
+  blockchain: 'tempo';
+}
+
 export type CoinflowPurchaseProps =
   | CoinflowSolanaPurchaseProps
   | CoinflowSessionKeyPurchaseProps
@@ -518,7 +528,8 @@ export type CoinflowPurchaseProps =
   | CoinflowBasePurchaseProps
   | CoinflowArbitrumPurchaseProps
   | CoinflowStellarPurchaseProps
-  | CoinflowMonadPurchaseProps;
+  | CoinflowMonadPurchaseProps
+  | CoinflowTempoPurchaseProps;
 
 /** Withdraw **/
 
@@ -538,6 +549,7 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
       | 'base'
       | 'arbitrum'
       | 'monad'
+      | 'tempo'
       | 'stellar';
   }[];
   lockAmount?: boolean;
@@ -622,6 +634,13 @@ export interface MonadWalletProps {
 export type CoinflowMonadWithdrawProps = CoinflowEvmWithdrawProps &
   MonadWalletProps;
 
+export interface TempoWalletProps {
+  blockchain: 'tempo';
+}
+
+export type CoinflowTempoWithdrawProps = CoinflowEvmWithdrawProps &
+  TempoWalletProps;
+
 export type CoinflowWithdrawProps =
   | CoinflowSolanaWithdrawProps
   | CoinflowEthWithdrawProps
@@ -629,7 +648,8 @@ export type CoinflowWithdrawProps =
   | CoinflowBaseWithdrawProps
   | CoinflowArbitrumWithdrawProps
   | CoinflowStellarWithdrawProps
-  | CoinflowMonadWithdrawProps;
+  | CoinflowMonadWithdrawProps
+  | CoinflowTempoWithdrawProps;
 
 export interface CommonEvmRedeem {
   /**
