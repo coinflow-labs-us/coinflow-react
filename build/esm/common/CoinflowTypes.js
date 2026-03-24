@@ -59,7 +59,6 @@ export var PaymentMethods;
     PaymentMethods["applePay"] = "applePay";
     PaymentMethods["credits"] = "credits";
     PaymentMethods["crypto"] = "crypto";
-    PaymentMethods["instantBankTransfer"] = "instantBankTransfer";
     PaymentMethods["wire"] = "wire";
 })(PaymentMethods || (PaymentMethods = {}));
 export const paymentMethodLabels = {
@@ -73,7 +72,6 @@ export const paymentMethodLabels = {
     [PaymentMethods.applePay]: 'Apple Pay',
     [PaymentMethods.credits]: 'Credits',
     [PaymentMethods.crypto]: 'Crypto',
-    [PaymentMethods.instantBankTransfer]: 'Instant Bank Transfer',
     [PaymentMethods.wire]: 'Wire Transfer',
 };
 export var CardType;

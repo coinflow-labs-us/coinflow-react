@@ -367,7 +367,6 @@ export enum PaymentMethods {
   applePay = 'applePay',
   credits = 'credits',
   crypto = 'crypto',
-  instantBankTransfer = 'instantBankTransfer',
   wire = 'wire',
 }
 
@@ -382,7 +381,6 @@ export const paymentMethodLabels: Record<PaymentMethods, string> = {
   [PaymentMethods.applePay]: 'Apple Pay',
   [PaymentMethods.credits]: 'Credits',
   [PaymentMethods.crypto]: 'Crypto',
-  [PaymentMethods.instantBankTransfer]: 'Instant Bank Transfer',
   [PaymentMethods.wire]: 'Wire Transfer',
 };
 

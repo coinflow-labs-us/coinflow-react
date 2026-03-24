@@ -253,7 +253,6 @@ export declare enum PaymentMethods {
     applePay = "applePay",
     credits = "credits",
     crypto = "crypto",
-    instantBankTransfer = "instantBankTransfer",
     wire = "wire"
 }
 export declare const paymentMethodLabels: Record<PaymentMethods, string>;

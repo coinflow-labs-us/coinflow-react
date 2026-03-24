@@ -64,7 +64,6 @@ var PaymentMethods;
     PaymentMethods["applePay"] = "applePay";
     PaymentMethods["credits"] = "credits";
     PaymentMethods["crypto"] = "crypto";
-    PaymentMethods["instantBankTransfer"] = "instantBankTransfer";
     PaymentMethods["wire"] = "wire";
 })(PaymentMethods || (exports.PaymentMethods = PaymentMethods = {}));
 exports.paymentMethodLabels = {
@@ -78,7 +77,6 @@ exports.paymentMethodLabels = {
     [PaymentMethods.applePay]: 'Apple Pay',
     [PaymentMethods.credits]: 'Credits',
     [PaymentMethods.crypto]: 'Crypto',
-    [PaymentMethods.instantBankTransfer]: 'Instant Bank Transfer',
     [PaymentMethods.wire]: 'Wire Transfer',
 };
 var CardType;
