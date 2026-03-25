@@ -65,6 +65,7 @@ var PaymentMethods;
     PaymentMethods["credits"] = "credits";
     PaymentMethods["crypto"] = "crypto";
     PaymentMethods["wire"] = "wire";
+    PaymentMethods["cashApp"] = "cashApp";
 })(PaymentMethods || (exports.PaymentMethods = PaymentMethods = {}));
 exports.paymentMethodLabels = {
     [PaymentMethods.card]: 'Card',
@@ -78,6 +79,7 @@ exports.paymentMethodLabels = {
     [PaymentMethods.credits]: 'Credits',
     [PaymentMethods.crypto]: 'Crypto',
     [PaymentMethods.wire]: 'Wire Transfer',
+    [PaymentMethods.cashApp]: 'CashApp',
 };
 var CardType;
 (function (CardType) {

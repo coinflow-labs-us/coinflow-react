@@ -374,6 +374,7 @@ export enum PaymentMethods {
   credits = 'credits',
   crypto = 'crypto',
   wire = 'wire',
+  cashApp = 'cashApp',
 }
 
 export const paymentMethodLabels: Record<PaymentMethods, string> = {
@@ -388,6 +389,7 @@ export const paymentMethodLabels: Record<PaymentMethods, string> = {
   [PaymentMethods.credits]: 'Credits',
   [PaymentMethods.crypto]: 'Crypto',
   [PaymentMethods.wire]: 'Wire Transfer',
+  [PaymentMethods.cashApp]: 'CashApp',
 };
 
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {

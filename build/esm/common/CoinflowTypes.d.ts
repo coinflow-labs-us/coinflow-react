@@ -256,7 +256,8 @@ export declare enum PaymentMethods {
     applePay = "applePay",
     credits = "credits",
     crypto = "crypto",
-    wire = "wire"
+    wire = "wire",
+    cashApp = "cashApp"
 }
 export declare const paymentMethodLabels: Record<PaymentMethods, string>;
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
