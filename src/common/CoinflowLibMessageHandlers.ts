@@ -47,6 +47,7 @@ export enum IFrameMessageMethods {
   AuthDeclined = 'authDeclined',
   Loaded = 'loaded',
   AccountLinked = 'accountLinked',
+  Redirect = 'redirect',
 }
 
 export function getWalletPubkey(
@@ -115,6 +116,9 @@ export function handleIFrameMessage(
     case IFrameMessageMethods.Loaded:
       return;
     case IFrameMessageMethods.AccountLinked:
+      return;
+    case IFrameMessageMethods.Redirect:
+      window.open(data, '_blank');
       return;
   }
 

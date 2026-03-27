@@ -70,6 +70,10 @@ Props:
 
 # Changelog
 
+## 5.10.0
+
+- Added support for CashApp redirection
+
 ## 5.9.2
 
 - Fixed typing for sessionKey being not present when passing the wallet object

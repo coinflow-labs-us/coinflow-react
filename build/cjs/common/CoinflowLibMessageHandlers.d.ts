@@ -27,7 +27,8 @@ export declare enum IFrameMessageMethods {
     Success = "success",
     AuthDeclined = "authDeclined",
     Loaded = "loaded",
-    AccountLinked = "accountLinked"
+    AccountLinked = "accountLinked",
+    Redirect = "redirect"
 }
 export declare function getWalletPubkey(input: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain'>): string | null | undefined;
 export declare function handleIFrameMessage(rawMessage: string, handlers: IFrameMessageHandlers, handleHeightChangeId: string | number): Promise<string> | void;

@@ -16,6 +16,7 @@ var IFrameMessageMethods;
     IFrameMessageMethods["AuthDeclined"] = "authDeclined";
     IFrameMessageMethods["Loaded"] = "loaded";
     IFrameMessageMethods["AccountLinked"] = "accountLinked";
+    IFrameMessageMethods["Redirect"] = "redirect";
 })(IFrameMessageMethods || (exports.IFrameMessageMethods = IFrameMessageMethods = {}));
 function getWalletPubkey(input) {
     let wallet;
@@ -78,6 +79,9 @@ function handleIFrameMessage(rawMessage, handlers, handleHeightChangeId) {
         case IFrameMessageMethods.Loaded:
             return;
         case IFrameMessageMethods.AccountLinked:
+            return;
+        case IFrameMessageMethods.Redirect:
+            window.open(data, '_blank');
             return;
     }
     console.warn(`Didn't expect to get here, handleIFrameMessage method:${method} is not one of ${Object.values(IFrameMessageMethods)}`);
