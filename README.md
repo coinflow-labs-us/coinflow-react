@@ -70,6 +70,11 @@ Props:
 
 # Changelog
 
+## 5.11.0
+
+- Added unified protection initialization helper and headers helper
+- Test zipcode `00001` triggers fraud protection rejection
+
 ## 5.10.0
 
 - Added support for CashApp redirection

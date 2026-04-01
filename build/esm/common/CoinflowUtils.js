@@ -288,4 +288,16 @@ export function getCustomerName(info) {
         };
     return undefined;
 }
+export function recordFrontendError({ event, error, env, merchantId, }) {
+    const isError = error instanceof Error;
+    const message = isError ? error.message : error;
+    const stackTrace = isError ? error.stack : '';
+    fetch(`${CoinflowUtils.getCoinflowApiUrl(env)}/api/telemetry/frontend-error`, {
+        method: 'POST',
+        body: JSON.stringify({ message, stackTrace, merchantId, event }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).catch(() => { });
+}
 //# sourceMappingURL=CoinflowUtils.js.map

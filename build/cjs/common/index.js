@@ -12,4 +12,6 @@ tslib_1.__exportStar(require("./types/AnyObject"), exports);
 tslib_1.__exportStar(require("./types/giftCardCartItem"), exports);
 tslib_1.__exportStar(require("./types/nftCartItem"), exports);
 tslib_1.__exportStar(require("./types/cryptoCartItem"), exports);
+tslib_1.__exportStar(require("./CoinflowPurchaseProtectionHeaders"), exports);
+tslib_1.__exportStar(require("./CoinflowProtectionInit"), exports);
 //# sourceMappingURL=index.js.map

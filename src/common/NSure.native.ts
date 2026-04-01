@@ -1,5 +1,5 @@
-function fun(): string | null {
+function getNSureDeviceId(): string | null {
   return null;
 }
 
-export default fun;
+export default getNSureDeviceId;

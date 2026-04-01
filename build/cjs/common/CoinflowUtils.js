@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoinflowUtils = void 0;
 const tslib_1 = require("tslib");
 exports.getCustomerName = getCustomerName;
+exports.recordFrontendError = recordFrontendError;
 const SolanaPeerDeps_1 = require("./SolanaPeerDeps");
 const lz_string_1 = tslib_1.__importDefault(require("lz-string"));
 const Subtotal_1 = require("./types/Subtotal");
@@ -293,5 +294,17 @@ function getCustomerName(info) {
             lastName,
         };
     return undefined;
+}
+function recordFrontendError({ event, error, env, merchantId, }) {
+    const isError = error instanceof Error;
+    const message = isError ? error.message : error;
+    const stackTrace = isError ? error.stack : '';
+    fetch(`${CoinflowUtils.getCoinflowApiUrl(env)}/api/telemetry/frontend-error`, {
+        method: 'POST',
+        body: JSON.stringify({ message, stackTrace, merchantId, event }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).catch(() => { });
 }
 //# sourceMappingURL=CoinflowUtils.js.map

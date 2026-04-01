@@ -9,3 +9,5 @@ export * from './types/AnyObject';
 export * from './types/giftCardCartItem';
 export * from './types/nftCartItem';
 export * from './types/cryptoCartItem';
+export * from './CoinflowPurchaseProtectionHeaders';
+export * from './CoinflowProtectionInit';

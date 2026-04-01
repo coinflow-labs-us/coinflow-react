@@ -441,3 +441,29 @@ export function getCustomerName(
     };
   return undefined;
 }
+
+export function recordFrontendError({
+  event,
+  error,
+  env,
+  merchantId,
+}: {
+  event: string;
+  error: any;
+  env: CoinflowEnvs;
+  merchantId?: string;
+}) {
+  const isError = error instanceof Error;
+  const message = isError ? error.message : error;
+  const stackTrace = isError ? error.stack : '';
+  fetch(
+    `${CoinflowUtils.getCoinflowApiUrl(env)}/api/telemetry/frontend-error`,
+    {
+      method: 'POST',
+      body: JSON.stringify({message, stackTrace, merchantId, event}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  ).catch(() => {});
+}

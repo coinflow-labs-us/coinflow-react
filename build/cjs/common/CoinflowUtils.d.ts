@@ -28,3 +28,9 @@ export interface FullName {
     lastName: string;
 }
 export declare function getCustomerName(info: CustomerInfo | undefined): FullName | undefined;
+export declare function recordFrontendError({ event, error, env, merchantId }: {
+    event: string;
+    error: any;
+    env: CoinflowEnvs;
+    merchantId?: string;
+}): void;
