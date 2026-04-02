@@ -422,6 +422,23 @@ export function isTypedCurrencyCents<T extends Currency>(
 ): cents is TypedCurrencyCents<T> {
   return cents.currency === currency;
 }
+export interface ExchangeRate<T extends Currency = Currency> {
+  base: Currency;
+  rate: number;
+  to: T;
+}
+
+export function invertRate<T extends Currency = Currency>(ex: {
+  base: T;
+  rate: number;
+  to: Currency;
+}) {
+  return {
+    base: ex.to,
+    rate: 1 / ex.rate,
+    to: ex.base,
+  } as ExchangeRate<T>;
+}
 
 export interface TokenSubtotal {
   /**
