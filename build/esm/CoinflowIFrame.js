@@ -18,7 +18,8 @@ export const CoinflowIFrame = forwardRef((props, ref) => {
             let handler;
             return new Promise((resolve, reject) => {
                 handler = ({ data, origin }) => {
-                    if (!origin.includes(CoinflowUtils.getCoinflowBaseUrl(props.env)))
+                    const expectedOrigin = new URL(CoinflowUtils.getCoinflowBaseUrl(props.env)).origin;
+                    if (origin !== expectedOrigin)
                         return;
                     if (data.startsWith('ERROR')) {
                         reject(new Error(data.replace('ERROR', '')));
@@ -41,7 +42,8 @@ export const CoinflowIFrame = forwardRef((props, ref) => {
         },
     }));
     const handleIframeMessages = useCallback(({ data, origin }) => {
-        if (!origin.includes(CoinflowUtils.getCoinflowBaseUrl(props.env)))
+        const expectedOrigin = new URL(CoinflowUtils.getCoinflowBaseUrl(props.env)).origin;
+        if (origin !== expectedOrigin)
             return;
         const promise = handleIFrameMessage(data, props, props.handleHeightChangeId);
         if (!promise)

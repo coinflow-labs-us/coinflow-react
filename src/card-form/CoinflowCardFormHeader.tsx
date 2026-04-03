@@ -13,3 +13,6 @@ export function CoinflowCardFormHeader(
 
   return null;
 }
+
+/** @deprecated Use CoinflowCardForm instead — header is no longer needed */
+export const CoinflowLegacyCardFormHeader = CoinflowCardFormHeader;

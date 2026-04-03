@@ -202,4 +202,12 @@ const CoinflowCardOnlyInputComponent = forwardRef((props, ref) => {
  * ```
  */
 export const CoinflowCardOnlyInput = memo(CoinflowCardOnlyInputComponent);
+/** @deprecated Use CoinflowCardForm instead */
+export const CoinflowLegacyCardNumberInput = CoinflowCardNumberInput;
+/** @deprecated Use CoinflowCvvForm instead */
+export const CoinflowLegacyCvvInput = CoinflowCvvInput;
+/** @deprecated Use CoinflowCvvForm instead */
+export const CoinflowLegacyCvvOnlyInput = CoinflowCvvOnlyInput;
+/** @deprecated Use CoinflowCardNumberForm instead */
+export const CoinflowLegacyCardOnlyInput = CoinflowCardOnlyInput;
 //# sourceMappingURL=CoinflowCardForm.js.map

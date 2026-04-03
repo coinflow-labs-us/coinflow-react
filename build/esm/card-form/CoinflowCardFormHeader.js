@@ -7,4 +7,6 @@ export function CoinflowCardFormHeader(props) {
     }, [props.env, setTokenExScriptTag]);
     return null;
 }
+/** @deprecated Use CoinflowCardForm instead — header is no longer needed */
+export const CoinflowLegacyCardFormHeader = CoinflowCardFormHeader;
 //# sourceMappingURL=CoinflowCardFormHeader.js.map
