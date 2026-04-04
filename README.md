@@ -1,13 +1,5 @@
 # Coinflow React
 
-## Changelog
-
-### 5.12.0
-
-- New `CoinflowCardForm`, `CoinflowCardNumberForm`, and `CoinflowCvvForm` components — simple card inputs with a single `tokenize()` call and full theme support
-- Added theme options for `fontSize` and placeholder text
-- Improved security for iframe communication
-
 ## Withdraw Usage
 
 ```

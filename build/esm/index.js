@@ -8,7 +8,6 @@ export * from './CoinflowPurchaseProtection';
 export * from './useCoinflowProtectionHeaders';
 export * from './card-form/CoinflowCardForm';
 export * from './card-form/CoinflowCardFormHeader';
-export * from './card-form/CoinflowCardFormV2';
 export * from './CoinflowApplePayButton';
 export * from './CoinflowGooglePayButton';
 //# sourceMappingURL=index.js.map

@@ -115,12 +115,6 @@ export type MerchantTheme = {
   ctaColor?: string;
   font?: string;
   style?: MerchantStyle;
-  fontSize?: string;
-  fontWeight?: string;
-  cardNumberPlaceholder?: string;
-  cvvPlaceholder?: string;
-  expirationPlaceholder?: string;
-  showCardIcon?: boolean;
 };
 
 interface BaseCustomerInfo {

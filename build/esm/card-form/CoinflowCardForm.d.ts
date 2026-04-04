@@ -116,11 +116,3 @@ export declare const CoinflowCvvOnlyInput: React.MemoExoticComponent<React.Forwa
  * ```
  */
 export declare const CoinflowCardOnlyInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>>;
-/** @deprecated Use CoinflowCardForm instead */
-export declare const CoinflowLegacyCardNumberInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<(CoinflowCardNumberInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>>;
-/** @deprecated Use CoinflowCvvForm instead */
-export declare const CoinflowLegacyCvvInput: React.MemoExoticComponent<() => React.JSX.Element>;
-/** @deprecated Use CoinflowCvvForm instead */
-export declare const CoinflowLegacyCvvOnlyInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>>;
-/** @deprecated Use CoinflowCardNumberForm instead */
-export declare const CoinflowLegacyCardOnlyInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>>;
