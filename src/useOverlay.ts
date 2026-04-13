@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import {type RefObject, useEffect, useState} from 'react';
 import {CoinflowIFrameExposedFunctions} from './CoinflowIFrame';
 
 export function useOverlay(
-  iframeRef: React.RefObject<CoinflowIFrameExposedFunctions> | null
+  iframeRef: RefObject<CoinflowIFrameExposedFunctions | null> | null
 ) {
-  const [messageReceived, setMessageReceived] = React.useState(false);
-  const [showOverlay, setShowOverlay] = React.useState(true);
+  const [messageReceived, setMessageReceived] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(true);
 
   useEffect(() => {
     iframeRef?.current

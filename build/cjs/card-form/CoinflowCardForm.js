@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CoinflowCardOnlyInput = exports.CoinflowCvvOnlyInput = exports.CoinflowCvvInput = exports.CoinflowCardNumberInput = void 0;
+exports.CoinflowLegacyCardOnlyInput = exports.CoinflowLegacyCvvOnlyInput = exports.CoinflowLegacyCvvInput = exports.CoinflowLegacyCardNumberInput = exports.CoinflowCardOnlyInput = exports.CoinflowCvvOnlyInput = exports.CoinflowCvvInput = exports.CoinflowCardNumberInput = void 0;
 const tslib_1 = require("tslib");
 const react_1 = tslib_1.__importStar(require("react"));
 const useCardFormIframe_1 = require("./useCardFormIframe");
@@ -206,4 +206,12 @@ const CoinflowCardOnlyInputComponent = (0, react_1.forwardRef)((props, ref) => {
  * ```
  */
 exports.CoinflowCardOnlyInput = (0, react_1.memo)(CoinflowCardOnlyInputComponent);
+/** @deprecated Use CoinflowCardForm instead */
+exports.CoinflowLegacyCardNumberInput = exports.CoinflowCardNumberInput;
+/** @deprecated Use CoinflowCvvForm instead */
+exports.CoinflowLegacyCvvInput = exports.CoinflowCvvInput;
+/** @deprecated Use CoinflowCvvForm instead */
+exports.CoinflowLegacyCvvOnlyInput = exports.CoinflowCvvOnlyInput;
+/** @deprecated Use CoinflowCardNumberForm instead */
+exports.CoinflowLegacyCardOnlyInput = exports.CoinflowCardOnlyInput;
 //# sourceMappingURL=CoinflowCardForm.js.map

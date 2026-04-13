@@ -36,7 +36,7 @@ import { MerchantIdOrCheckoutJwt, CoinflowCardNumberInputProps, CoinflowCvvOnlyI
  *
  * ```
  */
-export declare const CoinflowCardNumberInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<(CoinflowCardNumberInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>>;
+export declare const CoinflowCardNumberInput: React.NamedExoticComponent<(CoinflowCardNumberInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>;
 /**
  * The CVV number input for creating a new tokenized card
  */
@@ -78,7 +78,7 @@ export declare const CoinflowCvvInput: React.MemoExoticComponent<() => React.JSX
  *
  * ```
  */
-export declare const CoinflowCvvOnlyInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>>;
+export declare const CoinflowCvvOnlyInput: React.NamedExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>;
 /**
  * Allows merchants to collect card information from their customers in a PCI-compliant way and receive the tokenized card number.
  * The `CoinflowCardOnlyInput` is used for collecting a debit card for users to be able to withdraw their funds directly to.
@@ -115,4 +115,12 @@ export declare const CoinflowCvvOnlyInput: React.MemoExoticComponent<React.Forwa
  *
  * ```
  */
-export declare const CoinflowCardOnlyInput: React.MemoExoticComponent<React.ForwardRefExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>>;
+export declare const CoinflowCardOnlyInput: React.NamedExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>;
+/** @deprecated Use CoinflowCardForm instead */
+export declare const CoinflowLegacyCardNumberInput: React.NamedExoticComponent<(CoinflowCardNumberInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>;
+/** @deprecated Use CoinflowCvvForm instead */
+export declare const CoinflowLegacyCvvInput: React.MemoExoticComponent<() => React.JSX.Element>;
+/** @deprecated Use CoinflowCvvForm instead */
+export declare const CoinflowLegacyCvvOnlyInput: React.NamedExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>;
+/** @deprecated Use CoinflowCardNumberForm instead */
+export declare const CoinflowLegacyCardOnlyInput: React.NamedExoticComponent<(CoinflowCvvOnlyInputProps & MerchantIdOrCheckoutJwt) & React.RefAttributes<unknown>>;
