@@ -6,7 +6,8 @@ import { CryptoCartItem } from './types/cryptoCartItem';
 import { MoneyTopUpCartItem } from './types/moneyTopUpCartItem';
 export declare enum WithdrawCategory {
     USER = "user",
-    BUSINESS = "business"
+    BUSINESS = "business",
+    FIRST_PARTY = "firstParty"
 }
 export declare enum WithdrawSpeed {
     ASAP = "asap",

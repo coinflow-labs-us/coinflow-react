@@ -7,6 +7,7 @@ var WithdrawCategory;
 (function (WithdrawCategory) {
     WithdrawCategory["USER"] = "user";
     WithdrawCategory["BUSINESS"] = "business";
+    WithdrawCategory["FIRST_PARTY"] = "firstParty";
 })(WithdrawCategory || (exports.WithdrawCategory = WithdrawCategory = {}));
 var WithdrawSpeed;
 (function (WithdrawSpeed) {

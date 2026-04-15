@@ -2,6 +2,7 @@ export var WithdrawCategory;
 (function (WithdrawCategory) {
     WithdrawCategory["USER"] = "user";
     WithdrawCategory["BUSINESS"] = "business";
+    WithdrawCategory["FIRST_PARTY"] = "firstParty";
 })(WithdrawCategory || (WithdrawCategory = {}));
 export var WithdrawSpeed;
 (function (WithdrawSpeed) {

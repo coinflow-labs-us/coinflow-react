@@ -14,6 +14,7 @@ import {MoneyTopUpCartItem} from './types/moneyTopUpCartItem';
 export enum WithdrawCategory {
   USER = 'user',
   BUSINESS = 'business',
+  FIRST_PARTY = 'firstParty',
 }
 
 export enum WithdrawSpeed {
