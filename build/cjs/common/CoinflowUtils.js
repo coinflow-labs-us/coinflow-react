@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoinflowUtils = void 0;
-const tslib_1 = require("tslib");
 exports.getCustomerName = getCustomerName;
 exports.recordFrontendError = recordFrontendError;
+const tslib_1 = require("tslib");
 const SolanaPeerDeps_1 = require("./SolanaPeerDeps");
 const lz_string_1 = tslib_1.__importDefault(require("lz-string"));
 const Subtotal_1 = require("./types/Subtotal");

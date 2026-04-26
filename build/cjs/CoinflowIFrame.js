@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoinflowIFrame = void 0;
-const tslib_1 = require("tslib");
 exports.useRandomHandleHeightChangeId = useRandomHandleHeightChangeId;
+const tslib_1 = require("tslib");
 const react_1 = tslib_1.__importStar(require("react"));
 const common_1 = require("./common");
 function useRandomHandleHeightChangeId() {

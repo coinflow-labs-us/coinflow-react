@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
 exports.CoinflowWithdraw = CoinflowWithdraw;
+const tslib_1 = require("tslib");
 const react_1 = tslib_1.__importStar(require("react"));
 const CoinflowIFrame_1 = require("./CoinflowIFrame");
 const common_1 = require("./common");
