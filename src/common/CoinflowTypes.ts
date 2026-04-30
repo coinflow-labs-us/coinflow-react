@@ -465,6 +465,17 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   accountFundingTransaction?: AccountFundingTransaction;
 }
 
+export interface WithGeo {
+  /**
+   * End-user GPS coordinates for `BlockingRuleMethod.GEOLOCATION` enforcement.
+   * Required only when the merchant has a geolocation rule configured. The
+   * web build reads the browser Geolocation API directly; React Native hosts
+   * must request the fix from the platform (e.g. `expo-location`,
+   * `react-native-geolocation`) and forward the result here.
+   */
+  userLocation?: {lat: number; lng: number};
+}
+
 /**
  * Used for Account Funding Transactions
  */
@@ -580,6 +591,14 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
    * Array of allowed withdrawal speeds. If not provided, all speeds are allowed.
    */
   allowedWithdrawSpeeds?: WithdrawSpeed[];
+  /**
+   * End-user GPS coordinates for `BlockingRuleMethod.GEOLOCATION` enforcement.
+   * Required only when the merchant has a geolocation rule configured. The
+   * web build reads the browser Geolocation API directly; React Native hosts
+   * must request the fix from the platform (e.g. `expo-location`,
+   * `react-native-geolocation`) and forward the result here.
+   */
+  userLocation?: {lat: number; lng: number};
 }
 
 export type WalletTypes = SolanaWallet | EthWallet | StellarWallet;
@@ -827,7 +846,8 @@ export interface CoinflowIFrameProps
     Pick<
       CoinflowSolanaPurchaseProps,
       'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'
-    > {
+    >,
+    WithGeo {
   walletPubkey: string | null | undefined;
   sessionKey?: string;
   route: string;

@@ -4,6 +4,7 @@ import {
   CoinflowIFrameProps,
   CoinflowPurchaseProps,
   CustomerInfo,
+  WithGeo,
 } from './CoinflowTypes';
 import {web3, base58} from './SolanaPeerDeps';
 import LZString from 'lz-string';
@@ -110,8 +111,9 @@ export class CoinflowUtils {
     allowedWithdrawSpeeds,
     isZeroAuthorization,
     zeroAuthorizationConfig,
+    userLocation,
     baseUrl,
-  }: CoinflowIFrameProps & {baseUrl?: string}): string {
+  }: CoinflowIFrameProps & {baseUrl?: string} & WithGeo): string {
     const prefix = routePrefix
       ? `/${routePrefix}/${blockchain}`
       : `/${blockchain}`;
@@ -296,6 +298,11 @@ export class CoinflowUtils {
         'allowedWithdrawSpeeds',
         allowedWithdrawSpeeds.join(',')
       );
+
+    if (userLocation) {
+      url.searchParams.append('lat', userLocation.lat.toString());
+      url.searchParams.append('lng', userLocation.lng.toString());
+    }
 
     return url.toString();
   }

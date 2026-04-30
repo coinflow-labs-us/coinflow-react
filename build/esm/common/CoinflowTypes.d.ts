@@ -332,6 +332,19 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     destinationAuthKey?: string;
     accountFundingTransaction?: AccountFundingTransaction;
 }
+export interface WithGeo {
+    /**
+     * End-user GPS coordinates for `BlockingRuleMethod.GEOLOCATION` enforcement.
+     * Required only when the merchant has a geolocation rule configured. The
+     * web build reads the browser Geolocation API directly; React Native hosts
+     * must request the fix from the platform (e.g. `expo-location`,
+     * `react-native-geolocation`) and forward the result here.
+     */
+    userLocation?: {
+        lat: number;
+        lng: number;
+    };
+}
 /**
  * Used for Account Funding Transactions
  */
@@ -421,6 +434,17 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
      * Array of allowed withdrawal speeds. If not provided, all speeds are allowed.
      */
     allowedWithdrawSpeeds?: WithdrawSpeed[];
+    /**
+     * End-user GPS coordinates for `BlockingRuleMethod.GEOLOCATION` enforcement.
+     * Required only when the merchant has a geolocation rule configured. The
+     * web build reads the browser Geolocation API directly; React Native hosts
+     * must request the fix from the platform (e.g. `expo-location`,
+     * `react-native-geolocation`) and forward the result here.
+     */
+    userLocation?: {
+        lat: number;
+        lng: number;
+    };
 }
 export type WalletTypes = SolanaWallet | EthWallet | StellarWallet;
 export interface SolanaWalletProps {
@@ -577,7 +601,7 @@ export interface DecentRedeem extends CommonEvmRedeem {
  * Gas fees for the transaction will be automatically calculated and added to the total charged to the customer. Optionally the merchant can opt to pay for these gas fees.
  */
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem | DecentRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'chargebackProtectionAccountType' | 'webhookInfo' | 'subtotal' | 'customPayInFees' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'> {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'chargebackProtectionAccountType' | 'webhookInfo' | 'subtotal' | 'customPayInFees' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'>, WithGeo {
     walletPubkey: string | null | undefined;
     sessionKey?: string;
     route: string;

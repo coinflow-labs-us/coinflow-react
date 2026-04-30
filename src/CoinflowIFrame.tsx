@@ -121,7 +121,7 @@ export const CoinflowIFrame = forwardRef(
           onLoad={() => {
             if (IFrameRef.current) IFrameRef.current.style.opacity = '1';
           }}
-          allow={'payment;camera;clipboard-write'}
+          allow={'payment;camera;clipboard-write;geolocation'}
           ref={IFrameRef}
           style={{
             width: '100%',

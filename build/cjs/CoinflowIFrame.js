@@ -73,7 +73,7 @@ exports.CoinflowIFrame = (0, react_1.forwardRef)((props, ref) => {
     return (0, react_1.useMemo)(() => (react_1.default.createElement("iframe", { scrolling: handleHeightChange ? 'no' : 'yes', onLoad: () => {
             if (IFrameRef.current)
                 IFrameRef.current.style.opacity = '1';
-        }, allow: 'payment;camera;clipboard-write', ref: IFrameRef, style: {
+        }, allow: 'payment;camera;clipboard-write;geolocation', ref: IFrameRef, style: {
             width: '100%',
             height: '100%',
             opacity: 0,
