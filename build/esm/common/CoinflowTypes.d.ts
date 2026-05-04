@@ -267,6 +267,42 @@ export declare enum PaymentMethods {
     cashApp = "cashApp"
 }
 export declare const paymentMethodLabels: Record<PaymentMethods, string>;
+export interface CoinflowCommonPaymentIntentProps extends Omit<CoinflowTypes, 'blockchain'> {
+    paymentIntentId: string;
+    onSuccess?: OnSuccessMethod;
+    onAuthDeclined?: OnAuthDeclinedMethod;
+    /**
+     * If true, pre-checks the partial USDC payment checkbox when USDC balance is available.
+     * If false or undefined, maintains default behavior (unchecked).
+     */
+    partialUsdcChecked?: boolean;
+    /**
+     * The DeviceID gotten from the Coinflow SDK:
+     *  https://docs.coinflow.cash/guides/checkout/fraud-protection/chargeback-protection/implement-chargeback-protection#how-to-add-chargeback-protection
+     *
+     * nSureSDK.getDeviceId()
+     */
+    deviceId?: string;
+    /**
+     * If rendering the Coinflow component within multiple nested iframes, all ancestors in the chain must be provided as a comma-separated list.
+     *
+     * Example:
+     * Primary origin that will be interacting with the Coinflow iFrame: foo.com
+     * Subsequent origins that will render foo.com: bar.com
+     * The origin array would then be: [https://foo.com,https://bar.com]
+     */
+    origins?: string[];
+    /**
+     * End-user wallet used for wallet-authenticated payment-intent checkout flows.
+     *
+     * Required when the target payment intent type depends on a customer wallet
+     * (for example: EVM/Solana/Stellar transaction intents or credits/USDC signing flows).
+     *
+     * The wallet implementation must match the active blockchain.
+     */
+    wallet?: WalletTypes;
+    blockchain?: 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'stellar' | 'monad';
+}
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     subtotal?: Subtotal;
     /**
@@ -615,6 +651,22 @@ export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 
     theme?: MerchantTheme;
     usePermit?: boolean;
     handleHeightChangeId: string | number;
+}
+export interface CoinflowIntentsIFrameProps {
+    theme?: MerchantTheme;
+    merchantCss?: string;
+    color?: 'white' | 'black';
+    intentId: string;
+    route: string;
+    routePrefix?: string;
+    handleHeightChangeId: string | number;
+    env?: CoinflowEnvs;
+    loaderBackground?: string;
+    handleHeightChange?: (height: string) => void;
+    origins?: string[];
+    deviceId?: string;
+    walletPubkey?: string | undefined | null;
+    blockchain?: 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'stellar' | 'monad';
 }
 export declare enum CardType {
     VISA = "VISA",

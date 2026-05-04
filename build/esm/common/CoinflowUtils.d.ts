@@ -1,4 +1,4 @@
-import { CoinflowBlockchain, CoinflowEnvs, CoinflowIFrameProps, CoinflowPurchaseProps, CustomerInfo, WithGeo } from './CoinflowTypes';
+import { CoinflowBlockchain, CoinflowEnvs, CoinflowIFrameProps, CoinflowIntentsIFrameProps, CoinflowPurchaseProps, CustomerInfo, WithGeo } from './CoinflowTypes';
 export declare class CoinflowUtils {
     env: CoinflowEnvs;
     url: string;
@@ -10,6 +10,9 @@ export declare class CoinflowUtils {
     static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, customPayInFees, presentment, transaction, blockchain, webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, baseUrl }: CoinflowIFrameProps & {
         baseUrl?: string;
     } & WithGeo): string;
+    static getCoinflowIntentsUrl({ baseUrl, route, color, theme, env, origins, deviceId, merchantCss, loaderBackground, handleHeightChangeId }: CoinflowIntentsIFrameProps & {
+        baseUrl?: string;
+    }): string;
     static getTransaction(props: CoinflowPurchaseProps): string | undefined;
     static byBlockchain<T>(blockchain: CoinflowBlockchain, args: {
         solana: T;

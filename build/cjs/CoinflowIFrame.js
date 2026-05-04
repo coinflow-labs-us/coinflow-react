@@ -11,7 +11,9 @@ function useRandomHandleHeightChangeId() {
 exports.CoinflowIFrame = (0, react_1.forwardRef)((props, ref) => {
     const IFrameRef = (0, react_1.useRef)(null);
     const url = (0, react_1.useMemo)(() => {
-        return common_1.CoinflowUtils.getCoinflowUrl(props);
+        return 'intentId' in props
+            ? common_1.CoinflowUtils.getCoinflowIntentsUrl(props)
+            : common_1.CoinflowUtils.getCoinflowUrl(props);
     }, [props]);
     const sendMessage = (0, react_1.useCallback)((message) => {
         if (!IFrameRef?.current?.contentWindow)

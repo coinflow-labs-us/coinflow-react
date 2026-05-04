@@ -179,6 +179,33 @@ export class CoinflowUtils {
         }
         return url.toString();
     }
+    static getCoinflowIntentsUrl({ baseUrl, route, color, theme, env, origins, deviceId, merchantCss, loaderBackground, handleHeightChangeId, }) {
+        const url = new URL(route, baseUrl ?? CoinflowUtils.getCoinflowBaseUrl(env));
+        if (origins)
+            url.searchParams.append('origins', LZString.compressToEncodedURIComponent(JSON.stringify(origins)));
+        if (deviceId) {
+            url.searchParams.append('deviceId', deviceId);
+        }
+        else {
+            const deviceId = getNSureDeviceId();
+            if (deviceId)
+                url.searchParams.append('deviceId', deviceId);
+        }
+        if (merchantCss)
+            url.searchParams.append('merchantCss', merchantCss);
+        if (color)
+            url.searchParams.append('color', color);
+        if (loaderBackground) {
+            url.searchParams.append('loaderBackground', loaderBackground);
+        }
+        if (handleHeightChangeId) {
+            url.searchParams.append('useHeightChange', handleHeightChangeId.toString());
+        }
+        if (theme) {
+            url.searchParams.append('theme', LZString.compressToEncodedURIComponent(JSON.stringify(theme)));
+        }
+        return url.toString();
+    }
     static getTransaction(props) {
         if (!props.blockchain)
             return undefined;

@@ -6,7 +6,9 @@ export function useRandomHandleHeightChangeId() {
 export const CoinflowIFrame = forwardRef((props, ref) => {
     const IFrameRef = useRef(null);
     const url = useMemo(() => {
-        return CoinflowUtils.getCoinflowUrl(props);
+        return 'intentId' in props
+            ? CoinflowUtils.getCoinflowIntentsUrl(props)
+            : CoinflowUtils.getCoinflowUrl(props);
     }, [props]);
     const sendMessage = useCallback((message) => {
         if (!IFrameRef?.current?.contentWindow)

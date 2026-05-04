@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import {
   CoinflowIFrameProps,
+  CoinflowIntentsIFrameProps,
   CoinflowUtils,
   handleIFrameMessage,
   IFrameMessageHandlers,
@@ -30,11 +31,17 @@ export function useRandomHandleHeightChangeId() {
 }
 
 export const CoinflowIFrame = forwardRef(
-  (props: CoinflowIFrameProps & IFrameMessageHandlers, ref) => {
+  (
+    props: (CoinflowIFrameProps | CoinflowIntentsIFrameProps) &
+      IFrameMessageHandlers,
+    ref
+  ) => {
     const IFrameRef = useRef<HTMLIFrameElement | null>(null);
 
     const url = useMemo(() => {
-      return CoinflowUtils.getCoinflowUrl(props);
+      return 'intentId' in props
+        ? CoinflowUtils.getCoinflowIntentsUrl(props)
+        : CoinflowUtils.getCoinflowUrl(props);
     }, [props]);
 
     const sendMessage = useCallback((message: string) => {
