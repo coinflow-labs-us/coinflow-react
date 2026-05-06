@@ -71,7 +71,6 @@ export class CoinflowUtils {
     routePrefix,
     env,
     subtotal,
-    customPayInFees,
     presentment,
     transaction,
     blockchain = 'solana',
@@ -142,13 +141,6 @@ export class CoinflowUtils {
         url.searchParams.append('token', subtotal.address.toString());
         url.searchParams.append('amount', subtotal.amount.toString());
       }
-    }
-
-    if (customPayInFees && customPayInFees.length > 0) {
-      url.searchParams.append(
-        'customPayInFees',
-        encodeURIComponent(JSON.stringify(customPayInFees))
-      );
     }
 
     if (presentment) url.searchParams.append('presentment', presentment);

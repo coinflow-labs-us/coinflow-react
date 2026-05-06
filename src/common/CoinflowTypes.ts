@@ -39,7 +39,7 @@ export enum SettlementType {
 
 /**
  * Configuration for a single custom pay-in fee line item.
- * Use with customPayInFees prop on purchase flows.
+ * Pass via the `customPayInFees` field on `/checkout/link` or `/checkout/jwt-token`.
  */
 export interface PurchaseCustomPayInFee {
   lineItemLabel: string;
@@ -448,11 +448,6 @@ export interface CoinflowCommonPaymentIntentProps extends Omit<
 
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   subtotal?: Subtotal;
-  /**
-   * Custom pay-in fees to add to checkout. Each fee appears as a separate line item.
-   * These fees are added to the subtotal and displayed to the customer.
-   */
-  customPayInFees?: PurchaseCustomPayInFee[];
   presentment?: Currency;
   onSuccess?: OnSuccessMethod;
   sessionKey?: string;
@@ -862,7 +857,6 @@ export interface CoinflowIFrameProps
       | 'chargebackProtectionAccountType'
       | 'webhookInfo'
       | 'subtotal'
-      | 'customPayInFees'
       | 'presentment'
       | 'customerInfo'
       | 'settlementType'
