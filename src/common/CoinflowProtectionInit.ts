@@ -3,10 +3,7 @@ import {CoinflowUtils, recordFrontendError} from './CoinflowUtils';
 import {initProtectionSession} from './CoinflowProtectionSession';
 import {CoinflowEnvs} from './CoinflowTypes';
 
-const NSURE_APP_IDS: Record<string, string> = {
-  prod: '9JBW2RHC7JNJN8ZQ',
-  sandbox: 'SANDBOX_CTCE4XK53ZW0R7V1',
-};
+const NSURE_APP_ID = '9JBW2RHC7JNJN8ZQ';
 
 const PROTECTION_SESSION_PROJECT_IDS: Record<string, string> = {
   prod: '315da543-c486-435a-aa21-53844c469822',
@@ -31,7 +28,7 @@ export async function initCoinflowProtection({
       merchantId
     );
     if (partnerId) {
-      const appId = NSURE_APP_IDS[env] ?? NSURE_APP_IDS['sandbox'];
+      const appId = NSURE_APP_ID;
       try {
         nsureSDK.init(appId, partnerId);
       } catch (e) {
