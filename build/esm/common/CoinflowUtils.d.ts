@@ -7,10 +7,10 @@ export declare class CoinflowUtils {
     static getCoinflowBaseUrl(env?: CoinflowEnvs): string;
     static getCoinflowAppBaseUrl(env?: CoinflowEnvs): string;
     static getCoinflowApiUrl(env?: CoinflowEnvs): string;
-    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, presentment, transaction, blockchain, webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, baseUrl }: CoinflowIFrameProps & {
+    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, presentment, transaction, blockchain, webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, baseUrl, }: CoinflowIFrameProps & {
         baseUrl?: string;
     } & WithGeo): string;
-    static getCoinflowIntentsUrl({ baseUrl, route, color, theme, env, origins, deviceId, merchantCss, loaderBackground, handleHeightChangeId }: CoinflowIntentsIFrameProps & {
+    static getCoinflowIntentsUrl({ baseUrl, route, color, theme, env, origins, deviceId, merchantCss, loaderBackground, handleHeightChangeId, }: CoinflowIntentsIFrameProps & {
         baseUrl?: string;
     }): string;
     static getTransaction(props: CoinflowPurchaseProps): string | undefined;
@@ -31,7 +31,7 @@ export interface FullName {
     lastName: string;
 }
 export declare function getCustomerName(info: CustomerInfo | undefined): FullName | undefined;
-export declare function recordFrontendError({ event, error, env, merchantId }: {
+export declare function recordFrontendError({ event, error, env, merchantId, }: {
     event: string;
     error: any;
     env: CoinflowEnvs;

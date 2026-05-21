@@ -229,7 +229,7 @@ function CardFormIFrame({
       allow="payment"
       style={{
         width: '100%',
-        height: '52px',
+        height: '56px',
         border: 'none',
         opacity: loaded ? 1 : 0,
         transition: 'opacity 300ms linear',

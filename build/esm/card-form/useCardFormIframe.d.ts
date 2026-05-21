@@ -1,5 +1,5 @@
 import { CoinflowEnvs, doInitializeCvvOnlyTokenExIframe, doInitializeTokenExCardOnlyIframe, doInitializeTokenExIframe, setTokenExScriptTag, TokenExIframe, MerchantIdOrCheckoutJwt } from '../common';
-export declare function useCardFormIframe({ env, merchantId, checkoutJwt }: {
+export declare function useCardFormIframe({ env, merchantId, checkoutJwt, }: {
     env: CoinflowEnvs;
 } & MerchantIdOrCheckoutJwt): {
     tokenExIframe: TokenExIframe | undefined;
