@@ -54,11 +54,13 @@ function useCardFormIframe({
 }: CardFormBaseProps & {variant: CardFormVariant; token?: string}) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [loaded, setLoaded] = useState(false);
+  const [iframeHeight, setIframeHeight] = useState<number | null>(null);
 
   const url = useMemo(() => {
     const baseUrl = CoinflowUtils.getCoinflowBaseUrl(env);
     const url = new URL(`/form/v2/${variant}`, baseUrl);
     url.searchParams.append('merchantId', merchantId);
+    url.searchParams.append('useHeightChange', 'true');
     if (theme) {
       url.searchParams.append(
         'theme',
@@ -82,6 +84,11 @@ function useCardFormIframe({
         if (parsed.method === IFrameMessageMethods.Loaded) {
           setLoaded(true);
           onLoad?.();
+        } else if (parsed.method === IFrameMessageMethods.HeightChange) {
+          const parsedHeight = Number(parsed.data);
+          if (Number.isFinite(parsedHeight) && parsedHeight > 0) {
+            setIframeHeight(parsedHeight);
+          }
         }
       } catch {
         // not JSON, ignore
@@ -144,14 +151,14 @@ function useCardFormIframe({
     });
   }, [env]);
 
-  return {iframeRef, url, loaded, tokenize};
+  return {iframeRef, url, loaded, tokenize, iframeHeight};
 }
 
 const CoinflowCardFormComponent = forwardRef<
   CardFormRef,
   CoinflowCardFormProps
 >((props, ref) => {
-  const {iframeRef, url, loaded, tokenize} = useCardFormIframe({
+  const {iframeRef, url, loaded, tokenize, iframeHeight} = useCardFormIframe({
     ...props,
     variant: 'card-form',
   });
@@ -163,6 +170,7 @@ const CoinflowCardFormComponent = forwardRef<
       iframeRef={iframeRef}
       url={url}
       loaded={loaded}
+      iframeHeight={iframeHeight}
       title="Card Form"
     />
   );
@@ -172,7 +180,7 @@ const CoinflowCardNumberFormComponent = forwardRef<
   CardFormRef,
   CoinflowCardNumberFormProps
 >((props, ref) => {
-  const {iframeRef, url, loaded, tokenize} = useCardFormIframe({
+  const {iframeRef, url, loaded, tokenize, iframeHeight} = useCardFormIframe({
     ...props,
     variant: 'card-number-form',
   });
@@ -184,6 +192,7 @@ const CoinflowCardNumberFormComponent = forwardRef<
       iframeRef={iframeRef}
       url={url}
       loaded={loaded}
+      iframeHeight={iframeHeight}
       title="Card Number Form"
     />
   );
@@ -191,7 +200,7 @@ const CoinflowCardNumberFormComponent = forwardRef<
 
 const CoinflowCvvFormComponent = forwardRef<CardFormRef, CoinflowCvvFormProps>(
   (props, ref) => {
-    const {iframeRef, url, loaded, tokenize} = useCardFormIframe({
+    const {iframeRef, url, loaded, tokenize, iframeHeight} = useCardFormIframe({
       ...props,
       variant: 'cvv-form',
     });
@@ -203,6 +212,7 @@ const CoinflowCvvFormComponent = forwardRef<CardFormRef, CoinflowCvvFormProps>(
         iframeRef={iframeRef}
         url={url}
         loaded={loaded}
+        iframeHeight={iframeHeight}
         title="CVV Form"
       />
     );
@@ -213,11 +223,13 @@ function CardFormIFrame({
   iframeRef,
   url,
   loaded,
+  iframeHeight,
   title,
 }: {
   iframeRef: React.RefObject<HTMLIFrameElement | null>;
   url: string;
   loaded: boolean;
+  iframeHeight: number | null;
   title: string;
 }) {
   return (
@@ -229,10 +241,10 @@ function CardFormIFrame({
       allow="payment"
       style={{
         width: '100%',
-        height: '56px',
+        height: iframeHeight ? `${iframeHeight}px` : '56px',
         border: 'none',
         opacity: loaded ? 1 : 0,
-        transition: 'opacity 300ms linear',
+        transition: 'opacity 300ms linear, height 150ms ease-out',
       }}
     />
   );
