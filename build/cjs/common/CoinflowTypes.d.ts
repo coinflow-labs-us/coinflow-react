@@ -79,6 +79,7 @@ export declare enum MerchantStyle {
 export type MerchantTheme = {
     primary?: string;
     background?: string;
+    cardBackground?: string;
     backgroundAccent?: string;
     backgroundAccent2?: string;
     textColor?: string;
@@ -92,6 +93,7 @@ export type MerchantTheme = {
     cardNumberPlaceholder?: string;
     cvvPlaceholder?: string;
     expirationPlaceholder?: string;
+    placeholderColor?: string;
     showCardIcon?: boolean;
 };
 interface BaseCustomerInfo {

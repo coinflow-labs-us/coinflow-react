@@ -80,6 +80,16 @@ Props:
 
 # Changelog
 
+## 5.15.0
+
+- Added `cardBackground` to `MerchantTheme` to control the inner card-entry surface independently of the outer canvas `background`
+- Added `placeholderColor` to `MerchantTheme` to control placeholder text color in card form inputs
+- Fixed the card brand icon being hidden when the card form reflows to a stacked two-row layout at narrow widths
+
+## 5.14.0
+
+- Fixed an issue with vertical spacing when resizing the page
+
 ## 5.11.0
 
 - Added unified protection initialization helper and headers helper
