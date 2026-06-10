@@ -63,6 +63,7 @@ export var PaymentMethods;
     PaymentMethods["wire"] = "wire";
     PaymentMethods["cashApp"] = "cashApp";
     PaymentMethods["apa"] = "apa";
+    PaymentMethods["interac"] = "interac";
 })(PaymentMethods || (PaymentMethods = {}));
 export const paymentMethodLabels = {
     [PaymentMethods.card]: 'Card',
@@ -78,6 +79,7 @@ export const paymentMethodLabels = {
     [PaymentMethods.wire]: 'Wire Transfer',
     [PaymentMethods.cashApp]: 'CashApp',
     [PaymentMethods.apa]: 'APA',
+    [PaymentMethods.interac]: 'Interac',
 };
 export var CardType;
 (function (CardType) {

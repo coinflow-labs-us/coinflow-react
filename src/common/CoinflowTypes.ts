@@ -385,6 +385,7 @@ export enum PaymentMethods {
   wire = 'wire',
   cashApp = 'cashApp',
   apa = 'apa',
+  interac = 'interac',
 }
 
 export const paymentMethodLabels: Record<PaymentMethods, string> = {
@@ -401,6 +402,7 @@ export const paymentMethodLabels: Record<PaymentMethods, string> = {
   [PaymentMethods.wire]: 'Wire Transfer',
   [PaymentMethods.cashApp]: 'CashApp',
   [PaymentMethods.apa]: 'APA',
+  [PaymentMethods.interac]: 'Interac',
 };
 
 export interface CoinflowCommonPaymentIntentProps extends Omit<

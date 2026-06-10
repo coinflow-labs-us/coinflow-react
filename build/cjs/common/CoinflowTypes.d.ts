@@ -267,7 +267,8 @@ export declare enum PaymentMethods {
     crypto = "crypto",
     wire = "wire",
     cashApp = "cashApp",
-    apa = "apa"
+    apa = "apa",
+    interac = "interac"
 }
 export declare const paymentMethodLabels: Record<PaymentMethods, string>;
 export interface CoinflowCommonPaymentIntentProps extends Omit<CoinflowTypes, 'blockchain'> {
