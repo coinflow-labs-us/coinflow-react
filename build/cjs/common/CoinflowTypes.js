@@ -68,6 +68,7 @@ var PaymentMethods;
     PaymentMethods["wire"] = "wire";
     PaymentMethods["cashApp"] = "cashApp";
     PaymentMethods["apa"] = "apa";
+    PaymentMethods["paypal"] = "paypal";
     PaymentMethods["interac"] = "interac";
 })(PaymentMethods || (exports.PaymentMethods = PaymentMethods = {}));
 exports.paymentMethodLabels = {
@@ -84,6 +85,7 @@ exports.paymentMethodLabels = {
     [PaymentMethods.wire]: 'Wire Transfer',
     [PaymentMethods.cashApp]: 'CashApp',
     [PaymentMethods.apa]: 'APA',
+    [PaymentMethods.paypal]: 'PayPal',
     [PaymentMethods.interac]: 'Interac',
 };
 var CardType;

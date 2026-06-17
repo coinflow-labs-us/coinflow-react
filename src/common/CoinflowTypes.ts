@@ -385,6 +385,7 @@ export enum PaymentMethods {
   wire = 'wire',
   cashApp = 'cashApp',
   apa = 'apa',
+  paypal = 'paypal',
   interac = 'interac',
 }
 
@@ -402,6 +403,7 @@ export const paymentMethodLabels: Record<PaymentMethods, string> = {
   [PaymentMethods.wire]: 'Wire Transfer',
   [PaymentMethods.cashApp]: 'CashApp',
   [PaymentMethods.apa]: 'APA',
+  [PaymentMethods.paypal]: 'PayPal',
   [PaymentMethods.interac]: 'Interac',
 };
 
