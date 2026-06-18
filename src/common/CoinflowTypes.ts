@@ -386,6 +386,7 @@ export enum PaymentMethods {
   cashApp = 'cashApp',
   apa = 'apa',
   paypal = 'paypal',
+  venmo = 'venmo',
   interac = 'interac',
 }
 
@@ -404,6 +405,7 @@ export const paymentMethodLabels: Record<PaymentMethods, string> = {
   [PaymentMethods.cashApp]: 'CashApp',
   [PaymentMethods.apa]: 'APA',
   [PaymentMethods.paypal]: 'PayPal',
+  [PaymentMethods.venmo]: 'Venmo',
   [PaymentMethods.interac]: 'Interac',
 };
 

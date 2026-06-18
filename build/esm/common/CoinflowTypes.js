@@ -64,6 +64,7 @@ export var PaymentMethods;
     PaymentMethods["cashApp"] = "cashApp";
     PaymentMethods["apa"] = "apa";
     PaymentMethods["paypal"] = "paypal";
+    PaymentMethods["venmo"] = "venmo";
     PaymentMethods["interac"] = "interac";
 })(PaymentMethods || (PaymentMethods = {}));
 export const paymentMethodLabels = {
@@ -81,6 +82,7 @@ export const paymentMethodLabels = {
     [PaymentMethods.cashApp]: 'CashApp',
     [PaymentMethods.apa]: 'APA',
     [PaymentMethods.paypal]: 'PayPal',
+    [PaymentMethods.venmo]: 'Venmo',
     [PaymentMethods.interac]: 'Interac',
 };
 export var CardType;

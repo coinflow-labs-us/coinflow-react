@@ -269,6 +269,7 @@ export declare enum PaymentMethods {
     cashApp = "cashApp",
     apa = "apa",
     paypal = "paypal",
+    venmo = "venmo",
     interac = "interac"
 }
 export declare const paymentMethodLabels: Record<PaymentMethods, string>;
