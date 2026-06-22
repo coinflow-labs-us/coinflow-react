@@ -42,6 +42,11 @@ export const CoinflowIFrame = forwardRef((props, ref) => {
             sendMessage(message);
             return this.listenForMessage(isResponseValid);
         },
+        postMessage(message) {
+            if (!IFrameRef?.current?.contentWindow)
+                return;
+            IFrameRef.current.contentWindow.postMessage(message, '*');
+        },
     }));
     const handleIframeMessages = useCallback(({ data, origin }) => {
         const expectedOrigin = new URL(CoinflowUtils.getCoinflowBaseUrl(props.env)).origin;

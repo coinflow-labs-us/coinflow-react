@@ -11,4 +11,5 @@ export * from './card-form/CoinflowCardFormHeader';
 export * from './card-form/CoinflowCardFormV2';
 export * from './CoinflowApplePayButton';
 export * from './CoinflowGooglePayButton';
+export * from './CoinflowPayPalButton';
 //# sourceMappingURL=index.js.map

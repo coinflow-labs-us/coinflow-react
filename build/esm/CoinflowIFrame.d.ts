@@ -4,6 +4,7 @@ export type SendAndReceiveMessage = (message: string, isResponseValid: (response
 export type CoinflowIFrameExposedFunctions = {
     sendAndReceiveMessage: SendAndReceiveMessage;
     listenForMessage: (isResponseValid: (response: string) => boolean) => Promise<string>;
+    postMessage: (message: string) => void;
 };
 export declare function useRandomHandleHeightChangeId(): string;
 export declare const CoinflowIFrame: React.ForwardRefExoticComponent<((CoinflowIFrameProps | CoinflowIntentsIFrameProps) & IFrameMessageHandlers) & React.RefAttributes<unknown>>;

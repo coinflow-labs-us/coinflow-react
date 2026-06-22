@@ -36,6 +36,11 @@ export interface IFrameMessageHandlers {
   handleHeightChange?: (height: string) => void;
   onSuccess: OnSuccessMethod | undefined;
   onAuthDeclined: OnAuthDeclinedMethod | undefined;
+  /**
+   * Called when the iframe opens/closes an in-page overlay (e.g. the PayPal
+   * approval modal). `state` is 'open' or 'close'.
+   */
+  handleOverlay?: (state: string) => void;
 }
 
 export enum IFrameMessageMethods {
@@ -48,6 +53,7 @@ export enum IFrameMessageMethods {
   Loaded = 'loaded',
   AccountLinked = 'accountLinked',
   Redirect = 'redirect',
+  Overlay = 'overlay',
 }
 
 export function getWalletPubkey(
@@ -119,6 +125,10 @@ export function handleIFrameMessage(
       return;
     case IFrameMessageMethods.Redirect:
       window.open(data, '_blank');
+      return;
+    case IFrameMessageMethods.Overlay:
+      if (!handlers.handleOverlay) return;
+      handlers.handleOverlay(data);
       return;
   }
 

@@ -80,6 +80,10 @@ Props:
 
 # Changelog
 
+## 5.16.0
+
+ - Added `CoinflowPayPalButton` to let merchants embed the PayPal button in their own checkout UI
+
 ## 5.15.0
 
 - Added `cardBackground` to `MerchantTheme` to control the inner card-entry surface independently of the outer canvas `background`

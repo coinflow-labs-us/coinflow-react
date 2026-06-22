@@ -18,6 +18,11 @@ export interface IFrameMessageHandlers {
     handleHeightChange?: (height: string) => void;
     onSuccess: OnSuccessMethod | undefined;
     onAuthDeclined: OnAuthDeclinedMethod | undefined;
+    /**
+     * Called when the iframe opens/closes an in-page overlay (e.g. the PayPal
+     * approval modal). `state` is 'open' or 'close'.
+     */
+    handleOverlay?: (state: string) => void;
 }
 export declare enum IFrameMessageMethods {
     SignMessage = "signMessage",
@@ -28,7 +33,8 @@ export declare enum IFrameMessageMethods {
     AuthDeclined = "authDeclined",
     Loaded = "loaded",
     AccountLinked = "accountLinked",
-    Redirect = "redirect"
+    Redirect = "redirect",
+    Overlay = "overlay"
 }
 export declare function getWalletPubkey(input: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain'>): string | null | undefined;
 export declare function handleIFrameMessage(rawMessage: string, handlers: IFrameMessageHandlers, handleHeightChangeId: string | number): Promise<string> | void;

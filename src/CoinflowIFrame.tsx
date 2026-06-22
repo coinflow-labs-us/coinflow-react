@@ -24,6 +24,7 @@ export type CoinflowIFrameExposedFunctions = {
   listenForMessage: (
     isResponseValid: (response: string) => boolean
   ) => Promise<string>;
+  postMessage: (message: string) => void;
 };
 
 export function useRandomHandleHeightChangeId() {
@@ -84,6 +85,11 @@ export const CoinflowIFrame = forwardRef(
       ): Promise<string> {
         sendMessage(message);
         return this.listenForMessage(isResponseValid);
+      },
+
+      postMessage(message: string): void {
+        if (!IFrameRef?.current?.contentWindow) return;
+        IFrameRef.current.contentWindow.postMessage(message, '*');
       },
     }));
 
