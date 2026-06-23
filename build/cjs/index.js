@@ -15,4 +15,5 @@ tslib_1.__exportStar(require("./card-form/CoinflowCardFormV2"), exports);
 tslib_1.__exportStar(require("./CoinflowApplePayButton"), exports);
 tslib_1.__exportStar(require("./CoinflowGooglePayButton"), exports);
 tslib_1.__exportStar(require("./CoinflowPayPalButton"), exports);
+tslib_1.__exportStar(require("./CoinflowVenmoButton"), exports);
 //# sourceMappingURL=index.js.map

@@ -12,3 +12,4 @@ export * from './card-form/CoinflowCardFormV2';
 export * from './CoinflowApplePayButton';
 export * from './CoinflowGooglePayButton';
 export * from './CoinflowPayPalButton';
+export * from './CoinflowVenmoButton';

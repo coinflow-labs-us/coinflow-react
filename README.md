@@ -80,6 +80,10 @@ Props:
 
 # Changelog
 
+## 5.17.0
+
+ - Added `CoinflowVenmoButton` to let merchants embed the Venmo button in their own checkout UI
+
 ## 5.16.0
 
  - Added `CoinflowPayPalButton` to let merchants embed the PayPal button in their own checkout UI
