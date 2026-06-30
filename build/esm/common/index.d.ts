@@ -11,3 +11,4 @@ export * from './types/nftCartItem';
 export * from './types/cryptoCartItem';
 export * from './CoinflowPurchaseProtectionHeaders';
 export * from './CoinflowProtectionInit';
+export { default as getForterToken, captureForterToken, awaitForterToken, } from './Forter';

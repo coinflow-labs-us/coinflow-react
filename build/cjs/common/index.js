@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.awaitForterToken = exports.captureForterToken = exports.getForterToken = void 0;
 const tslib_1 = require("tslib");
 tslib_1.__exportStar(require("./CoinflowTypes"), exports);
 tslib_1.__exportStar(require("./CoinflowUtils"), exports);
@@ -14,4 +15,8 @@ tslib_1.__exportStar(require("./types/nftCartItem"), exports);
 tslib_1.__exportStar(require("./types/cryptoCartItem"), exports);
 tslib_1.__exportStar(require("./CoinflowPurchaseProtectionHeaders"), exports);
 tslib_1.__exportStar(require("./CoinflowProtectionInit"), exports);
+var Forter_1 = require("./Forter");
+Object.defineProperty(exports, "getForterToken", { enumerable: true, get: function () { return tslib_1.__importDefault(Forter_1).default; } });
+Object.defineProperty(exports, "captureForterToken", { enumerable: true, get: function () { return Forter_1.captureForterToken; } });
+Object.defineProperty(exports, "awaitForterToken", { enumerable: true, get: function () { return Forter_1.awaitForterToken; } });
 //# sourceMappingURL=index.js.map
