@@ -80,6 +80,11 @@ Props:
 
 # Changelog
 
+## 5.19.0
+
+- `CoinflowVenmoButton` now renders Venmo's approval flow as an in-page modal instead of a popup window
+- **Breaking**: `CoinflowVenmoButton` now requires an `overlayId` prop — the id of an element the approval overlay fills while it's open, matching `CoinflowPayPalButton`
+
 ## 5.17.0
 
  - Added `CoinflowVenmoButton` to let merchants embed the Venmo button in their own checkout UI
