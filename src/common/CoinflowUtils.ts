@@ -112,6 +112,7 @@ export class CoinflowUtils {
     isZeroAuthorization,
     zeroAuthorizationConfig,
     userLocation,
+    depositAmounts,
     baseUrl,
   }: CoinflowIFrameProps & {baseUrl?: string} & WithGeo): string {
     const prefix = routePrefix
@@ -268,6 +269,9 @@ export class CoinflowUtils {
         'allowedPaymentMethods',
         allowedPaymentMethods.join(',')
       );
+
+    if (depositAmounts)
+      url.searchParams.append('depositAmounts', depositAmounts.join(','));
 
     if (threeDsChallengePreference)
       url.searchParams.append(

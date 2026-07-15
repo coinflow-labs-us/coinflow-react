@@ -50,7 +50,7 @@ export class CoinflowUtils {
             return 'http://localhost:5000';
         return `https://api-${env}.coinflow.cash`;
     }
-    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, baseUrl, }) {
+    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, depositAmounts, baseUrl, }) {
         const prefix = routePrefix
             ? `/${routePrefix}/${blockchain}`
             : `/${blockchain}`;
@@ -162,6 +162,8 @@ export class CoinflowUtils {
             url.searchParams.append('origins', LZString.compressToEncodedURIComponent(JSON.stringify(origins)));
         if (allowedPaymentMethods)
             url.searchParams.append('allowedPaymentMethods', allowedPaymentMethods.join(','));
+        if (depositAmounts)
+            url.searchParams.append('depositAmounts', depositAmounts.join(','));
         if (threeDsChallengePreference)
             url.searchParams.append('threeDsChallengePreference', threeDsChallengePreference);
         if (destinationAuthKey)

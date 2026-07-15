@@ -285,8 +285,6 @@ export interface CoinflowCommonPaymentIntentProps extends Omit<CoinflowTypes, 'b
     /**
      * The DeviceID gotten from the Coinflow SDK:
      *  https://docs.coinflow.cash/guides/checkout/fraud-protection/chargeback-protection/implement-chargeback-protection#how-to-add-chargeback-protection
-     *
-     * nSureSDK.getDeviceId()
      */
     deviceId?: string;
     /**
@@ -347,8 +345,6 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     /**
      * The DeviceID gotten from the Coinflow SDK:
      *  https://docs.coinflow.cash/guides/checkout/fraud-protection/chargeback-protection/implement-chargeback-protection#how-to-add-chargeback-protection
-     *
-     * nSureSDK.getDeviceId()
      */
     deviceId?: string;
     jwtToken?: string;
@@ -368,6 +364,11 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     threeDsChallengePreference?: ThreeDsChallengePreference;
     destinationAuthKey?: string;
     accountFundingTransaction?: AccountFundingTransaction;
+    /**
+     * Custom preset deposit amounts (in dollars) to display in the AmountSelector.
+     * Only the first 3 values are used. Defaults to [10, 25, 50] if not provided.
+     */
+    depositAmounts?: number[];
 }
 export interface WithGeo {
     /**
@@ -638,7 +639,7 @@ export interface DecentRedeem extends CommonEvmRedeem {
  * Gas fees for the transaction will be automatically calculated and added to the total charged to the customer. Optionally the merchant can opt to pay for these gas fees.
  */
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem | DecentRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'chargebackProtectionAccountType' | 'webhookInfo' | 'subtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'>, WithGeo {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'chargebackProtectionAccountType' | 'webhookInfo' | 'subtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig' | 'depositAmounts'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'>, WithGeo {
     walletPubkey: string | null | undefined;
     sessionKey?: string;
     route: string;

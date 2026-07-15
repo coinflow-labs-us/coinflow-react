@@ -424,8 +424,6 @@ export interface CoinflowCommonPaymentIntentProps extends Omit<
   /**
    * The DeviceID gotten from the Coinflow SDK:
    *  https://docs.coinflow.cash/guides/checkout/fraud-protection/chargeback-protection/implement-chargeback-protection#how-to-add-chargeback-protection
-   *
-   * nSureSDK.getDeviceId()
    */
   deviceId?: string;
   /**
@@ -494,8 +492,6 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   /**
    * The DeviceID gotten from the Coinflow SDK:
    *  https://docs.coinflow.cash/guides/checkout/fraud-protection/chargeback-protection/implement-chargeback-protection#how-to-add-chargeback-protection
-   *
-   * nSureSDK.getDeviceId()
    */
   deviceId?: string;
   jwtToken?: string;
@@ -515,6 +511,11 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   threeDsChallengePreference?: ThreeDsChallengePreference;
   destinationAuthKey?: string;
   accountFundingTransaction?: AccountFundingTransaction;
+  /**
+   * Custom preset deposit amounts (in dollars) to display in the AmountSelector.
+   * Only the first 3 values are used. Defaults to [10, 25, 50] if not provided.
+   */
+  depositAmounts?: number[];
 }
 
 export interface WithGeo {
@@ -882,6 +883,7 @@ export interface CoinflowIFrameProps
       | 'partialUsdcChecked'
       | 'isZeroAuthorization'
       | 'zeroAuthorizationConfig'
+      | 'depositAmounts'
     >,
     Pick<
       CoinflowCommonWithdrawProps,
