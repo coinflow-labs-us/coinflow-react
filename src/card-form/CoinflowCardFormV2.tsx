@@ -11,13 +11,21 @@ import React, {
 } from 'react';
 import LZString from 'lz-string';
 import {
+  buildSkeletonCss,
+  CardFormVariant,
   CoinflowEnvs,
   CoinflowUtils,
+  getSkeletonColors,
+  getSkeletonGridClass,
+  guessSkeletonHeightPx,
   IFrameMessageMethods,
+  INLINE_SKELETON_HEIGHT_PX,
   MerchantTheme,
+  SKELETON_BOX_STYLE,
+  SKELETON_FADE_MS,
+  SKELETON_LAYOUTS,
+  SKELETON_ROOT_PADDING_PX,
 } from '../common';
-
-type CardFormVariant = 'card-form' | 'card-number-form' | 'cvv-form';
 
 interface CardFormBaseProps {
   merchantId: string;
@@ -76,7 +84,12 @@ function useCardFormIframe({
   }, [variant, merchantId, env, theme, token]);
 
   const handleMessage = useCallback(
-    ({data, origin}: {data: string; origin: string}) => {
+    (event: MessageEvent) => {
+      const {data, origin, source} = event;
+      // Only honor messages from THIS instance's iframe. Multiple card forms on
+      // one page each listen on `window`, so without this every instance would
+      // apply every other iframe's height/loaded events to itself.
+      if (source !== iframeRef.current?.contentWindow) return;
       const expectedOrigin = new URL(CoinflowUtils.getCoinflowBaseUrl(env))
         .origin;
       if (origin !== expectedOrigin) return;
@@ -174,6 +187,8 @@ const CoinflowCardFormComponent = forwardRef<
       loaded={loaded}
       iframeHeight={iframeHeight}
       title="Card Form"
+      variant="card-form"
+      theme={props.theme}
     />
   );
 });
@@ -196,6 +211,8 @@ const CoinflowCardNumberFormComponent = forwardRef<
       loaded={loaded}
       iframeHeight={iframeHeight}
       title="Card Number Form"
+      variant="card-number-form"
+      theme={props.theme}
     />
   );
 });
@@ -216,6 +233,8 @@ const CoinflowCvvFormComponent = forwardRef<CardFormRef, CoinflowCvvFormProps>(
         loaded={loaded}
         iframeHeight={iframeHeight}
         title="CVV Form"
+        variant="cvv-form"
+        theme={props.theme}
       />
     );
   }
@@ -227,28 +246,133 @@ function CardFormIFrame({
   loaded,
   iframeHeight,
   title,
+  variant,
+  theme,
 }: {
   iframeRef: React.RefObject<HTMLIFrameElement | null>;
   url: string;
   loaded: boolean;
   iframeHeight: number | null;
   title: string;
+  variant: CardFormVariant;
+  theme?: MerchantTheme;
 }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  // Guess the skeleton height from the container width until the iframe reports
+  // its real height: compact (stacked) layouts are taller than the inline one.
+  const [guessHeight, setGuessHeight] = useState(INLINE_SKELETON_HEIGHT_PX);
+
+  useLayoutEffect(() => {
+    // Measure the wrapper div, not the iframe: a freshly-mounted <iframe> is a
+    // replaced element with an intrinsic 300px default width before its
+    // width:100% resolves, which would briefly (and wrongly) trip the compact
+    // breakpoint and jump the height. A block div reports the true container
+    // width immediately.
+    const el = wrapperRef.current;
+    if (!el || !SKELETON_LAYOUTS[variant].compact) return;
+
+    const measure = () =>
+      setGuessHeight(guessSkeletonHeightPx({variant, width: el.clientWidth}));
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [variant]);
+
+  const height =
+    loaded && iframeHeight ? `${iframeHeight}px` : `${guessHeight}px`;
   return (
-    <iframe
-      ref={iframeRef as React.RefObject<HTMLIFrameElement>}
-      src={url}
-      title={title}
-      frameBorder="0"
-      allow="payment"
+    <div ref={wrapperRef} style={{position: 'relative', width: '100%', height}}>
+      <CardFormSkeleton variant={variant} hidden={loaded} theme={theme} />
+      <iframe
+        ref={iframeRef as React.RefObject<HTMLIFrameElement>}
+        src={url}
+        title={title}
+        frameBorder="0"
+        allow="payment"
+        style={{
+          width: '100%',
+          height,
+          border: 'none',
+          opacity: loaded ? 1 : 0,
+          transition: 'opacity 300ms linear, height 150ms ease-out',
+        }}
+      />
+    </div>
+  );
+}
+
+function CardFormSkeleton({
+  variant,
+  hidden,
+  theme,
+}: {
+  variant: CardFormVariant;
+  hidden: boolean;
+  theme?: MerchantTheme;
+}) {
+  // Stay mounted while fading out so the opacity transition can play, then
+  // unmount on transition end. Remount instantly when shown again.
+  const [rendered, setRendered] = useState(!hidden);
+  if (!hidden && !rendered) setRendered(true);
+
+  // Fallback unmount: `transitionend` may never fire (reduced-motion, an
+  // ancestor display:none, or opacity already 0), so force cleanup after the
+  // fade window regardless.
+  useEffect(() => {
+    if (!hidden) return;
+    const timer = setTimeout(() => setRendered(false), SKELETON_FADE_MS);
+    return () => clearTimeout(timer);
+  }, [hidden]);
+
+  if (!rendered) return null;
+
+  const layout = SKELETON_LAYOUTS[variant];
+  const gridClass = getSkeletonGridClass(variant);
+  // Best-effort tint from the merchant theme's background (neutral when absent).
+  const colors = getSkeletonColors(theme);
+
+  return (
+    <div
+      role="status"
+      aria-label="Loading card form"
+      onTransitionEnd={e => {
+        if (e.propertyName === 'opacity' && hidden) setRendered(false);
+      }}
       style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
         width: '100%',
-        height: iframeHeight ? `${iframeHeight}px` : '56px',
-        border: 'none',
-        opacity: loaded ? 1 : 0,
+        height: '100%',
+        display: 'flex',
+        pointerEvents: 'none',
+        flexDirection: 'column',
+        gap: 8,
+        padding: SKELETON_ROOT_PADDING_PX,
+        boxSizing: 'border-box',
+        borderRadius: 8,
+        background: colors.backdrop,
+        containerType: 'inline-size',
+        opacity: hidden ? '0%' : '100%',
         transition: 'opacity 300ms linear, height 150ms ease-out',
       }}
-    />
+    >
+      <style>{buildSkeletonCss(variant)}</style>
+      <div className={gridClass}>
+        {layout.areas.map(area => (
+          <div
+            key={area}
+            style={{
+              ...SKELETON_BOX_STYLE,
+              background: colors.box,
+              gridArea: area,
+            }}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 

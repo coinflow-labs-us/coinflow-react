@@ -1,15 +1,5 @@
 # Coinflow React
 
-## Changelog
-
-### 5.12.0
-
-- New `CoinflowCardForm`, `CoinflowCardNumberForm`, and `CoinflowCvvForm` components — simple card inputs with a single `tokenize()` call and full theme support
-- Theme options: `font`, `fontSize`, `background`, `textColor`, `showCardIcon`, `cardNumberPlaceholder`, `cvvPlaceholder`, `expirationPlaceholder`
-- `showCardIcon`: display the detected card brand (Visa, Mastercard, etc.) inline with the card number input
-- Improved browser autocomplete support for card fields
-- Improved security for iframe communication
-
 ## Withdraw Usage
 
 ```
@@ -79,6 +69,10 @@ Props:
 - `getFeePayer` - Return the `PublicKey` of the Coinflow Fee Payer
 
 # Changelog
+
+## 5.21.0
+
+- Added loading states to the `CoinflowCardForm`, `CoinflowCardNumberInput`, `CoinflowCvvOnlyInput` components
 
 ## 5.19.0
 
