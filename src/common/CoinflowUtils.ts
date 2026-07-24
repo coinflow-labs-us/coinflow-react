@@ -113,6 +113,7 @@ export class CoinflowUtils {
     zeroAuthorizationConfig,
     userLocation,
     depositAmounts,
+    ownerOverride,
     baseUrl,
   }: CoinflowIFrameProps & {baseUrl?: string} & WithGeo): string {
     const prefix = routePrefix
@@ -124,6 +125,7 @@ export class CoinflowUtils {
     );
 
     if (walletPubkey) url.searchParams.append('pubkey', walletPubkey);
+    if (ownerOverride) url.searchParams.append('ownerOverride', ownerOverride);
     if (sessionKey) url.searchParams.append('sessionKey', sessionKey);
 
     if (transaction) {

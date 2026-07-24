@@ -489,6 +489,7 @@ export interface SolanaWalletProps {
     wallet: SolanaWallet;
     connection: Connection;
     blockchain: 'solana';
+    ownerOverride?: string;
 }
 export type CoinflowSolanaWithdrawProps = CoinflowCommonWithdrawProps & SolanaWalletProps;
 interface EvmWalletProps {
@@ -652,6 +653,7 @@ export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 
     disableGooglePay?: boolean;
     theme?: MerchantTheme;
     usePermit?: boolean;
+    ownerOverride?: string;
     handleHeightChangeId: string | number;
 }
 export interface CoinflowIntentsIFrameProps {

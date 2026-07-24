@@ -56,13 +56,15 @@ class CoinflowUtils {
             return 'http://localhost:5000';
         return `https://api-${env}.coinflow.cash`;
     }
-    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, depositAmounts, baseUrl, }) {
+    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, depositAmounts, ownerOverride, baseUrl, }) {
         const prefix = routePrefix
             ? `/${routePrefix}/${blockchain}`
             : `/${blockchain}`;
         const url = new URL(prefix + route, baseUrl ?? CoinflowUtils.getCoinflowBaseUrl(env));
         if (walletPubkey)
             url.searchParams.append('pubkey', walletPubkey);
+        if (ownerOverride)
+            url.searchParams.append('ownerOverride', ownerOverride);
         if (sessionKey)
             url.searchParams.append('sessionKey', sessionKey);
         if (transaction) {
