@@ -112,6 +112,7 @@ export class CoinflowUtils {
     isZeroAuthorization,
     zeroAuthorizationConfig,
     userLocation,
+    appReturnUrl,
     depositAmounts,
     ownerOverride,
     baseUrl,
@@ -302,6 +303,8 @@ export class CoinflowUtils {
       url.searchParams.append('lat', userLocation.lat.toString());
       url.searchParams.append('lng', userLocation.lng.toString());
     }
+
+    if (appReturnUrl) url.searchParams.append('appReturnUrl', appReturnUrl);
 
     return url.toString();
   }

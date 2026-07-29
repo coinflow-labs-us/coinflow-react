@@ -527,6 +527,14 @@ export interface WithGeo {
    * `react-native-geolocation`) and forward the result here.
    */
   userLocation?: {lat: number; lng: number};
+
+  /**
+   * Deep link (custom scheme or universal link) that reopens the host app.
+   * Used by browser-handoff checkouts (e.g. Venmo on React Native) so the
+   * standalone checkout page can route the customer back into the app after
+   * the payment app returns them to the browser.
+   */
+  appReturnUrl?: string;
 }
 
 /**
@@ -652,6 +660,14 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
    * `react-native-geolocation`) and forward the result here.
    */
   userLocation?: {lat: number; lng: number};
+
+  /**
+   * Deep link (custom scheme or universal link) that reopens the host app.
+   * Used by browser-handoff checkouts (e.g. Venmo on React Native) so the
+   * standalone checkout page can route the customer back into the app after
+   * the payment app returns them to the browser.
+   */
+  appReturnUrl?: string;
 }
 
 export type WalletTypes = SolanaWallet | EthWallet | StellarWallet;
