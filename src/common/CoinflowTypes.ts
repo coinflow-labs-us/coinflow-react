@@ -29,6 +29,7 @@ export enum WithdrawSpeed {
   PAYPAL = 'paypal',
   WIRE = 'wire',
   INTERAC = 'interac',
+  SWIFT = 'swift',
 }
 
 export enum SettlementType {

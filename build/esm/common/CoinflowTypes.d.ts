@@ -20,7 +20,8 @@ export declare enum WithdrawSpeed {
     VENMO = "venmo",
     PAYPAL = "paypal",
     WIRE = "wire",
-    INTERAC = "interac"
+    INTERAC = "interac",
+    SWIFT = "swift"
 }
 export declare enum SettlementType {
     Credits = "Credits",

@@ -17,6 +17,7 @@ export var WithdrawSpeed;
     WithdrawSpeed["PAYPAL"] = "paypal";
     WithdrawSpeed["WIRE"] = "wire";
     WithdrawSpeed["INTERAC"] = "interac";
+    WithdrawSpeed["SWIFT"] = "swift";
 })(WithdrawSpeed || (WithdrawSpeed = {}));
 export var SettlementType;
 (function (SettlementType) {

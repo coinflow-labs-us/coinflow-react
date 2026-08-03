@@ -22,6 +22,7 @@ var WithdrawSpeed;
     WithdrawSpeed["PAYPAL"] = "paypal";
     WithdrawSpeed["WIRE"] = "wire";
     WithdrawSpeed["INTERAC"] = "interac";
+    WithdrawSpeed["SWIFT"] = "swift";
 })(WithdrawSpeed || (exports.WithdrawSpeed = WithdrawSpeed = {}));
 var SettlementType;
 (function (SettlementType) {
