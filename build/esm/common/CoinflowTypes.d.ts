@@ -493,9 +493,11 @@ export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     };
     /**
      * Deep link (custom scheme or universal link) that reopens the host app.
-     * Used by browser-handoff checkouts (e.g. Venmo on React Native) so the
-     * standalone checkout page can route the customer back into the app after
-     * the payment app returns them to the browser.
+     * Used by browser-handoff flows on React Native — Venmo checkout and the
+     * "Log in with PayPal" payout flow — so the standalone page routes the user
+     * back into the app after the payment/login app returns them to the browser.
+     * When omitted, PayPal linking still completes via polling but the user must
+     * switch back to the app manually.
      */
     appReturnUrl?: string;
 }
