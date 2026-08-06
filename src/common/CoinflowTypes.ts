@@ -10,6 +10,10 @@ import {GiftCardCartItem} from './types/giftCardCartItem';
 import {nftCartItem} from './types/nftCartItem';
 import {CryptoCartItem} from './types/cryptoCartItem';
 import {MoneyTopUpCartItem} from './types/moneyTopUpCartItem';
+import {TravelCartItem} from './types/travelCartItem';
+import {FlightTicketCartItem} from './types/flightTicketCartItem';
+import {FlightUpgradeCartItem} from './types/flightUpgradeCartItem';
+import {LodgingCartItem} from './types/lodgingCartItem';
 
 export enum WithdrawCategory {
   USER = 'user',
@@ -351,7 +355,11 @@ export type CartItemClassOmitted =
   | NftCartItemClassOmitted
   | Omit<GiftCardCartItem, 'listPrice'>
   | CryptoCartItem
-  | MoneyTopUpCartItem;
+  | MoneyTopUpCartItem
+  | TravelCartItem
+  | FlightTicketCartItem
+  | FlightUpgradeCartItem
+  | LodgingCartItem;
 export type ChargebackProtectionItem = CartItemClassOmitted;
 
 export type NftCartItemClassOmitted = Omit<
@@ -364,7 +372,11 @@ export type CartItem =
   | Omit<nftCartItem, 'listPrice' | 'sellingPrice'>
   | Omit<GiftCardCartItem, 'listPrice'>
   | CryptoCartItem
-  | MoneyTopUpCartItem;
+  | MoneyTopUpCartItem
+  | TravelCartItem
+  | FlightTicketCartItem
+  | FlightUpgradeCartItem
+  | LodgingCartItem;
 
 export enum ThreeDsChallengePreference {
   NoPreference = 'NoPreference',
