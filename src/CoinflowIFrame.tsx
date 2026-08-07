@@ -55,13 +55,14 @@ export const CoinflowIFrame = forwardRef(
       async listenForMessage(
         isResponseValid: (response: string) => boolean
       ): Promise<string> {
-        let handler: ({data, origin}: {data: string; origin: string}) => void;
+        let handler: ({data, origin}: {data: unknown; origin: string}) => void;
         return new Promise<string>((resolve, reject) => {
-          handler = ({data, origin}: {data: string; origin: string}) => {
+          handler = ({data, origin}: {data: unknown; origin: string}) => {
             const expectedOrigin = new URL(
               CoinflowUtils.getCoinflowBaseUrl(props.env)
             ).origin;
             if (origin !== expectedOrigin) return;
+            if (typeof data !== 'string') return;
 
             if (data.startsWith('ERROR')) {
               reject(new Error(data.replace('ERROR', '')));
@@ -94,11 +95,12 @@ export const CoinflowIFrame = forwardRef(
     }));
 
     const handleIframeMessages = useCallback(
-      ({data, origin}: {data: string; origin: string}) => {
+      ({data, origin}: {data: unknown; origin: string}) => {
         const expectedOrigin = new URL(
           CoinflowUtils.getCoinflowBaseUrl(props.env)
         ).origin;
         if (origin !== expectedOrigin) return;
+        if (typeof data !== 'string') return;
 
         const promise = handleIFrameMessage(
           data,

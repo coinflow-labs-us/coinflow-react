@@ -38,7 +38,11 @@ export function MobileWalletButton({
         try {
           const res = JSON.parse(data);
 
-          if ('method' in res && res.data.startsWith('ERROR')) {
+          if (
+            'method' in res &&
+            typeof res.data === 'string' &&
+            res.data.startsWith('ERROR')
+          ) {
             onError?.(res.info);
             return false;
           }
