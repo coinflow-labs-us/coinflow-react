@@ -14,6 +14,10 @@ import {TravelCartItem} from './types/travelCartItem';
 import {FlightTicketCartItem} from './types/flightTicketCartItem';
 import {FlightUpgradeCartItem} from './types/flightUpgradeCartItem';
 import {LodgingCartItem} from './types/lodgingCartItem';
+import {
+  InputErrorWalletCallInfo,
+  InputValidWalletCallInfo,
+} from './card-form/cardFieldValidationError';
 
 export enum WithdrawCategory {
   USER = 'user',
@@ -228,6 +232,14 @@ export type OnAuthDeclinedMethod = (
   args: AuthDeclinedWalletCallInfo
 ) => void | Promise<void>;
 
+export type OnInputErrorMethod = (
+  args: InputErrorWalletCallInfo
+) => void | Promise<void>;
+
+export type OnInputValidMethod = (
+  args: InputValidWalletCallInfo
+) => void | Promise<void>;
+
 /** Wallets **/
 export interface SolanaWallet {
   publicKey: PublicKey | null;
@@ -430,6 +442,16 @@ export interface CoinflowCommonPaymentIntentProps extends Omit<
   onSuccess?: OnSuccessMethod;
   onAuthDeclined?: OnAuthDeclinedMethod;
   /**
+   * Called whenever a card field (card number, expiration, cvv) shows a
+   * validation error to the user, with the field name and the displayed message.
+   */
+  onInputError?: OnInputErrorMethod;
+  /**
+   * Called when a card field that was showing a validation error stops showing
+   * it, with the field name.
+   */
+  onInputValid?: OnInputValidMethod;
+  /**
    * If true, pre-checks the partial USDC payment checkbox when USDC balance is available.
    * If false or undefined, maintains default behavior (unchecked).
    */
@@ -473,6 +495,16 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   onSuccess?: OnSuccessMethod;
   sessionKey?: string;
   onAuthDeclined?: OnAuthDeclinedMethod;
+  /**
+   * Called whenever a card field (card number, expiration, cvv) shows a
+   * validation error to the user, with the field name and the displayed message.
+   */
+  onInputError?: OnInputErrorMethod;
+  /**
+   * Called when a card field that was showing a validation error stops showing
+   * it, with the field name.
+   */
+  onInputValid?: OnInputValidMethod;
   webhookInfo?: {
     [key: string]: any;
   };

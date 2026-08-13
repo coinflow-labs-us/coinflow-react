@@ -6,6 +6,7 @@ export * from './card-form/TokenEx';
 export * from './card-form/tokenexHelpers';
 export * from './card-form/cardEntryLayout';
 export * from './card-form/cardFormSkeleton';
+export * from './card-form/cardFieldValidationError';
 export * from './types/Subtotal';
 export * from './types/AnyObject';
 export * from './types/giftCardCartItem';

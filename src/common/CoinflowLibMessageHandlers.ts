@@ -4,12 +4,18 @@ import {
   CoinflowPurchaseProps,
   EthWallet,
   OnAuthDeclinedMethod,
+  OnInputErrorMethod,
+  OnInputValidMethod,
   OnSuccessMethod,
   SolanaWallet,
   StellarWallet,
   WalletTypes,
 } from './CoinflowTypes';
 import {CoinflowUtils} from './CoinflowUtils';
+import {
+  InputErrorWalletCallInfo,
+  InputValidWalletCallInfo,
+} from './card-form/cardFieldValidationError';
 import type {Transaction, VersionedTransaction} from '@solana/web3.js';
 import {web3, base58} from './SolanaPeerDeps';
 
@@ -29,6 +35,18 @@ type AuthDeclinedWalletCall = {
   info: AuthDeclinedWalletCallInfo;
 };
 
+type InputErrorWalletCall = {
+  method: IFrameMessageMethods.InputError;
+  data: string;
+  info: InputErrorWalletCallInfo;
+};
+
+type InputValidWalletCall = {
+  method: IFrameMessageMethods.InputValid;
+  data: string;
+  info: InputValidWalletCallInfo;
+};
+
 export interface IFrameMessageHandlers {
   handleSendTransaction: (transaction: string) => Promise<string>;
   handleSignMessage?: (message: string) => Promise<string>;
@@ -36,6 +54,8 @@ export interface IFrameMessageHandlers {
   handleHeightChange?: (height: string) => void;
   onSuccess: OnSuccessMethod | undefined;
   onAuthDeclined: OnAuthDeclinedMethod | undefined;
+  onInputError?: OnInputErrorMethod | undefined;
+  onInputValid?: OnInputValidMethod | undefined;
   /**
    * Called when the iframe opens/closes an in-page overlay (e.g. the PayPal
    * approval modal). `state` is 'open' or 'close'.
@@ -50,6 +70,8 @@ export enum IFrameMessageMethods {
   HeightChange = 'heightChange',
   Success = 'success',
   AuthDeclined = 'authDeclined',
+  InputError = 'inputError',
+  InputValid = 'inputValid',
   Loaded = 'loaded',
   AccountLinked = 'accountLinked',
   Redirect = 'redirect',
@@ -119,6 +141,14 @@ export function handleIFrameMessage(
       if (!handlers.onAuthDeclined) return;
       handlers.onAuthDeclined((walletCall as AuthDeclinedWalletCall).info);
       return;
+    case IFrameMessageMethods.InputError:
+      if (!handlers.onInputError) return;
+      handlers.onInputError((walletCall as InputErrorWalletCall).info);
+      return;
+    case IFrameMessageMethods.InputValid:
+      if (!handlers.onInputValid) return;
+      handlers.onInputValid((walletCall as InputValidWalletCall).info);
+      return;
     case IFrameMessageMethods.Loaded:
       return;
     case IFrameMessageMethods.AccountLinked:
@@ -140,7 +170,12 @@ export function handleIFrameMessage(
 export function getHandlers(
   props: Pick<
     CoinflowPurchaseProps,
-    'wallet' | 'blockchain' | 'onSuccess' | 'onAuthDeclined'
+    | 'wallet'
+    | 'blockchain'
+    | 'onSuccess'
+    | 'onAuthDeclined'
+    | 'onInputError'
+    | 'onInputValid'
   >
 ): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   let chain: CoinflowBlockchain | undefined;
@@ -172,6 +207,8 @@ export function getHandlers(
       },
       onSuccess: props.onSuccess,
       onAuthDeclined: props.onAuthDeclined,
+      onInputError: props.onInputError,
+      onInputValid: props.onInputValid,
     };
   }
 
@@ -181,48 +218,64 @@ export function getHandlers(
         wallet: wallet as SolanaWallet,
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
+        onInputError: props.onInputError,
+        onInputValid: props.onInputValid,
       }),
     eth: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
+        onInputError: props.onInputError,
+        onInputValid: props.onInputValid,
       }),
     polygon: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
+        onInputError: props.onInputError,
+        onInputValid: props.onInputValid,
       }),
     base: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
+        onInputError: props.onInputError,
+        onInputValid: props.onInputValid,
       }),
     arbitrum: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
+        onInputError: props.onInputError,
+        onInputValid: props.onInputValid,
       }),
     stellar: () =>
       getStellarWalletHandlers({
         wallet: wallet as StellarWallet,
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
+        onInputError: props.onInputError,
+        onInputValid: props.onInputValid,
       }),
     monad: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
+        onInputError: props.onInputError,
+        onInputValid: props.onInputValid,
       }),
     tempo: () =>
       getEvmWalletHandlers({
         wallet: wallet as EthWallet,
         onSuccess: props.onSuccess,
         onAuthDeclined: props.onAuthDeclined,
+        onInputError: props.onInputError,
+        onInputValid: props.onInputValid,
       }),
     user: () => getSessionKeyHandlers(props),
   })();
@@ -232,10 +285,14 @@ function getSolanaWalletHandlers({
   wallet,
   onSuccess,
   onAuthDeclined,
+  onInputError,
+  onInputValid,
 }: {
   wallet: SolanaWallet;
   onSuccess: OnSuccessMethod | undefined;
   onAuthDeclined: OnAuthDeclinedMethod | undefined;
+  onInputError: OnInputErrorMethod | undefined;
+  onInputValid: OnInputValidMethod | undefined;
 }): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   return {
     handleSendTransaction: async (transaction: string) => {
@@ -273,6 +330,8 @@ function getSolanaWalletHandlers({
     },
     onSuccess,
     onAuthDeclined,
+    onInputError,
+    onInputValid,
   };
 }
 
@@ -299,10 +358,14 @@ function getEvmWalletHandlers({
   wallet,
   onSuccess,
   onAuthDeclined,
+  onInputError,
+  onInputValid,
 }: {
   wallet: EthWallet;
   onSuccess?: OnSuccessMethod;
   onAuthDeclined: OnAuthDeclinedMethod | undefined;
+  onInputError: OnInputErrorMethod | undefined;
+  onInputValid: OnInputValidMethod | undefined;
 }): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   return {
     handleSendTransaction: async (transaction: string) => {
@@ -315,6 +378,8 @@ function getEvmWalletHandlers({
     },
     onSuccess,
     onAuthDeclined,
+    onInputError,
+    onInputValid,
   };
 }
 
@@ -322,10 +387,14 @@ function getStellarWalletHandlers({
   wallet,
   onSuccess,
   onAuthDeclined,
+  onInputError,
+  onInputValid,
 }: {
   wallet: StellarWallet;
   onSuccess: OnSuccessMethod | undefined;
   onAuthDeclined: OnAuthDeclinedMethod | undefined;
+  onInputError: OnInputErrorMethod | undefined;
+  onInputValid: OnInputValidMethod | undefined;
 }): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   return {
     handleSendTransaction: async (transaction: string) => {
@@ -351,21 +420,27 @@ function getStellarWalletHandlers({
     },
     onSuccess,
     onAuthDeclined,
+    onInputError,
+    onInputValid,
   };
 }
 
 function getSessionKeyHandlers({
   onSuccess,
   onAuthDeclined,
-}: Pick<CoinflowPurchaseProps, 'onSuccess' | 'onAuthDeclined'>): Omit<
-  IFrameMessageHandlers,
-  'handleHeightChange'
-> {
+  onInputError,
+  onInputValid,
+}: Pick<
+  CoinflowPurchaseProps,
+  'onSuccess' | 'onAuthDeclined' | 'onInputError' | 'onInputValid'
+>): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   return {
     handleSendTransaction: async () => {
       return Promise.resolve('');
     },
     onSuccess,
     onAuthDeclined,
+    onInputError,
+    onInputValid,
   };
 }

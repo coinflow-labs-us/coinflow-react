@@ -14,6 +14,8 @@ var IFrameMessageMethods;
     IFrameMessageMethods["HeightChange"] = "heightChange";
     IFrameMessageMethods["Success"] = "success";
     IFrameMessageMethods["AuthDeclined"] = "authDeclined";
+    IFrameMessageMethods["InputError"] = "inputError";
+    IFrameMessageMethods["InputValid"] = "inputValid";
     IFrameMessageMethods["Loaded"] = "loaded";
     IFrameMessageMethods["AccountLinked"] = "accountLinked";
     IFrameMessageMethods["Redirect"] = "redirect";
@@ -77,6 +79,16 @@ function handleIFrameMessage(rawMessage, handlers, handleHeightChangeId) {
                 return;
             handlers.onAuthDeclined(walletCall.info);
             return;
+        case IFrameMessageMethods.InputError:
+            if (!handlers.onInputError)
+                return;
+            handlers.onInputError(walletCall.info);
+            return;
+        case IFrameMessageMethods.InputValid:
+            if (!handlers.onInputValid)
+                return;
+            handlers.onInputValid(walletCall.info);
+            return;
         case IFrameMessageMethods.Loaded:
             return;
         case IFrameMessageMethods.AccountLinked:
@@ -120,6 +132,8 @@ function getHandlers(props) {
             },
             onSuccess: props.onSuccess,
             onAuthDeclined: props.onAuthDeclined,
+            onInputError: props.onInputError,
+            onInputValid: props.onInputValid,
         };
     }
     return CoinflowUtils_1.CoinflowUtils.byBlockchain(chain, {
@@ -127,46 +141,62 @@ function getHandlers(props) {
             wallet: wallet,
             onSuccess: props.onSuccess,
             onAuthDeclined: props.onAuthDeclined,
+            onInputError: props.onInputError,
+            onInputValid: props.onInputValid,
         }),
         eth: () => getEvmWalletHandlers({
             wallet: wallet,
             onSuccess: props.onSuccess,
             onAuthDeclined: props.onAuthDeclined,
+            onInputError: props.onInputError,
+            onInputValid: props.onInputValid,
         }),
         polygon: () => getEvmWalletHandlers({
             wallet: wallet,
             onSuccess: props.onSuccess,
             onAuthDeclined: props.onAuthDeclined,
+            onInputError: props.onInputError,
+            onInputValid: props.onInputValid,
         }),
         base: () => getEvmWalletHandlers({
             wallet: wallet,
             onSuccess: props.onSuccess,
             onAuthDeclined: props.onAuthDeclined,
+            onInputError: props.onInputError,
+            onInputValid: props.onInputValid,
         }),
         arbitrum: () => getEvmWalletHandlers({
             wallet: wallet,
             onSuccess: props.onSuccess,
             onAuthDeclined: props.onAuthDeclined,
+            onInputError: props.onInputError,
+            onInputValid: props.onInputValid,
         }),
         stellar: () => getStellarWalletHandlers({
             wallet: wallet,
             onSuccess: props.onSuccess,
             onAuthDeclined: props.onAuthDeclined,
+            onInputError: props.onInputError,
+            onInputValid: props.onInputValid,
         }),
         monad: () => getEvmWalletHandlers({
             wallet: wallet,
             onSuccess: props.onSuccess,
             onAuthDeclined: props.onAuthDeclined,
+            onInputError: props.onInputError,
+            onInputValid: props.onInputValid,
         }),
         tempo: () => getEvmWalletHandlers({
             wallet: wallet,
             onSuccess: props.onSuccess,
             onAuthDeclined: props.onAuthDeclined,
+            onInputError: props.onInputError,
+            onInputValid: props.onInputValid,
         }),
         user: () => getSessionKeyHandlers(props),
     })();
 }
-function getSolanaWalletHandlers({ wallet, onSuccess, onAuthDeclined, }) {
+function getSolanaWalletHandlers({ wallet, onSuccess, onAuthDeclined, onInputError, onInputValid, }) {
     return {
         handleSendTransaction: async (transaction) => {
             const tx = getSolanaTransaction(transaction);
@@ -198,6 +228,8 @@ function getSolanaWalletHandlers({ wallet, onSuccess, onAuthDeclined, }) {
         },
         onSuccess,
         onAuthDeclined,
+        onInputError,
+        onInputValid,
     };
 }
 function getSolanaTransaction(data) {
@@ -211,7 +243,7 @@ function getSolanaTransaction(data) {
         return SolanaPeerDeps_1.web3.Transaction.from(parsedUInt8Array);
     return vtx;
 }
-function getEvmWalletHandlers({ wallet, onSuccess, onAuthDeclined, }) {
+function getEvmWalletHandlers({ wallet, onSuccess, onAuthDeclined, onInputError, onInputValid, }) {
     return {
         handleSendTransaction: async (transaction) => {
             const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
@@ -223,9 +255,11 @@ function getEvmWalletHandlers({ wallet, onSuccess, onAuthDeclined, }) {
         },
         onSuccess,
         onAuthDeclined,
+        onInputError,
+        onInputValid,
     };
 }
-function getStellarWalletHandlers({ wallet, onSuccess, onAuthDeclined, }) {
+function getStellarWalletHandlers({ wallet, onSuccess, onAuthDeclined, onInputError, onInputValid, }) {
     return {
         handleSendTransaction: async (transaction) => {
             // transaction is unsigned base64 XDR
@@ -248,15 +282,19 @@ function getStellarWalletHandlers({ wallet, onSuccess, onAuthDeclined, }) {
         },
         onSuccess,
         onAuthDeclined,
+        onInputError,
+        onInputValid,
     };
 }
-function getSessionKeyHandlers({ onSuccess, onAuthDeclined, }) {
+function getSessionKeyHandlers({ onSuccess, onAuthDeclined, onInputError, onInputValid, }) {
     return {
         handleSendTransaction: async () => {
             return Promise.resolve('');
         },
         onSuccess,
         onAuthDeclined,
+        onInputError,
+        onInputValid,
     };
 }
 //# sourceMappingURL=CoinflowLibMessageHandlers.js.map

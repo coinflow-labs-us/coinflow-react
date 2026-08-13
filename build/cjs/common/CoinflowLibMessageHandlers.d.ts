@@ -1,4 +1,4 @@
-import { CoinflowPurchaseProps, OnAuthDeclinedMethod, OnSuccessMethod } from './CoinflowTypes';
+import { CoinflowPurchaseProps, OnAuthDeclinedMethod, OnInputErrorMethod, OnInputValidMethod, OnSuccessMethod } from './CoinflowTypes';
 export type WalletCall = {
     method: IFrameMessageMethods;
     data: string;
@@ -18,6 +18,8 @@ export interface IFrameMessageHandlers {
     handleHeightChange?: (height: string) => void;
     onSuccess: OnSuccessMethod | undefined;
     onAuthDeclined: OnAuthDeclinedMethod | undefined;
+    onInputError?: OnInputErrorMethod | undefined;
+    onInputValid?: OnInputValidMethod | undefined;
     /**
      * Called when the iframe opens/closes an in-page overlay (e.g. the PayPal
      * approval modal). `state` is 'open' or 'close'.
@@ -31,6 +33,8 @@ export declare enum IFrameMessageMethods {
     HeightChange = "heightChange",
     Success = "success",
     AuthDeclined = "authDeclined",
+    InputError = "inputError",
+    InputValid = "inputValid",
     Loaded = "loaded",
     AccountLinked = "accountLinked",
     Redirect = "redirect",
@@ -38,5 +42,5 @@ export declare enum IFrameMessageMethods {
 }
 export declare function getWalletPubkey(input: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain'>): string | null | undefined;
 export declare function handleIFrameMessage(rawMessage: string, handlers: IFrameMessageHandlers, handleHeightChangeId: string | number): Promise<string> | void;
-export declare function getHandlers(props: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain' | 'onSuccess' | 'onAuthDeclined'>): Omit<IFrameMessageHandlers, 'handleHeightChange'>;
+export declare function getHandlers(props: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain' | 'onSuccess' | 'onAuthDeclined' | 'onInputError' | 'onInputValid'>): Omit<IFrameMessageHandlers, 'handleHeightChange'>;
 export {};

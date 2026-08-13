@@ -21,6 +21,8 @@ import {
   IFrameMessageMethods,
   INLINE_SKELETON_HEIGHT_PX,
   MerchantTheme,
+  OnInputErrorMethod,
+  OnInputValidMethod,
   SKELETON_BOX_STYLE,
   SKELETON_FADE_MS,
   SKELETON_LAYOUTS,
@@ -32,6 +34,16 @@ interface CardFormBaseProps {
   env?: CoinflowEnvs;
   theme?: MerchantTheme;
   onLoad?: () => void;
+  /**
+   * Called whenever a card field in the form shows a validation error to the
+   * user, with the field name and the displayed message.
+   */
+  onInputError?: OnInputErrorMethod;
+  /**
+   * Called when a card field that was showing a validation error stops showing
+   * it, with the field name.
+   */
+  onInputValid?: OnInputValidMethod;
 }
 
 export interface CoinflowCardFormProps extends CardFormBaseProps {}
@@ -61,6 +73,8 @@ function useCardFormIframe({
   theme,
   token,
   onLoad,
+  onInputError,
+  onInputValid,
 }: CardFormBaseProps & {variant: CardFormVariant; token?: string}) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [loaded, setLoaded] = useState(false);
@@ -104,12 +118,16 @@ function useCardFormIframe({
           if (Number.isFinite(parsedHeight) && parsedHeight > 0) {
             setIframeHeight(parsedHeight);
           }
+        } else if (parsed.method === IFrameMessageMethods.InputError) {
+          void onInputError?.(parsed.info);
+        } else if (parsed.method === IFrameMessageMethods.InputValid) {
+          void onInputValid?.(parsed.info);
         }
       } catch {
         // not JSON, ignore
       }
     },
-    [env, onLoad]
+    [env, onLoad, onInputError, onInputValid]
   );
 
   useEffect(() => {

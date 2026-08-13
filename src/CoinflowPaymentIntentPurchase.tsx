@@ -61,6 +61,8 @@ function useCoinflowPaymentIntentCheckout(
       },
       onSuccess: props.onSuccess,
       onAuthDeclined: props.onAuthDeclined,
+      onInputError: props.onInputError,
+      onInputValid: props.onInputValid,
       handleHeightChange: props.handleHeightChange,
     };
   }, [props]);
