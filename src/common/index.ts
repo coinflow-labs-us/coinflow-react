@@ -23,3 +23,4 @@ export {
   captureForterToken,
   awaitForterToken,
 } from './Forter';
+export * from './plaidLinkTokenCache';

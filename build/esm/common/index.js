@@ -19,4 +19,5 @@ export * from './types/lodgingCartItem';
 export * from './CoinflowPurchaseProtectionHeaders';
 export * from './CoinflowProtectionInit';
 export { default as getForterToken, captureForterToken, awaitForterToken, } from './Forter';
+export * from './plaidLinkTokenCache';
 //# sourceMappingURL=index.js.map
