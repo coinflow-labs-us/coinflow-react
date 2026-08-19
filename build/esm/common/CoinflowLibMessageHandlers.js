@@ -14,6 +14,7 @@ export var IFrameMessageMethods;
     IFrameMessageMethods["AccountLinked"] = "accountLinked";
     IFrameMessageMethods["Redirect"] = "redirect";
     IFrameMessageMethods["Overlay"] = "overlay";
+    IFrameMessageMethods["UpdateSubtotal"] = "updateSubtotal";
 })(IFrameMessageMethods || (IFrameMessageMethods = {}));
 export function getWalletPubkey(input) {
     let wallet;

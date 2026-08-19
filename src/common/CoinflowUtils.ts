@@ -71,6 +71,7 @@ export class CoinflowUtils {
     routePrefix,
     env,
     subtotal,
+    useNativeSubtotal,
     presentment,
     transaction,
     blockchain = 'solana',
@@ -115,6 +116,7 @@ export class CoinflowUtils {
     appReturnUrl,
     depositAmounts,
     ownerOverride,
+    bridgeId,
     baseUrl,
   }: CoinflowIFrameProps & {baseUrl?: string} & WithGeo): string {
     const prefix = routePrefix
@@ -146,6 +148,10 @@ export class CoinflowUtils {
         url.searchParams.append('amount', subtotal.amount.toString());
       }
     }
+
+    if (useNativeSubtotal) url.searchParams.append('useNativeSubtotal', 'true');
+
+    if (bridgeId) url.searchParams.append('bridgeId', bridgeId);
 
     if (presentment) url.searchParams.append('presentment', presentment);
 

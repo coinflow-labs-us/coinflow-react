@@ -4,8 +4,9 @@ import {
   getHandlers,
   getWalletPubkey,
   IFrameMessageHandlers,
+  IFrameMessageMethods,
 } from './common';
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   CoinflowIFrame,
   CoinflowIFrameExposedFunctions,
@@ -27,7 +28,34 @@ export function MobileWalletButton({
   alignItems?: string;
 }) {
   const iframeRef = useRef<CoinflowIFrameExposedFunctions>(null);
-  const {opacity, display} = useOverlay(iframeRef);
+  const {opacity, display, messageReceived} = useOverlay(iframeRef);
+
+  // The subtotal is pinned to its initial value in the iframe URL so that
+  // amount changes don't change the URL and force a reload. Updates are
+  // instead sent to the running iframe via postMessage below.
+  const [initialSubtotal] = useState(props.subtotal);
+  const lastSentSubtotalRef = useRef(JSON.stringify(initialSubtotal));
+
+  const {onLoad} = props;
+  const onLoadFiredRef = useRef(false);
+  useEffect(() => {
+    if (!messageReceived || onLoadFiredRef.current) return;
+    onLoadFiredRef.current = true;
+    onLoad?.();
+  }, [messageReceived, onLoad]);
+
+  const {subtotal} = props;
+  useEffect(() => {
+    if (!messageReceived || !subtotal) return;
+
+    const serializedSubtotal = JSON.stringify(subtotal);
+    if (lastSentSubtotalRef.current === serializedSubtotal) return;
+
+    lastSentSubtotalRef.current = serializedSubtotal;
+    iframeRef.current?.postMessage(
+      `${IFrameMessageMethods.UpdateSubtotal}:${serializedSubtotal}`
+    );
+  }, [messageReceived, subtotal]);
 
   const {onSuccess, onError} = props;
   useEffect(() => {
@@ -60,13 +88,14 @@ export function MobileWalletButton({
     const walletPubkey = getWalletPubkey(props);
     return {
       ...props,
+      subtotal: initialSubtotal,
       walletPubkey,
       transaction: undefined,
       routePrefix: 'form',
       route: `/${route}/${props.merchantId}`,
       handleHeightChangeId,
     };
-  }, [handleHeightChangeId, props, route]);
+  }, [handleHeightChangeId, props, route, initialSubtotal]);
 
   const messageHandlers = useMemo<IFrameMessageHandlers>(() => {
     return {
@@ -117,4 +146,6 @@ export function MobileWalletButton({
 export interface MobileWalletButtonProps {
   color: 'white' | 'black';
   onError?: (message: string) => void;
+  /** Called once the button inside the iframe has loaded. */
+  onLoad?: () => void;
 }

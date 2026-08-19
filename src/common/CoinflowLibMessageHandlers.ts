@@ -76,6 +76,7 @@ export enum IFrameMessageMethods {
   AccountLinked = 'accountLinked',
   Redirect = 'redirect',
   Overlay = 'overlay',
+  UpdateSubtotal = 'updateSubtotal',
 }
 
 export function getWalletPubkey(

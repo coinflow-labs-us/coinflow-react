@@ -327,6 +327,11 @@ export interface CoinflowCommonPaymentIntentProps extends Omit<CoinflowTypes, 'b
 }
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
     subtotal?: Subtotal;
+    /**
+     * When true, the Apple Pay button skips the totals (fee quote) fetch and
+     * charges exactly the `subtotal` passed to the component.
+     */
+    useNativeSubtotal?: boolean;
     presentment?: Currency;
     onSuccess?: OnSuccessMethod;
     sessionKey?: string;
@@ -684,7 +689,7 @@ export interface DecentRedeem extends CommonEvmRedeem {
  * Gas fees for the transaction will be automatically calculated and added to the total charged to the customer. Optionally the merchant can opt to pay for these gas fees.
  */
 export type EvmTransactionData = SafeMintRedeem | ReturnedTokenIdRedeem | KnownTokenIdRedeem | NormalRedeem | TokenRedeem | DecentRedeem;
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'chargebackProtectionAccountType' | 'webhookInfo' | 'subtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig' | 'depositAmounts'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'>, WithGeo {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'chargebackProtectionAccountType' | 'webhookInfo' | 'subtotal' | 'useNativeSubtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'supportEmail' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig' | 'depositAmounts'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'>, WithGeo {
     walletPubkey: string | null | undefined;
     sessionKey?: string;
     route: string;
@@ -699,6 +704,11 @@ export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 
     usePermit?: boolean;
     ownerOverride?: string;
     handleHeightChangeId: string | number;
+    /**
+     * Identifier linking a React Native Apple Pay WebView to its hidden bridge
+     * WebView for subtotal updates relayed through localStorage.
+     */
+    bridgeId?: string;
 }
 export interface CoinflowIntentsIFrameProps {
     theme?: MerchantTheme;

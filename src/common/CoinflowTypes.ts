@@ -491,6 +491,11 @@ export interface CoinflowCommonPaymentIntentProps extends Omit<
 
 export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
   subtotal?: Subtotal;
+  /**
+   * When true, the Apple Pay button skips the totals (fee quote) fetch and
+   * charges exactly the `subtotal` passed to the component.
+   */
+  useNativeSubtotal?: boolean;
   presentment?: Currency;
   onSuccess?: OnSuccessMethod;
   sessionKey?: string;
@@ -932,6 +937,7 @@ export interface CoinflowIFrameProps
       | 'chargebackProtectionAccountType'
       | 'webhookInfo'
       | 'subtotal'
+      | 'useNativeSubtotal'
       | 'presentment'
       | 'customerInfo'
       | 'settlementType'
@@ -979,6 +985,11 @@ export interface CoinflowIFrameProps
   usePermit?: boolean;
   ownerOverride?: string;
   handleHeightChangeId: string | number;
+  /**
+   * Identifier linking a React Native Apple Pay WebView to its hidden bridge
+   * WebView for subtotal updates relayed through localStorage.
+   */
+  bridgeId?: string;
 }
 
 export interface CoinflowIntentsIFrameProps {
