@@ -38,6 +38,10 @@ export enum WithdrawSpeed {
   WIRE = 'wire',
   INTERAC = 'interac',
   SWIFT = 'swift',
+  // On-chain payout to an end user via a merchant DESTRUCTIVE API key. Not a
+  // fiat rail: never routed to payout providers and never offered from saved
+  // purse accounts.
+  CRYPTO = 'crypto',
 }
 
 export enum SettlementType {

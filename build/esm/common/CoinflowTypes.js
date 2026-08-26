@@ -18,6 +18,10 @@ export var WithdrawSpeed;
     WithdrawSpeed["WIRE"] = "wire";
     WithdrawSpeed["INTERAC"] = "interac";
     WithdrawSpeed["SWIFT"] = "swift";
+    // On-chain payout to an end user via a merchant DESTRUCTIVE API key. Not a
+    // fiat rail: never routed to payout providers and never offered from saved
+    // purse accounts.
+    WithdrawSpeed["CRYPTO"] = "crypto";
 })(WithdrawSpeed || (WithdrawSpeed = {}));
 export var SettlementType;
 (function (SettlementType) {
