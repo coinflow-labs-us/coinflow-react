@@ -202,6 +202,8 @@ export interface CoinflowTypes {
   blockchain?: CoinflowBlockchain | undefined;
   handleHeightChange?: (height: string) => void;
   theme?: MerchantTheme;
+  /** Your company email address that the customer can contact. */
+  supportEmail?: string;
 }
 
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
@@ -549,10 +551,6 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
    */
   deviceId?: string;
   jwtToken?: string;
-  /**
-   * Your company email address that the customer can contact.
-   */
-  supportEmail?: string;
   /**
    * If rendering the Coinflow component within multiple nested iframes, all ancestors in the chain must be provided as a comma-separated list.
    *
@@ -951,7 +949,6 @@ export interface CoinflowIFrameProps
       | 'jwtToken'
       | 'origins'
       | 'threeDsChallengePreference'
-      | 'supportEmail'
       | 'allowedPaymentMethods'
       | 'accountFundingTransaction'
       | 'partialUsdcChecked'
