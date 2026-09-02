@@ -24,3 +24,4 @@ export {
   awaitForterToken,
 } from './Forter';
 export * from './plaidLinkTokenCache';
+export * from './bankLinkCallback';

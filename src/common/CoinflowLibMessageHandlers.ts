@@ -1,8 +1,12 @@
 import {
+  AccountLinkedInfo,
+  AccountNotLinkedInfo,
   AuthDeclinedWalletCallInfo,
   CoinflowBlockchain,
   CoinflowPurchaseProps,
   EthWallet,
+  OnAccountLinkedMethod,
+  OnAccountNotLinkedMethod,
   OnAuthDeclinedMethod,
   OnInputErrorMethod,
   OnInputValidMethod,
@@ -47,6 +51,18 @@ type InputValidWalletCall = {
   info: InputValidWalletCallInfo;
 };
 
+type AccountLinkedWalletCall = {
+  method: IFrameMessageMethods.AccountLinked;
+  data: string;
+  info: AccountLinkedInfo;
+};
+
+type AccountNotLinkedWalletCall = {
+  method: IFrameMessageMethods.AccountNotLinked;
+  data: string;
+  info: AccountNotLinkedInfo;
+};
+
 export interface IFrameMessageHandlers {
   handleSendTransaction: (transaction: string) => Promise<string>;
   handleSignMessage?: (message: string) => Promise<string>;
@@ -56,6 +72,12 @@ export interface IFrameMessageHandlers {
   onAuthDeclined: OnAuthDeclinedMethod | undefined;
   onInputError?: OnInputErrorMethod | undefined;
   onInputValid?: OnInputValidMethod | undefined;
+  /**
+   * Called when the customer finishes linking a payment or payout account in
+   * the iframe. For bank links the info carries the linked account tokens.
+   */
+  onAccountLinked?: OnAccountLinkedMethod | undefined;
+  onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
   /**
    * Called when the iframe opens/closes an in-page overlay (e.g. the PayPal
    * approval modal). `state` is 'open' or 'close'.
@@ -74,6 +96,7 @@ export enum IFrameMessageMethods {
   InputValid = 'inputValid',
   Loaded = 'loaded',
   AccountLinked = 'accountLinked',
+  AccountNotLinked = 'accountNotLinked',
   Redirect = 'redirect',
   Overlay = 'overlay',
   UpdateSubtotal = 'updateSubtotal',
@@ -153,6 +176,14 @@ export function handleIFrameMessage(
     case IFrameMessageMethods.Loaded:
       return;
     case IFrameMessageMethods.AccountLinked:
+      if (!handlers.onAccountLinked) return;
+      handlers.onAccountLinked((walletCall as AccountLinkedWalletCall).info);
+      return;
+    case IFrameMessageMethods.AccountNotLinked:
+      if (!handlers.onAccountNotLinked) return;
+      handlers.onAccountNotLinked(
+        (walletCall as AccountNotLinkedWalletCall).info
+      );
       return;
     case IFrameMessageMethods.Redirect:
       window.open(data, '_blank');
@@ -177,7 +208,10 @@ export function getHandlers(
     | 'onAuthDeclined'
     | 'onInputError'
     | 'onInputValid'
-  >
+  > & {
+    onAccountLinked?: OnAccountLinkedMethod | undefined;
+    onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
+  }
 ): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   let chain: CoinflowBlockchain | undefined;
   let wallet: WalletTypes | undefined;
@@ -210,10 +244,12 @@ export function getHandlers(
       onAuthDeclined: props.onAuthDeclined,
       onInputError: props.onInputError,
       onInputValid: props.onInputValid,
+      onAccountLinked: props.onAccountLinked,
+      onAccountNotLinked: props.onAccountNotLinked,
     };
   }
 
-  return CoinflowUtils.byBlockchain(chain, {
+  const walletHandlers = CoinflowUtils.byBlockchain(chain, {
     solana: () =>
       getSolanaWalletHandlers({
         wallet: wallet as SolanaWallet,
@@ -280,6 +316,12 @@ export function getHandlers(
       }),
     user: () => getSessionKeyHandlers(props),
   })();
+
+  return {
+    ...walletHandlers,
+    onAccountLinked: props.onAccountLinked,
+    onAccountNotLinked: props.onAccountNotLinked,
+  };
 }
 
 function getSolanaWalletHandlers({

@@ -1,3 +1,4 @@
+import {BankLinkStatus} from './bankLinkCallback';
 import type {
   Connection,
   VersionedTransaction,
@@ -245,6 +246,52 @@ export type OnInputErrorMethod = (
 export type OnInputValidMethod = (
   args: InputValidWalletCallInfo
 ) => void | Promise<void>;
+
+/**
+ * Mirrors `LinkedAccountType` in `@coinflow/common`. Redeclared here because
+ * lib-common ships to merchants and cannot depend on the server package.
+ */
+export type AccountLinkedType =
+  | 'bank'
+  | 'card'
+  | 'iban'
+  | 'pix'
+  | 'eft'
+  | 'venmo'
+  | 'paypal'
+  | 'wire'
+  | 'interac';
+
+export interface AccountLinkedInfo {
+  type: AccountLinkedType;
+  /**
+   * The linked bank account tokens, each usable as the `token` field on an ACH
+   * checkout request. Present only for bank links.
+   */
+  tokens?: string[];
+}
+
+export type OnAccountLinkedMethod = (info: AccountLinkedInfo) => void;
+
+/**
+ * Why a linking session ended without an account.
+ *
+ * Derived from the standalone link's `bankLinkStatus` so the two entry points
+ * cannot drift: a merchant who moves between them meets the same vocabulary.
+ */
+export type AccountNotLinkedReason = Exclude<BankLinkStatus, 'linked'>;
+
+export interface AccountNotLinkedInfo {
+  type: AccountLinkedType;
+  /**
+   * `canceled` when the customer backed out, `failed` when the account could
+   * not be linked — for example because the account holder's name could not be
+   * verified.
+   */
+  reason: AccountNotLinkedReason;
+}
+
+export type OnAccountNotLinkedMethod = (info: AccountNotLinkedInfo) => void;
 
 /** Wallets **/
 export interface SolanaWallet {
@@ -930,6 +977,41 @@ export type EvmTransactionData =
   | TokenRedeem
   | DecentRedeem;
 
+/**
+ * Props for the embeddable `CoinflowBankLink` component.
+ *
+ * **Web only.** React Native and other mobile integrations cannot embed this
+ * component; send the customer to the standalone bank link URL instead.
+ */
+export interface CoinflowBankLinkProps
+  extends
+    Pick<
+      CoinflowTypes,
+      | 'merchantId'
+      | 'env'
+      | 'blockchain'
+      | 'loaderBackground'
+      | 'theme'
+      | 'handleHeightChange'
+    >,
+    Pick<CoinflowCommonPurchaseProps, 'email' | 'customerInfo'> {
+  /** The customer must be authenticated to link a bank account. */
+  sessionKey: string;
+  merchantCss?: string;
+  /**
+   * Called once Plaid linking completes, with the tokens of the newly linked
+   * bank accounts.
+   */
+  onAccountLinked?: OnAccountLinkedMethod | undefined;
+  /**
+   * Called when the session ends without linking an account — the customer
+   * cancelled, or the account could not be linked. The component stays
+   * mounted and does not navigate, so this is where you close or reset your
+   * own UI.
+   */
+  onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
+}
+
 export interface CoinflowIFrameProps
   extends
     Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>,
@@ -961,6 +1043,7 @@ export interface CoinflowIFrameProps
       | 'bankAccountLinkRedirect'
       | 'additionalWallets'
       | 'transactionSigner'
+      | 'amount'
       | 'lockAmount'
       | 'lockDefaultToken'
       | 'origins'
@@ -991,6 +1074,21 @@ export interface CoinflowIFrameProps
    * WebView for subtotal updates relayed through localStorage.
    */
   bridgeId?: string;
+  /**
+   * Ends the bank-linking page on its own confirmation instead of continuing
+   * into Coinflow's checkout.
+   *
+   * Internal. `<CoinflowBankLink>` sets it, and so does `POST /checkout/link`'s
+   * bank-link sibling when no `callbackUrl` is given, so neither SDK nor API
+   * integrators ever pass it themselves. It exists because the page is shared
+   * with the in-checkout linking step, where continuing to checkout is right.
+   *
+   * A hand-built iframe URL that omits it drops the customer into a Coinflow
+   * purchase flow once they link, which is wrong inside a merchant's own
+   * checkout. Build the URL from the bank-link endpoint rather than by hand.
+   * The `accountLinked` message carries the tokens either way.
+   */
+  bankLinkOnly?: boolean;
 }
 
 export interface CoinflowIntentsIFrameProps {

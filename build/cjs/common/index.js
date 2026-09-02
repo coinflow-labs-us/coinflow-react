@@ -27,4 +27,5 @@ Object.defineProperty(exports, "getForterToken", { enumerable: true, get: functi
 Object.defineProperty(exports, "captureForterToken", { enumerable: true, get: function () { return Forter_1.captureForterToken; } });
 Object.defineProperty(exports, "awaitForterToken", { enumerable: true, get: function () { return Forter_1.awaitForterToken; } });
 tslib_1.__exportStar(require("./plaidLinkTokenCache"), exports);
+tslib_1.__exportStar(require("./bankLinkCallback"), exports);
 //# sourceMappingURL=index.js.map

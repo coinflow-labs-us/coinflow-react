@@ -20,4 +20,5 @@ export * from './CoinflowPurchaseProtectionHeaders';
 export * from './CoinflowProtectionInit';
 export { default as getForterToken, captureForterToken, awaitForterToken, } from './Forter';
 export * from './plaidLinkTokenCache';
+export * from './bankLinkCallback';
 //# sourceMappingURL=index.js.map

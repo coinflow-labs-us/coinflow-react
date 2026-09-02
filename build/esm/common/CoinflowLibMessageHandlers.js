@@ -12,6 +12,7 @@ export var IFrameMessageMethods;
     IFrameMessageMethods["InputValid"] = "inputValid";
     IFrameMessageMethods["Loaded"] = "loaded";
     IFrameMessageMethods["AccountLinked"] = "accountLinked";
+    IFrameMessageMethods["AccountNotLinked"] = "accountNotLinked";
     IFrameMessageMethods["Redirect"] = "redirect";
     IFrameMessageMethods["Overlay"] = "overlay";
     IFrameMessageMethods["UpdateSubtotal"] = "updateSubtotal";
@@ -87,6 +88,14 @@ export function handleIFrameMessage(rawMessage, handlers, handleHeightChangeId) 
         case IFrameMessageMethods.Loaded:
             return;
         case IFrameMessageMethods.AccountLinked:
+            if (!handlers.onAccountLinked)
+                return;
+            handlers.onAccountLinked(walletCall.info);
+            return;
+        case IFrameMessageMethods.AccountNotLinked:
+            if (!handlers.onAccountNotLinked)
+                return;
+            handlers.onAccountNotLinked(walletCall.info);
             return;
         case IFrameMessageMethods.Redirect:
             window.open(data, '_blank');
@@ -129,9 +138,11 @@ export function getHandlers(props) {
             onAuthDeclined: props.onAuthDeclined,
             onInputError: props.onInputError,
             onInputValid: props.onInputValid,
+            onAccountLinked: props.onAccountLinked,
+            onAccountNotLinked: props.onAccountNotLinked,
         };
     }
-    return CoinflowUtils.byBlockchain(chain, {
+    const walletHandlers = CoinflowUtils.byBlockchain(chain, {
         solana: () => getSolanaWalletHandlers({
             wallet: wallet,
             onSuccess: props.onSuccess,
@@ -190,6 +201,11 @@ export function getHandlers(props) {
         }),
         user: () => getSessionKeyHandlers(props),
     })();
+    return {
+        ...walletHandlers,
+        onAccountLinked: props.onAccountLinked,
+        onAccountNotLinked: props.onAccountNotLinked,
+    };
 }
 function getSolanaWalletHandlers({ wallet, onSuccess, onAuthDeclined, onInputError, onInputValid, }) {
     return {

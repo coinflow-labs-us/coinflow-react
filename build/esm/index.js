@@ -1,4 +1,5 @@
 export * from './CoinflowWithdraw';
+export * from './CoinflowBankLink';
 export * from './CoinflowPurchase';
 export * from './common';
 export * from './CoinflowIFrame';

@@ -50,7 +50,7 @@ export class CoinflowUtils {
             return 'http://localhost:5000';
         return `https://api-${env}.coinflow.cash`;
     }
-    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, useNativeSubtotal, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, appReturnUrl, depositAmounts, ownerOverride, bridgeId, baseUrl, }) {
+    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, useNativeSubtotal, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, amount, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, appReturnUrl, depositAmounts, ownerOverride, bridgeId, bankLinkOnly, baseUrl, }) {
         const prefix = routePrefix
             ? `/${routePrefix}/${blockchain}`
             : `/${blockchain}`;
@@ -111,6 +111,8 @@ export class CoinflowUtils {
         if (bankAccountLinkRedirect) {
             url.searchParams.append('bankAccountLinkRedirect', bankAccountLinkRedirect);
         }
+        if (bankLinkOnly)
+            url.searchParams.append('bankLinkOnly', 'true');
         if (additionalWallets)
             url.searchParams.append('additionalWallets', LZString.compressToEncodedURIComponent(JSON.stringify(additionalWallets)));
         if (chargebackProtectionData)
@@ -145,6 +147,10 @@ export class CoinflowUtils {
             url.searchParams.append('disableGooglePay', 'true');
         if (settlementType)
             url.searchParams.append('settlementType', settlementType);
+        // A purchase subtotal priced in tokens already set `amount`; don't append a
+        // second one, since URLSearchParams would keep both.
+        if (amount !== undefined && !url.searchParams.has('amount'))
+            url.searchParams.append('amount', amount.toString());
         if (lockAmount)
             url.searchParams.append('lockAmount', 'true');
         if (usePermit === false)

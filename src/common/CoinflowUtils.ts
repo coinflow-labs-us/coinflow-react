@@ -93,6 +93,7 @@ export class CoinflowUtils {
     disableGooglePay,
     customerInfo,
     settlementType,
+    amount,
     lockAmount,
     nativeSolToConvert,
     theme,
@@ -117,6 +118,7 @@ export class CoinflowUtils {
     depositAmounts,
     ownerOverride,
     bridgeId,
+    bankLinkOnly,
     baseUrl,
   }: CoinflowIFrameProps & {baseUrl?: string} & WithGeo): string {
     const prefix = routePrefix
@@ -203,6 +205,8 @@ export class CoinflowUtils {
       );
     }
 
+    if (bankLinkOnly) url.searchParams.append('bankLinkOnly', 'true');
+
     if (additionalWallets)
       url.searchParams.append(
         'additionalWallets',
@@ -246,6 +250,11 @@ export class CoinflowUtils {
     if (disableGooglePay) url.searchParams.append('disableGooglePay', 'true');
     if (settlementType)
       url.searchParams.append('settlementType', settlementType);
+
+    // A purchase subtotal priced in tokens already set `amount`; don't append a
+    // second one, since URLSearchParams would keep both.
+    if (amount !== undefined && !url.searchParams.has('amount'))
+      url.searchParams.append('amount', amount.toString());
 
     if (lockAmount) url.searchParams.append('lockAmount', 'true');
 

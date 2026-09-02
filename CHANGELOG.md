@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.22.1
+
+- Fix the `amount` prop on `CoinflowWithdraw` never reaching the iframe URL, which made the widget show the full wallet balance instead of the supplied amount. `amount` is now passed through alongside `lockAmount`.
+
 ## 5.22.0
 
 - `CoinflowApplePayButton` and `CoinflowGooglePayButton` no longer reload the iframe when the `subtotal` prop changes. The amount is now sent to the running iframe via `postMessage`, so the button stays mounted and updates instantly.

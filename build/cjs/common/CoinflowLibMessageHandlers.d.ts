@@ -1,4 +1,4 @@
-import { CoinflowPurchaseProps, OnAuthDeclinedMethod, OnInputErrorMethod, OnInputValidMethod, OnSuccessMethod } from './CoinflowTypes';
+import { CoinflowPurchaseProps, OnAccountLinkedMethod, OnAccountNotLinkedMethod, OnAuthDeclinedMethod, OnInputErrorMethod, OnInputValidMethod, OnSuccessMethod } from './CoinflowTypes';
 export type WalletCall = {
     method: IFrameMessageMethods;
     data: string;
@@ -21,6 +21,12 @@ export interface IFrameMessageHandlers {
     onInputError?: OnInputErrorMethod | undefined;
     onInputValid?: OnInputValidMethod | undefined;
     /**
+     * Called when the customer finishes linking a payment or payout account in
+     * the iframe. For bank links the info carries the linked account tokens.
+     */
+    onAccountLinked?: OnAccountLinkedMethod | undefined;
+    onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
+    /**
      * Called when the iframe opens/closes an in-page overlay (e.g. the PayPal
      * approval modal). `state` is 'open' or 'close'.
      */
@@ -37,11 +43,15 @@ export declare enum IFrameMessageMethods {
     InputValid = "inputValid",
     Loaded = "loaded",
     AccountLinked = "accountLinked",
+    AccountNotLinked = "accountNotLinked",
     Redirect = "redirect",
     Overlay = "overlay",
     UpdateSubtotal = "updateSubtotal"
 }
 export declare function getWalletPubkey(input: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain'>): string | null | undefined;
 export declare function handleIFrameMessage(rawMessage: string, handlers: IFrameMessageHandlers, handleHeightChangeId: string | number): Promise<string> | void;
-export declare function getHandlers(props: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain' | 'onSuccess' | 'onAuthDeclined' | 'onInputError' | 'onInputValid'>): Omit<IFrameMessageHandlers, 'handleHeightChange'>;
+export declare function getHandlers(props: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain' | 'onSuccess' | 'onAuthDeclined' | 'onInputError' | 'onInputValid'> & {
+    onAccountLinked?: OnAccountLinkedMethod | undefined;
+    onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
+}): Omit<IFrameMessageHandlers, 'handleHeightChange'>;
 export {};
