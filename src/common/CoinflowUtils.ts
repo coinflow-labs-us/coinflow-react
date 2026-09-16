@@ -57,6 +57,32 @@ export class CoinflowUtils {
     return `https://app-${env}.coinflow.cash`;
   }
 
+  static isCoinflowMessageOrigin({
+    url,
+    fallbackUrl,
+    env,
+  }: {
+    url: string | null | undefined;
+    fallbackUrl: string | null | undefined;
+    env?: CoinflowEnvs;
+  }): boolean {
+    const resolved = url || fallbackUrl;
+    if (!resolved) return false;
+
+    let hostname: string;
+    try {
+      hostname = new URL(resolved).hostname;
+    } catch {
+      return false;
+    }
+
+    if (env === 'local') return hostname === 'localhost';
+    // @ts-expect-error ngrok is a test-only env not in CoinflowEnvs
+    if (env === 'ngrok') return hostname === 'coinflow.ngrok.app';
+
+    return hostname === 'coinflow.cash' || hostname.endsWith('.coinflow.cash');
+  }
+
   static getCoinflowApiUrl(env?: CoinflowEnvs): string {
     if (!env || env === 'prod') return 'https://api.coinflow.cash';
     if (env === 'local') return 'http://localhost:5000';

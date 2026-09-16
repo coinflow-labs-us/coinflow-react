@@ -6,6 +6,11 @@ export declare class CoinflowUtils {
     getNSurePartnerId(merchantId: string): Promise<string | undefined>;
     static getCoinflowBaseUrl(env?: CoinflowEnvs): string;
     static getCoinflowAppBaseUrl(env?: CoinflowEnvs): string;
+    static isCoinflowMessageOrigin({ url, fallbackUrl, env, }: {
+        url: string | null | undefined;
+        fallbackUrl: string | null | undefined;
+        env?: CoinflowEnvs;
+    }): boolean;
     static getCoinflowApiUrl(env?: CoinflowEnvs): string;
     static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, useNativeSubtotal, presentment, transaction, blockchain, webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, amount, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, appReturnUrl, depositAmounts, ownerOverride, bridgeId, bankLinkOnly, baseUrl, }: CoinflowIFrameProps & {
         baseUrl?: string;
