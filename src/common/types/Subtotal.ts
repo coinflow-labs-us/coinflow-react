@@ -408,6 +408,17 @@ export interface CurrencyCents extends Cents {
   currency: Currency;
 }
 
+export interface LamportsAmount {
+  /**
+   * Amount of lamports. Must be a whole, non-negative number; as a string it may
+   * contain digits only (no sign, decimal point, or exponent).
+   * @isInt lamports must be an integer
+   * @minimum 0 lamports must be non-negative
+   * @pattern ^\d+$ lamports must be a non-negative integer
+   */
+  lamports: string | number;
+}
+
 export interface RemainingLimit extends CurrencyCents {
   type: 'single transaction' | 'daily' | 'monthly';
 }
