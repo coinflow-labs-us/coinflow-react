@@ -189,12 +189,7 @@ export type CoinflowBlockchain =
   | 'monad'
   | 'tempo'
   | 'user';
-export type CoinflowEnvs =
-  | 'prod'
-  | 'staging'
-  | 'staging-live'
-  | 'sandbox'
-  | 'local';
+export type CoinflowEnvs = 'prod' | 'staging' | 'sandbox' | 'local';
 
 export interface CoinflowTypes {
   merchantId: string;

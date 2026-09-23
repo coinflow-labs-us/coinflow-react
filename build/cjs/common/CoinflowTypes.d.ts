@@ -140,7 +140,7 @@ export interface SplitNameCustomerInfo extends BaseCustomerInfo {
 export type CustomerInfo = SplitNameCustomerInfo | NameCustomerInfo;
 /** Coinflow Types **/
 export type CoinflowBlockchain = 'solana' | 'eth' | 'polygon' | 'base' | 'arbitrum' | 'stellar' | 'monad' | 'tempo' | 'user';
-export type CoinflowEnvs = 'prod' | 'staging' | 'staging-live' | 'sandbox' | 'local';
+export type CoinflowEnvs = 'prod' | 'staging' | 'sandbox' | 'local';
 export interface CoinflowTypes {
     merchantId: string;
     env?: CoinflowEnvs;
