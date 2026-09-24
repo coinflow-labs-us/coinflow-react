@@ -1,4 +1,4 @@
-import { CoinflowPurchaseProps, OnAccountLinkedMethod, OnAccountNotLinkedMethod, OnAuthDeclinedMethod, OnInputErrorMethod, OnInputValidMethod, OnSuccessMethod } from './CoinflowTypes';
+import { CoinflowPurchaseProps, OnAccountLinkedMethod, OnAccountLinkErrorMethod, OnAccountNotLinkedMethod, OnAuthDeclinedMethod, OnInputErrorMethod, OnInputValidMethod, OnSuccessMethod } from './CoinflowTypes';
 export type WalletCall = {
     method: IFrameMessageMethods;
     data: string;
@@ -27,6 +27,10 @@ export interface IFrameMessageHandlers {
     onAccountLinked?: OnAccountLinkedMethod | undefined;
     onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
     /**
+     * Called when an account link attempt fails, with the error that caused it.
+     */
+    onAccountLinkError?: OnAccountLinkErrorMethod | undefined;
+    /**
      * Called when the iframe opens/closes an in-page overlay (e.g. the PayPal
      * approval modal). `state` is 'open' or 'close'.
      */
@@ -44,6 +48,7 @@ export declare enum IFrameMessageMethods {
     Loaded = "loaded",
     AccountLinked = "accountLinked",
     AccountNotLinked = "accountNotLinked",
+    AccountLinkError = "accountLinkError",
     Redirect = "redirect",
     Overlay = "overlay",
     UpdateSubtotal = "updateSubtotal"
@@ -53,5 +58,6 @@ export declare function handleIFrameMessage(rawMessage: string, handlers: IFrame
 export declare function getHandlers(props: Pick<CoinflowPurchaseProps, 'wallet' | 'blockchain' | 'onSuccess' | 'onAuthDeclined' | 'onInputError' | 'onInputValid'> & {
     onAccountLinked?: OnAccountLinkedMethod | undefined;
     onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
+    onAccountLinkError?: OnAccountLinkErrorMethod | undefined;
 }): Omit<IFrameMessageHandlers, 'handleHeightChange'>;
 export {};

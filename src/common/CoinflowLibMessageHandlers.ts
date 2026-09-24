@@ -1,11 +1,13 @@
 import {
   AccountLinkedInfo,
+  AccountLinkErrorInfo,
   AccountNotLinkedInfo,
   AuthDeclinedWalletCallInfo,
   CoinflowBlockchain,
   CoinflowPurchaseProps,
   EthWallet,
   OnAccountLinkedMethod,
+  OnAccountLinkErrorMethod,
   OnAccountNotLinkedMethod,
   OnAuthDeclinedMethod,
   OnInputErrorMethod,
@@ -63,6 +65,12 @@ type AccountNotLinkedWalletCall = {
   info: AccountNotLinkedInfo;
 };
 
+type AccountLinkErrorWalletCall = {
+  method: IFrameMessageMethods.AccountLinkError;
+  data: string;
+  info: AccountLinkErrorInfo;
+};
+
 export interface IFrameMessageHandlers {
   handleSendTransaction: (transaction: string) => Promise<string>;
   handleSignMessage?: (message: string) => Promise<string>;
@@ -78,6 +86,10 @@ export interface IFrameMessageHandlers {
    */
   onAccountLinked?: OnAccountLinkedMethod | undefined;
   onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
+  /**
+   * Called when an account link attempt fails, with the error that caused it.
+   */
+  onAccountLinkError?: OnAccountLinkErrorMethod | undefined;
   /**
    * Called when the iframe opens/closes an in-page overlay (e.g. the PayPal
    * approval modal). `state` is 'open' or 'close'.
@@ -97,6 +109,7 @@ export enum IFrameMessageMethods {
   Loaded = 'loaded',
   AccountLinked = 'accountLinked',
   AccountNotLinked = 'accountNotLinked',
+  AccountLinkError = 'accountLinkError',
   Redirect = 'redirect',
   Overlay = 'overlay',
   UpdateSubtotal = 'updateSubtotal',
@@ -185,6 +198,12 @@ export function handleIFrameMessage(
         (walletCall as AccountNotLinkedWalletCall).info
       );
       return;
+    case IFrameMessageMethods.AccountLinkError:
+      if (!handlers.onAccountLinkError) return;
+      handlers.onAccountLinkError(
+        (walletCall as AccountLinkErrorWalletCall).info
+      );
+      return;
     case IFrameMessageMethods.Redirect:
       window.open(data, '_blank');
       return;
@@ -211,6 +230,7 @@ export function getHandlers(
   > & {
     onAccountLinked?: OnAccountLinkedMethod | undefined;
     onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
+    onAccountLinkError?: OnAccountLinkErrorMethod | undefined;
   }
 ): Omit<IFrameMessageHandlers, 'handleHeightChange'> {
   let chain: CoinflowBlockchain | undefined;
@@ -246,6 +266,7 @@ export function getHandlers(
       onInputValid: props.onInputValid,
       onAccountLinked: props.onAccountLinked,
       onAccountNotLinked: props.onAccountNotLinked,
+      onAccountLinkError: props.onAccountLinkError,
     };
   }
 
@@ -321,6 +342,7 @@ export function getHandlers(
     ...walletHandlers,
     onAccountLinked: props.onAccountLinked,
     onAccountNotLinked: props.onAccountNotLinked,
+    onAccountLinkError: props.onAccountLinkError,
   };
 }
 

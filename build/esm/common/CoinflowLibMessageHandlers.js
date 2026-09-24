@@ -13,6 +13,7 @@ export var IFrameMessageMethods;
     IFrameMessageMethods["Loaded"] = "loaded";
     IFrameMessageMethods["AccountLinked"] = "accountLinked";
     IFrameMessageMethods["AccountNotLinked"] = "accountNotLinked";
+    IFrameMessageMethods["AccountLinkError"] = "accountLinkError";
     IFrameMessageMethods["Redirect"] = "redirect";
     IFrameMessageMethods["Overlay"] = "overlay";
     IFrameMessageMethods["UpdateSubtotal"] = "updateSubtotal";
@@ -97,6 +98,11 @@ export function handleIFrameMessage(rawMessage, handlers, handleHeightChangeId) 
                 return;
             handlers.onAccountNotLinked(walletCall.info);
             return;
+        case IFrameMessageMethods.AccountLinkError:
+            if (!handlers.onAccountLinkError)
+                return;
+            handlers.onAccountLinkError(walletCall.info);
+            return;
         case IFrameMessageMethods.Redirect:
             window.open(data, '_blank');
             return;
@@ -140,6 +146,7 @@ export function getHandlers(props) {
             onInputValid: props.onInputValid,
             onAccountLinked: props.onAccountLinked,
             onAccountNotLinked: props.onAccountNotLinked,
+            onAccountLinkError: props.onAccountLinkError,
         };
     }
     const walletHandlers = CoinflowUtils.byBlockchain(chain, {
@@ -205,6 +212,7 @@ export function getHandlers(props) {
         ...walletHandlers,
         onAccountLinked: props.onAccountLinked,
         onAccountNotLinked: props.onAccountNotLinked,
+        onAccountLinkError: props.onAccountLinkError,
     };
 }
 function getSolanaWalletHandlers({ wallet, onSuccess, onAuthDeclined, onInputError, onInputValid, }) {

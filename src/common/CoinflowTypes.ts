@@ -288,6 +288,14 @@ export interface AccountNotLinkedInfo {
 
 export type OnAccountNotLinkedMethod = (info: AccountNotLinkedInfo) => void;
 
+export interface AccountLinkErrorInfo {
+  type: AccountLinkedType;
+  message: string;
+  status?: number;
+}
+
+export type OnAccountLinkErrorMethod = (info: AccountLinkErrorInfo) => void;
+
 /** Wallets **/
 export interface SolanaWallet {
   publicKey: PublicKey | null;
@@ -710,6 +718,7 @@ export type CoinflowPurchaseProps =
 
 export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
   onSuccess?: OnSuccessMethod;
+  onAccountLinkError?: OnAccountLinkErrorMethod;
   tokens?: string[];
   lockDefaultToken?: boolean;
   amount?: number;
@@ -1005,6 +1014,12 @@ export interface CoinflowBankLinkProps
    * own UI.
    */
   onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
+  /**
+   * Called when a link attempt fails, with the error that caused it. The
+   * component stays on the failure screen, so this is where you surface the
+   * reason or log it for support.
+   */
+  onAccountLinkError?: OnAccountLinkErrorMethod | undefined;
 }
 
 export interface CoinflowIFrameProps

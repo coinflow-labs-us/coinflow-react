@@ -198,6 +198,12 @@ export interface AccountNotLinkedInfo {
     reason: AccountNotLinkedReason;
 }
 export type OnAccountNotLinkedMethod = (info: AccountNotLinkedInfo) => void;
+export interface AccountLinkErrorInfo {
+    type: AccountLinkedType;
+    message: string;
+    status?: number;
+}
+export type OnAccountLinkErrorMethod = (info: AccountLinkErrorInfo) => void;
 /** Wallets **/
 export interface SolanaWallet {
     publicKey: PublicKey | null;
@@ -515,6 +521,7 @@ export type CoinflowPurchaseProps = CoinflowSolanaPurchaseProps | CoinflowSessio
 /** Withdraw **/
 export interface CoinflowCommonWithdrawProps extends CoinflowTypes {
     onSuccess?: OnSuccessMethod;
+    onAccountLinkError?: OnAccountLinkErrorMethod;
     tokens?: string[];
     lockDefaultToken?: boolean;
     amount?: number;
@@ -742,6 +749,12 @@ export interface CoinflowBankLinkProps extends Pick<CoinflowTypes, 'merchantId' 
      * own UI.
      */
     onAccountNotLinked?: OnAccountNotLinkedMethod | undefined;
+    /**
+     * Called when a link attempt fails, with the error that caused it. The
+     * component stays on the failure screen, so this is where you surface the
+     * reason or log it for support.
+     */
+    onAccountLinkError?: OnAccountLinkErrorMethod | undefined;
 }
 export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'chargebackProtectionAccountType' | 'webhookInfo' | 'subtotal' | 'useNativeSubtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig' | 'depositAmounts'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'amount' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'>, WithGeo {
     walletPubkey: string | null | undefined;

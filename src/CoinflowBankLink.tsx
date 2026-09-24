@@ -18,6 +18,7 @@ import {
  * checkout request. `onAccountNotLinked` fires instead when the customer
  * cancels or the account cannot be linked — the component stays put rather
  * than navigating, so the merchant closes or resets its own UI.
+ * `onAccountLinkError` fires when a link attempt fails, carrying the error.
  */
 export function CoinflowBankLink(props: CoinflowBankLinkProps) {
   const handleHeightChangeId = useRandomHandleHeightChangeId();
@@ -46,12 +47,14 @@ export function CoinflowBankLink(props: CoinflowBankLinkProps) {
       onAuthDeclined: undefined,
       onAccountLinked: props.onAccountLinked,
       onAccountNotLinked: props.onAccountNotLinked,
+      onAccountLinkError: props.onAccountLinkError,
       handleHeightChange: props.handleHeightChange,
     };
   }, [
     props.handleHeightChange,
     props.onAccountLinked,
     props.onAccountNotLinked,
+    props.onAccountLinkError,
   ]);
 
   return <CoinflowIFrame {...iframeProps} {...messageHandlers} />;
