@@ -460,7 +460,12 @@ export interface TokenSubtotal {
    */
   address: string;
   /**
-   * Number of tokens
+   * Number of tokens, from 0 to 1,000,000,000,000 inclusive.
+   * String values must be a plain decimal with at most 12 integer digits and
+   * 18 fractional digits.
+   * @minimum 0 amount must be non-negative
+   * @maximum 1000000000000 amount must be at most 1000000000000
+   * @pattern ^\d{1,12}(\.\d{1,18})?$ amount must be a non-negative decimal
    */
   amount: number | string;
   /**
