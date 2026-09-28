@@ -659,6 +659,9 @@ export interface CoinflowSolanaPurchaseProps extends CoinflowCommonPurchaseProps
   blockchain: 'solana';
   rent?: {lamports: string | number};
   nativeSolToConvert?: {lamports: string | number};
+  /**
+   * @deprecated No longer has any effect. Credits payments are always captured once the credits are delivered.
+   */
   redemptionCheck?: boolean;
 }
 
@@ -1062,7 +1065,7 @@ export interface CoinflowIFrameProps
     Pick<CoinflowEvmPurchaseProps, 'authOnly'>,
     Pick<
       CoinflowSolanaPurchaseProps,
-      'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'
+      'rent' | 'nativeSolToConvert' | 'destinationAuthKey'
     >,
     WithGeo {
   walletPubkey: string | null | undefined;

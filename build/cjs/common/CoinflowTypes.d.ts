@@ -483,6 +483,9 @@ export interface CoinflowSolanaPurchaseProps extends CoinflowCommonPurchaseProps
     nativeSolToConvert?: {
         lamports: string | number;
     };
+    /**
+     * @deprecated No longer has any effect. Credits payments are always captured once the credits are delivered.
+     */
     redemptionCheck?: boolean;
 }
 export interface CoinflowSessionKeyPurchaseProps extends CoinflowCommonPurchaseProps {
@@ -756,7 +759,7 @@ export interface CoinflowBankLinkProps extends Pick<CoinflowTypes, 'merchantId' 
      */
     onAccountLinkError?: OnAccountLinkErrorMethod | undefined;
 }
-export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'chargebackProtectionAccountType' | 'webhookInfo' | 'subtotal' | 'useNativeSubtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig' | 'depositAmounts'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'amount' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey' | 'redemptionCheck'>, WithGeo {
+export interface CoinflowIFrameProps extends Omit<CoinflowTypes, 'merchantId' | 'handleHeightChange'>, Pick<CoinflowCommonPurchaseProps, 'chargebackProtectionData' | 'chargebackProtectionAccountType' | 'webhookInfo' | 'subtotal' | 'useNativeSubtotal' | 'presentment' | 'customerInfo' | 'settlementType' | 'email' | 'planCode' | 'deviceId' | 'jwtToken' | 'origins' | 'threeDsChallengePreference' | 'allowedPaymentMethods' | 'accountFundingTransaction' | 'partialUsdcChecked' | 'isZeroAuthorization' | 'zeroAuthorizationConfig' | 'depositAmounts'>, Pick<CoinflowCommonWithdrawProps, 'bankAccountLinkRedirect' | 'additionalWallets' | 'transactionSigner' | 'amount' | 'lockAmount' | 'lockDefaultToken' | 'origins' | 'allowedWithdrawSpeeds'>, Pick<CoinflowEvmPurchaseProps, 'authOnly'>, Pick<CoinflowSolanaPurchaseProps, 'rent' | 'nativeSolToConvert' | 'destinationAuthKey'>, WithGeo {
     walletPubkey: string | null | undefined;
     sessionKey?: string;
     route: string;

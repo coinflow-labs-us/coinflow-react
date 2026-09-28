@@ -135,7 +135,6 @@ export class CoinflowUtils {
     allowedPaymentMethods,
     accountFundingTransaction,
     partialUsdcChecked,
-    redemptionCheck,
     allowedWithdrawSpeeds,
     isZeroAuthorization,
     zeroAuthorizationConfig,
@@ -263,7 +262,6 @@ export class CoinflowUtils {
     if (merchantCss) url.searchParams.append('merchantCss', merchantCss);
     if (color) url.searchParams.append('color', color);
     if (rent) url.searchParams.append('rent', rent.lamports.toString());
-    if (redemptionCheck) url.searchParams.append('redemptionCheck', 'true');
     if (nativeSolToConvert)
       url.searchParams.append(
         'nativeSolToConvert',

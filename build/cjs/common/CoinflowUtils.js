@@ -74,7 +74,7 @@ class CoinflowUtils {
             return 'http://localhost:5000';
         return `https://api-${env}.coinflow.cash`;
     }
-    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, useNativeSubtotal, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, amount, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, redemptionCheck, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, appReturnUrl, depositAmounts, ownerOverride, bridgeId, bankLinkOnly, baseUrl, }) {
+    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, useNativeSubtotal, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, amount, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, appReturnUrl, depositAmounts, ownerOverride, bridgeId, bankLinkOnly, baseUrl, }) {
         const prefix = routePrefix
             ? `/${routePrefix}/${blockchain}`
             : `/${blockchain}`;
@@ -157,8 +157,6 @@ class CoinflowUtils {
             url.searchParams.append('color', color);
         if (rent)
             url.searchParams.append('rent', rent.lamports.toString());
-        if (redemptionCheck)
-            url.searchParams.append('redemptionCheck', 'true');
         if (nativeSolToConvert)
             url.searchParams.append('nativeSolToConvert', nativeSolToConvert.lamports.toString());
         if (lockDefaultToken)
