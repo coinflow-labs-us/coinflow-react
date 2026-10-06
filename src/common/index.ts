@@ -17,6 +17,7 @@ export * from './types/flightTicketCartItem';
 export * from './types/flightUpgradeCartItem';
 export * from './types/lodgingCartItem';
 export * from './CoinflowPurchaseProtectionHeaders';
+export * from './CoinflowFraudProtectionHeader';
 export * from './CoinflowProtectionInit';
 export {
   default as getForterToken,

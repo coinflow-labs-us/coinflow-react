@@ -21,6 +21,7 @@ tslib_1.__exportStar(require("./types/flightTicketCartItem"), exports);
 tslib_1.__exportStar(require("./types/flightUpgradeCartItem"), exports);
 tslib_1.__exportStar(require("./types/lodgingCartItem"), exports);
 tslib_1.__exportStar(require("./CoinflowPurchaseProtectionHeaders"), exports);
+tslib_1.__exportStar(require("./CoinflowFraudProtectionHeader"), exports);
 tslib_1.__exportStar(require("./CoinflowProtectionInit"), exports);
 var Forter_1 = require("./Forter");
 Object.defineProperty(exports, "getForterToken", { enumerable: true, get: function () { return tslib_1.__importDefault(Forter_1).default; } });
