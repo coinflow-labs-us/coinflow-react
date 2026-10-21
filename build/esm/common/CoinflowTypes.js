@@ -53,6 +53,12 @@ export var ThreeDsChallengePreference;
     ThreeDsChallengePreference["Frictionless"] = "Frictionless";
     ThreeDsChallengePreference["Challenge"] = "Challenge";
 })(ThreeDsChallengePreference || (ThreeDsChallengePreference = {}));
+export var CardFunding;
+(function (CardFunding) {
+    CardFunding["debit"] = "debit";
+    CardFunding["credit"] = "credit";
+    CardFunding["prepaid"] = "prepaid";
+})(CardFunding || (CardFunding = {}));
 export var PaymentMethods;
 (function (PaymentMethods) {
     PaymentMethods["card"] = "card";

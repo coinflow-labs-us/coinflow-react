@@ -68,7 +68,7 @@ export class CoinflowUtils {
             return 'http://localhost:5000';
         return `https://api-${env}.coinflow.cash`;
     }
-    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, useNativeSubtotal, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, amount, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, accountFundingTransaction, partialUsdcChecked, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, appReturnUrl, depositAmounts, ownerOverride, bridgeId, bankLinkOnly, baseUrl, }) {
+    static getCoinflowUrl({ walletPubkey, sessionKey, route, routePrefix, env, subtotal, useNativeSubtotal, presentment, transaction, blockchain = 'solana', webhookInfo, email, loaderBackground, handleHeightChangeId, bankAccountLinkRedirect, additionalWallets, chargebackProtectionData, chargebackProtectionAccountType, merchantCss, color, rent, lockDefaultToken, tokens, planCode, disableApplePay, disableGooglePay, customerInfo, settlementType, amount, lockAmount, nativeSolToConvert, theme, usePermit, transactionSigner, authOnly, deviceId, jwtToken, origins, threeDsChallengePreference, supportEmail, destinationAuthKey, allowedPaymentMethods, allowedCardFunding, accountFundingTransaction, partialUsdcChecked, allowedWithdrawSpeeds, isZeroAuthorization, zeroAuthorizationConfig, userLocation, appReturnUrl, depositAmounts, ownerOverride, bridgeId, bankLinkOnly, baseUrl, }) {
         const prefix = routePrefix
             ? `/${routePrefix}/${blockchain}`
             : `/${blockchain}`;
@@ -190,6 +190,9 @@ export class CoinflowUtils {
             url.searchParams.append('origins', LZString.compressToEncodedURIComponent(JSON.stringify(origins)));
         if (allowedPaymentMethods)
             url.searchParams.append('allowedPaymentMethods', allowedPaymentMethods.join(','));
+        if (allowedCardFunding?.length) {
+            url.searchParams.append('allowedCardFunding', allowedCardFunding.join(','));
+        }
         if (depositAmounts)
             url.searchParams.append('depositAmounts', depositAmounts.join(','));
         if (threeDsChallengePreference)

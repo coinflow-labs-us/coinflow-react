@@ -452,6 +452,12 @@ export enum ThreeDsChallengePreference {
   Challenge = 'Challenge',
 }
 
+export enum CardFunding {
+  debit = 'debit',
+  credit = 'credit',
+  prepaid = 'prepaid',
+}
+
 export enum PaymentMethods {
   card = 'card',
   ach = 'ach',
@@ -577,6 +583,8 @@ export interface CoinflowCommonPurchaseProps extends CoinflowTypes {
    * The payment methods displayed on the UI. If omitted, all available payment methods will be displayed.
    */
   allowedPaymentMethods?: PaymentMethods[];
+  /** Apple Pay sheet filter only (not enforced); `prepaid` shows as debit and `cardSettings.debitOnly` wins. */
+  allowedCardFunding?: CardFunding[];
   customerInfo?: CustomerInfo;
   settlementType?: SettlementType;
   authOnly?: boolean;
@@ -1045,6 +1053,7 @@ export interface CoinflowIFrameProps
       | 'origins'
       | 'threeDsChallengePreference'
       | 'allowedPaymentMethods'
+      | 'allowedCardFunding'
       | 'accountFundingTransaction'
       | 'partialUsdcChecked'
       | 'isZeroAuthorization'

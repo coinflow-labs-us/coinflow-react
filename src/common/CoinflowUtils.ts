@@ -133,6 +133,7 @@ export class CoinflowUtils {
     supportEmail,
     destinationAuthKey,
     allowedPaymentMethods,
+    allowedCardFunding,
     accountFundingTransaction,
     partialUsdcChecked,
     allowedWithdrawSpeeds,
@@ -311,6 +312,13 @@ export class CoinflowUtils {
         'allowedPaymentMethods',
         allowedPaymentMethods.join(',')
       );
+
+    if (allowedCardFunding?.length) {
+      url.searchParams.append(
+        'allowedCardFunding',
+        allowedCardFunding.join(',')
+      );
+    }
 
     if (depositAmounts)
       url.searchParams.append('depositAmounts', depositAmounts.join(','));

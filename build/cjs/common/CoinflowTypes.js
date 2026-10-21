@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RN_REDIRECT_MESSAGE_NAME = exports.CardType = exports.paymentMethodLabels = exports.PaymentMethods = exports.ThreeDsChallengePreference = exports.ChargebackProtectionAccountType = exports.MerchantStyle = exports.SettlementType = exports.WithdrawSpeed = exports.WithdrawCategory = void 0;
+exports.RN_REDIRECT_MESSAGE_NAME = exports.CardType = exports.paymentMethodLabels = exports.PaymentMethods = exports.CardFunding = exports.ThreeDsChallengePreference = exports.ChargebackProtectionAccountType = exports.MerchantStyle = exports.SettlementType = exports.WithdrawSpeed = exports.WithdrawCategory = void 0;
 exports.isZeroAuthVerifyCard = isZeroAuthVerifyCard;
 exports.isZeroAuthSavedPaymentMethods = isZeroAuthSavedPaymentMethods;
 var WithdrawCategory;
@@ -58,6 +58,12 @@ var ThreeDsChallengePreference;
     ThreeDsChallengePreference["Frictionless"] = "Frictionless";
     ThreeDsChallengePreference["Challenge"] = "Challenge";
 })(ThreeDsChallengePreference || (exports.ThreeDsChallengePreference = ThreeDsChallengePreference = {}));
+var CardFunding;
+(function (CardFunding) {
+    CardFunding["debit"] = "debit";
+    CardFunding["credit"] = "credit";
+    CardFunding["prepaid"] = "prepaid";
+})(CardFunding || (exports.CardFunding = CardFunding = {}));
 var PaymentMethods;
 (function (PaymentMethods) {
     PaymentMethods["card"] = "card";
