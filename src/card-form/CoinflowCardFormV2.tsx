@@ -13,6 +13,7 @@ import LZString from 'lz-string';
 import {
   buildSkeletonCss,
   CardFormVariant,
+  CardType,
   CoinflowEnvs,
   CoinflowUtils,
   getSkeletonColors,
@@ -58,6 +59,9 @@ export interface CardFormTokenResponse {
   token: string;
   expMonth?: string;
   expYear?: string;
+  bin?: string;
+  lastFour?: string;
+  cardType?: CardType;
 }
 
 export interface CardFormRef {
