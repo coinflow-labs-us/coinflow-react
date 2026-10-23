@@ -317,6 +317,7 @@ export declare enum PaymentMethods {
     usdc = "usdc",
     googlePay = "googlePay",
     applePay = "applePay",
+    paze = "paze",
     credits = "credits",
     crypto = "crypto",
     wire = "wire",

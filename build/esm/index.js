@@ -12,6 +12,7 @@ export * from './card-form/CoinflowCardFormHeader';
 export * from './card-form/CoinflowCardFormV2';
 export * from './CoinflowApplePayButton';
 export * from './CoinflowGooglePayButton';
+export * from './CoinflowPazeButton';
 export * from './CoinflowPayPalButton';
 export * from './CoinflowVenmoButton';
 //# sourceMappingURL=index.js.map

@@ -18,12 +18,14 @@ export function MobileWalletButton({
   props,
   route,
   overlayDisplayOverride,
+  overlayColor,
   children,
   alignItems,
 }: {
   props: CoinflowPurchaseProps & MobileWalletButtonProps;
   route: string;
   overlayDisplayOverride?: string;
+  overlayColor?: string;
   children: React.ReactNode;
   alignItems?: string;
 }) {
@@ -113,7 +115,7 @@ export function MobileWalletButton({
     >
       <div
         style={{
-          backgroundColor: props.color,
+          backgroundColor: overlayColor ?? props.color,
           width: '100%',
           height: '40px',
           position: 'absolute',

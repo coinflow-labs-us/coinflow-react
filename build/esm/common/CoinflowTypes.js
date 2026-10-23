@@ -69,6 +69,7 @@ export var PaymentMethods;
     PaymentMethods["usdc"] = "usdc";
     PaymentMethods["googlePay"] = "googlePay";
     PaymentMethods["applePay"] = "applePay";
+    PaymentMethods["paze"] = "paze";
     PaymentMethods["credits"] = "credits";
     PaymentMethods["crypto"] = "crypto";
     PaymentMethods["wire"] = "wire";
@@ -87,6 +88,7 @@ export const paymentMethodLabels = {
     [PaymentMethods.usdc]: 'USDC',
     [PaymentMethods.googlePay]: 'Google Pay',
     [PaymentMethods.applePay]: 'Apple Pay',
+    [PaymentMethods.paze]: 'Paze',
     [PaymentMethods.credits]: 'Credits',
     [PaymentMethods.crypto]: 'Crypto',
     [PaymentMethods.wire]: 'Wire Transfer',
