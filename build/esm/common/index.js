@@ -8,6 +8,7 @@ export * from './card-form/cardEntryLayout';
 export * from './card-form/cardFormSkeleton';
 export * from './card-form/cardFieldValidationError';
 export * from './types/Subtotal';
+export * from './types/L2L3Data';
 export * from './types/AnyObject';
 export * from './types/giftCardCartItem';
 export * from './types/nftCartItem';
