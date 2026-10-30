@@ -21,6 +21,9 @@ export const CARD_FIELD_ERROR_MESSAGES = {
   expiration: 'Expiration is invalid. Please double check information.',
   cvv: 'CVV is invalid. Please double check information.',
   cvvEmpty: 'Please enter your CVV to proceed.',
+  invalidCardToken: 'Card token is invalid. Please add a new card',
+  cardEntryUnavailable:
+    'Card entry is unavailable. Please re-enter your card details.',
 } as const;
 
 export function getCardFieldValidationError({
