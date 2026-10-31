@@ -70,6 +70,10 @@ Props:
 
 # Changelog
 
+## 6.0.0
+
+- **Breaking:** Removed the deprecated legacy card form components: `CoinflowCardNumberInput`, `CoinflowCvvInput`, `CoinflowCvvOnlyInput`, `CoinflowCardOnlyInput`, `CoinflowCardFormHeader` and their `CoinflowLegacy*` aliases. Use `CoinflowCardForm`, `CoinflowCardNumberForm` or `CoinflowCvvForm` instead.
+
 ## 5.21.0
 
 - Added loading states to the `CoinflowCardForm`, `CoinflowCardNumberInput`, `CoinflowCvvOnlyInput` components

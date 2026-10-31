@@ -35,6 +35,11 @@ export declare enum SettlementType {
     USDC = "USDC",
     Bank = "Bank"
 }
+export type MerchantIdOrCheckoutJwt = {
+    checkoutJwt: string;
+} | {
+    merchantId: string;
+};
 /**
  * Configuration for a single custom pay-in fee line item.
  * Pass via the `customPayInFees` field on `/checkout/link` or `/checkout/jwt-token`.
