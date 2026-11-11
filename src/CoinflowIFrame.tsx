@@ -55,9 +55,10 @@ export const CoinflowIFrame = forwardRef(
       async listenForMessage(
         isResponseValid: (response: string) => boolean
       ): Promise<string> {
-        let handler: ({data, origin}: {data: unknown; origin: string}) => void;
+        let handler: (event: MessageEvent) => void;
         return new Promise<string>((resolve, reject) => {
-          handler = ({data, origin}: {data: unknown; origin: string}) => {
+          handler = ({data, origin, source}: MessageEvent) => {
+            if (source !== IFrameRef.current?.contentWindow) return;
             const expectedOrigin = new URL(
               CoinflowUtils.getCoinflowBaseUrl(props.env)
             ).origin;
@@ -95,7 +96,8 @@ export const CoinflowIFrame = forwardRef(
     }));
 
     const handleIframeMessages = useCallback(
-      ({data, origin}: {data: unknown; origin: string}) => {
+      ({data, origin, source}: MessageEvent) => {
+        if (source !== IFrameRef.current?.contentWindow) return;
         const expectedOrigin = new URL(
           CoinflowUtils.getCoinflowBaseUrl(props.env)
         ).origin;
