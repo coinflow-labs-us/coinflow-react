@@ -150,7 +150,8 @@ function useCardFormIframe({
         return;
       }
 
-      const handler = ({data, origin}: {data: string; origin: string}) => {
+      const handler = ({data, origin, source}: MessageEvent) => {
+        if (source !== iframeRef.current?.contentWindow) return;
         const expectedOrigin = new URL(CoinflowUtils.getCoinflowBaseUrl(env))
           .origin;
         if (origin !== expectedOrigin) return;
